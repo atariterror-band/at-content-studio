@@ -92,6 +92,25 @@
 .frame-scrubber small{color:#77766e;font:9px var(--font);letter-spacing:0}
 .modal-content{display:grid;justify-items:center;gap:12px;max-height:94vh;max-width:90vw}
 .modal-video-controls{width:min(540px,86vw);padding:12px;background:#171715;border:1px solid var(--line)}
+.library-page-actions{display:flex;gap:8px}
+.folder-card-head .folder-upload{margin-left:auto;min-height:32px;padding:0 10px;white-space:nowrap}
+.folder-card-head .folder-count+.folder-upload{margin-left:8px}
+.folder-file-row{display:flex;align-items:center;gap:8px;min-width:0;border-bottom:1px solid #282823}
+.folder-file-row .folder-file{flex:1;min-width:0;border:0;text-align:left;background:transparent}
+.folder-file-row .folder-file::before{content:'▹'}
+.folder-delete{border:1px solid #4a302c;background:transparent;color:#e8877f;padding:5px 7px;font:8px var(--mono);cursor:pointer}
+.folder-delete:hover{border-color:var(--red);background:#351c19}
+.github-connect-card{width:min(520px,calc(100vw - 32px));padding:28px;background:#191917;border:1px solid var(--line);position:relative}
+.github-connect-card h2{margin:8px 0 12px;font:600 30px/.95 var(--display);text-transform:uppercase}
+.github-connect-card .action-modal-description{line-height:1.6}
+.github-token-link{display:inline-block;margin:4px 0 18px;color:var(--yellow);font:9px var(--mono);text-decoration:none}
+.github-token-label{display:block;margin-bottom:7px;color:#aaa99f;font:9px var(--mono);letter-spacing:.08em}
+.github-token-input{width:100%;height:42px;border:1px solid #4a4941;background:#11110f;color:var(--white);padding:0 11px;font:12px var(--mono);outline:none}
+.github-token-input:focus{border-color:var(--yellow)}
+.github-token-note{font-size:9px;line-height:1.5;color:#8b8a80}
+.github-connect-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
+.github-connect-actions .button{min-height:36px;font-size:8px}
+@media(max-width:620px){.library-page-actions{flex-direction:column}.folder-card-head{flex-wrap:wrap}.folder-card-head .folder-count{margin-left:auto}.folder-card-head .folder-upload{margin-left:0}.folder-files{grid-template-columns:1fr}.github-connect-actions{flex-wrap:wrap}.github-connect-actions .button{flex:1}}
 .filter-label{margin-top:15px}
 .filter-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
 .filter-options label{display:flex;align-items:center;gap:7px;min-height:30px;padding:0 8px;border:1px solid #343430;background:#1d1d19;color:#c3c1b7;font-size:9px;cursor:pointer}
