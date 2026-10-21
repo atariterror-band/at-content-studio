@@ -121,6 +121,7 @@
 .pane-resizer svg .hand-detail{fill:none;stroke:#141411;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
 .pane-resizer:hover,.pane-resizer:focus-visible{background:transparent;outline:0;filter:drop-shadow(0 0 5px #f2d21b88);color:var(--yellow)}
 .pane-resizer img{width:43px;height:43px;object-fit:contain;pointer-events:none;filter:drop-shadow(0 1px 2px #000)}
+body.preview-detail-open .pane-resizer,body.created-detail-open .pane-resizer{display:none!important}
 /* Align the floating preview with the first media field beneath its step heading. */
 .preview-column{margin-top:41px}
 @media(max-width:620px){.preview-column{margin-top:0}}
