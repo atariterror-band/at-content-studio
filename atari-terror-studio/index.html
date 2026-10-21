@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#11110f">
+  <meta name="description" content="Lokální AT Content Studio — návrhy sociálního obsahu z oficiálních médií Atari Terror.">
+  <title>AT Content Studio — Atari Terror</title>
+  <link rel="stylesheet" href="studio.css">
+</head>
+<body>
+  <aside class="rail">
+    <a class="brand" href="#studio" data-home-link aria-label="AT Content Studio — zpět na úvodní stránku"><span class="brand-mark">AT</span><span>AT CONTENT<small>ATARI TERROR</small></span></a>
+    <nav class="main-nav" aria-label="Hlavní navigace">
+      <button class="nav-item active" type="button" data-view-target="studio"><span class="nav-icon">▧</span> Tvorba obsahu</button>
+      <button class="nav-item" type="button" data-view-target="drafts"><span class="nav-icon">◷</span> Rozpracované návrhy <b id="draft-count">03</b></button>
+      <button class="nav-item" type="button" data-view-target="formats"><span class="nav-icon">▧</span> Formáty k exportu <b>05</b></button>
+      <button class="nav-item" type="button" data-view-target="library"><span class="nav-icon">▤</span> Knihovna médií <b id="asset-count">05</b></button>
+    </nav>
+  </aside>
+
+  <main class="workspace" id="studio">
+    <header class="topbar"><div class="crumb">ATARI TERROR <span>/</span> AT CONTENT STUDIO</div><div class="top-actions"><span class="saved-status" id="saved-status">OBSAH SMRTI</span><button class="avatar" title="Lokální pracovní prostor">AT</button></div></header>
+    <div class="view is-active" id="view-studio" data-view="studio">
+    <section class="welcome"><div><h1>Tvorba obsahu</h1></div><button class="button button-quiet" id="new-draft">＋ NOVÝ NÁVRH</button></section>
+
+    <section class="studio-grid" aria-label="Editor příspěvku">
+      <div class="editor-column">
+        <div class="section-head" id="editor-media"><div><p class="eyebrow">KROK 01</p><h2>Vyber obsah</h2></div></div>
+        <div class="asset-grid" id="asset-grid" aria-live="polite"></div>
+        <p class="micro-note">Média vybírej z knihovny. <button class="inline-library-link" type="button" data-open-library-picker>NAČÍST OBSAH Z KNIHOVNY MÉDIÍ ↗</button></p>
+
+        <div class="section-head headline-head"><div><p class="eyebrow">KROK 02</p><h2>Nadpis textu</h2></div><span class="step-hint">Zobrazí se v náhledu příspěvku</span></div>
+        <label class="sr-only" for="post-headline">Nadpis textu do vizuálu</label><input class="headline-input" id="post-headline" type="text" maxlength="70" value="Tady dej nadpis, pičo.">
+        <div class="text-layout-controls">
+          <fieldset class="alignment-picker"><legend>ZAROVNÁNÍ NADPISU A TEXTU</legend><button type="button" class="align-button selected" data-align="left" aria-pressed="true">DOLEVA</button><button type="button" class="align-button" data-align="center" aria-pressed="false">NA STŘED</button><button type="button" class="align-button" data-align="right" aria-pressed="false">DOPRAVA</button></fieldset>
+          <div class="position-picker"><label for="headline-size">VELIKOST NADPISU <output id="headline-size-value">100 %</output></label><input id="headline-size" type="range" min="55" max="150" value="100"><label for="content-x">VODOROVNÁ POLOHA</label><input id="content-x" type="range" min="8" max="92" value="8"><label for="content-y">SVISLÁ POLOHA</label><input id="content-y" type="range" min="45" max="88" value="66"></div>
+        </div>
+
+        <div class="section-head caption-head"><div><p class="eyebrow">KROK 03</p><h2>Text příspěvku</h2></div><button class="text-button" id="refresh-caption">↻ VYTVOŘIT VARIANTU</button></div>
+        <label class="sr-only" for="caption">Text příspěvku</label><textarea id="caption" rows="4" maxlength="500">Tady napiš příspěvek smrti, pičo.</textarea>
+        <div class="caption-size-control"><label for="caption-size">VELIKOST TEXTU PŘÍSPĚVKU <output id="caption-size-value">140 %</output></label><input id="caption-size" type="range" min="65" max="200" value="140"></div>
+        <div class="caption-meta"><span id="char-count">99 / 500</span><button class="text-button" id="copy-caption">KOPÍROVAT TEXT</button></div>
+
+        <div class="section-head video-head"><div><p class="eyebrow">KROK 04</p><h2>Délka a vzhled videa</h2></div></div>
+        <div class="video-options">
+          <p class="control-label">DÉLKA VIDEA</p>
+          <div class="duration-options" role="group" aria-label="Délka videa"><button type="button" class="duration-option selected" data-duration="5" aria-pressed="true">5 S</button><button type="button" class="duration-option" data-duration="10" aria-pressed="false">10 S</button><button type="button" class="duration-option" data-duration="15" aria-pressed="false">15 S</button><button type="button" class="duration-option" data-duration="20" aria-pressed="false">20 S</button><button type="button" class="duration-option" data-duration="more" aria-pressed="false">VÍCE</button></div>
+          <label class="custom-duration" id="custom-duration-wrap" hidden for="custom-duration">DÉLKA 25–120 SEKUND <input id="custom-duration" type="number" min="25" max="120" value="25"> S</label>
+          <p class="control-label filter-label">FILTRY <span>lze kombinovat</span></p>
+          <div class="filter-options"><label><input type="checkbox" data-video-filter="cinematic"><span>Filmový look</span></label><label><input type="checkbox" data-video-filter="contrast"><span>Kontrast</span></label><label><input type="checkbox" data-video-filter="noir"><span>Černobílý noir</span></label><label><input type="checkbox" data-video-filter="film"><span>Film</span></label></div>
+          <button class="button button-outline video-create-button" id="download-video">VYTVOŘIT VIDEO <span>↗</span></button>
+        </div>
+
+        <div class="section-head music-head"><div><p class="eyebrow">KROK 05</p><h2>Vyber skladbu ze Spotify</h2></div><a class="spotify-link" href="https://open.spotify.com/artist/7tuvvz0x2oNyY8JTXRcqmp" target="_blank" rel="noreferrer">KATALOG SPOTIFY ↗</a></div>
+        <div class="track-picker"><label for="track-select">VYBER SKLADBU</label><select id="track-select"><option value="">Bez skladby</option><option>Eve</option><option>Bright Sun</option><option>Mother</option><option>Oh My God</option><option>Motofoko</option><option>Chosen One</option><option>Dance Machine</option><option>War</option></select><div class="track-link-row"><span class="spotify-symbol">●</span><span id="track-hint">Výběr skladby je nepovinný.</span><button id="copy-track" type="button" title="Kopírovat odkaz na skladbu" disabled>KOPÍROVAT ODKAZ</button></div><div class="track-size-control"><label for="track-size">VELIKOST NÁZVU SKLADBY V NÁHLEDU <output id="track-size-value">100 %</output></label><input id="track-size" type="range" min="65" max="180" value="100"></div></div>
+
+      </div>
+
+      <aside class="preview-column">
+        <div class="preview-heading"><div><p class="eyebrow">ŽIVÝ NÁHLED</p><h2 id="preview-platform">Instagram Story</h2></div><button class="icon-button" id="fullscreen" title="Zvětšit náhled">⛶</button></div>
+        <div class="format-tabs" role="tablist" aria-label="Formát výstupu">
+          <button class="format-tab selected" data-format="story" role="tab" aria-selected="true">STORY <small>9:16</small></button>
+          <button class="format-tab" data-format="feed" role="tab" aria-selected="false">FEED <small>4:5</small></button>
+          <button class="format-tab" data-format="square" role="tab" aria-selected="false">ČTVEREC <small>1:1</small></button>
+          <button class="format-tab" data-format="landscape" role="tab" aria-selected="false">FB <small>1.91:1</small></button>
+          <button class="format-tab" data-format="fb-story" role="tab" aria-selected="false">FB STORIES <small>9:16</small></button>
+        </div>
+        <div class="preview-stage"><div class="device-frame" id="device-frame"><canvas id="preview-canvas" width="540" height="960" role="button" tabindex="0" aria-label="Otevřít náhled příspěvku na celou obrazovku"></canvas><a class="canvas-website-link" id="preview-website-link" href="https://www.atariterror.com/" target="_blank" rel="noopener noreferrer" aria-label="Otevřít web Atari Terror v novém panelu">WWW.ATARITERROR.COM</a><div class="preview-safe">NÁHLED PŘÍSPĚVKU</div></div></div>
+        <div class="preview-options"><label class="check-row"><input id="show-link" type="checkbox" checked><span class="checkmark"></span><span>Uvést Spotify v grafice</span></label><label class="check-row"><input id="show-band" type="checkbox" checked><span class="checkmark"></span><span>Podpis Atari Terror</span></label></div>
+        <div class="export-actions"><button class="button button-primary" id="create-content">VYTVOŘIT <span>↗</span></button><button class="button button-outline" id="download-image">STÁHNOUT OBRÁZEK <span>↓</span></button></div>
+        <p class="export-note" id="export-note">PNG pro příspěvek · video se stáhne jako WebM</p>
+      </aside>
+      <button class="pane-resizer" id="pane-resizer" type="button" role="slider" aria-label="Změnit poměr prostoru pro kroky a živý náhled" aria-valuemin="30" aria-valuemax="70" aria-valuenow="44" title="Táhni doleva nebo doprava pro změnu velikosti obou panelů">
+        <img src="assets/rock-hand.png" alt="" aria-hidden="true">
+      </button>
+    </section>
+    </div>
+
+    <section class="view page-view" id="view-drafts" data-view="drafts" hidden>
+      <div class="page-heading"><div><h1>Rozpracované návrhy</h1><p>Koncepty, které můžeš otevřít, upravit a připravit ke schválení.</p></div><button class="button button-quiet" id="draft-new">＋ NOVÝ NÁVRH</button></div>
+      <div class="draft-grid draft-page-grid">
+      <article class="draft-card" data-draft-card="bright"><span class="draft-thumb thumb-one"></span><span class="draft-copy"><b>Světlo proráží kouř</b><small>Bright Sun · Story · před 2 h</small></span><span class="draft-status">KE KONTROLE</span><span class="draft-actions"><button type="button" data-draft-open="bright">POKRAČOVAT</button><button type="button" class="delete-action" data-draft-delete="bright">SMAZAT</button></span></article>
+      <article class="draft-card" data-draft-card="mother"><span class="draft-thumb thumb-two"></span><span class="draft-copy"><b>Hlas, který tě zná</b><small>Mother · Feed · včera</small></span><span class="draft-status">KE KONTROLE</span><span class="draft-actions"><button type="button" data-draft-open="mother">POKRAČOVAT</button><button type="button" class="delete-action" data-draft-delete="mother">SMAZAT</button></span></article>
+      <article class="draft-card" data-draft-card="eve"><span class="draft-thumb thumb-three"></span><span class="draft-copy"><b>Ráj s cenovkou</b><small>Eve · Story · včera</small></span><span class="draft-status approved">SCHVÁLENO</span><span class="draft-actions"><button type="button" data-draft-open="eve">POKRAČOVAT</button><button type="button" class="delete-action" data-draft-delete="eve">SMAZAT</button></span></article>
+      </div>
+    </section>
+
+    <section class="view page-view" id="view-formats" data-view="formats" hidden>
+      <div class="page-heading"><div><h1>Formáty k exportu</h1><p>Vyber připravený formát. Návrh se otevře v editoru s odpovídajícím ořezem.</p></div></div>
+      <div class="export-format-grid">
+        <article class="export-format-card" data-format-card="story"><span class="format-ratio ratio-story">9:16</span><span><b>Instagram Story</b><small>Vertikální · 540 × 960 px</small></span><button type="button" data-format-launch="story">OTEVŘÍT ↗</button><button type="button" class="delete-action" data-format-delete="story">SMAZAT</button></article>
+        <article class="export-format-card" data-format-card="feed"><span class="format-ratio ratio-feed">4:5</span><span><b>Instagram Feed</b><small>Portrét · 540 × 675 px</small></span><button type="button" data-format-launch="feed">OTEVŘÍT ↗</button><button type="button" class="delete-action" data-format-delete="feed">SMAZAT</button></article>
+        <article class="export-format-card" data-format-card="square"><span class="format-ratio ratio-square">1:1</span><span><b>Čtvercový příspěvek</b><small>Čtverec · 700 × 700 px</small></span><button type="button" data-format-launch="square">OTEVŘÍT ↗</button><button type="button" class="delete-action" data-format-delete="square">SMAZAT</button></article>
+        <article class="export-format-card" data-format-card="landscape"><span class="format-ratio ratio-landscape">1.91:1</span><span><b>Facebook příspěvek</b><small>Na šířku · 960 × 503 px</small></span><button type="button" data-format-launch="landscape">OTEVŘÍT ↗</button><button type="button" class="delete-action" data-format-delete="landscape">SMAZAT</button></article>
+        <article class="export-format-card" data-format-card="fb-story"><span class="format-ratio ratio-fbstory">9:16</span><span><b>Facebook Stories</b><small>Vertikální · 540 × 960 px</small></span><button type="button" data-format-launch="fb-story">OTEVŘÍT ↗</button><button type="button" class="delete-action" data-format-delete="fb-story">SMAZAT</button></article>
+      </div>
+    </section>
+
+    <section class="view page-view" id="view-library" data-view="library" hidden>
+      <div class="page-heading"><div><h1>Knihovna médií</h1><p>Přehled složek a zdrojových souborů používaných pro příspěvky.</p></div><button class="button button-outline" id="library-add-folder">NAČÍST SLOŽKU ↗</button></div>
+      <div class="folder-list" id="folder-list"></div>
+      <p class="micro-note library-help">Nové adresáře přidáš výběrem jejich nadřazené složky. Jejich struktura se zobrazí v knihovně.</p>
+    </section>
+    <footer><span>AT CONTENT STUDIO · ATARI TERROR</span><span>LOKÁLNÍ PROTOTYP <i>●</i> 0.1</span></footer>
+  </main>
+
+  <input id="folder-input" type="file" accept="image/*,video/*" multiple webkitdirectory directory hidden>
+  <video id="source-video" muted playsinline hidden></video>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div class="action-modal" id="action-modal" hidden role="dialog" aria-modal="true" aria-labelledby="action-modal-title">
+    <div class="action-modal-card"><button class="modal-close" id="action-modal-close" aria-label="Zavřít">×</button><p class="eyebrow" id="action-modal-eyebrow">AT CONTENT STUDIO</p><div class="action-modal-art" id="action-modal-art"><span>AT</span></div><h2 id="action-modal-title"></h2><p class="action-modal-description" id="action-modal-description"></p><div class="action-modal-meta" id="action-modal-meta"></div><div class="action-modal-actions"><button class="button button-primary" id="action-modal-primary"></button><button class="button button-outline" id="action-modal-secondary">ZAVŘÍT</button></div></div>
+  </div>
+  <div class="action-modal library-picker-modal" id="library-picker-modal" hidden role="dialog" aria-modal="true" aria-labelledby="library-picker-title">
+    <section class="library-picker-card"><button class="modal-close" id="library-picker-close" aria-label="Zavřít">×</button><p class="eyebrow">AT CONTENT STUDIO / ZDROJE</p><h2 id="library-picker-title">Knihovna médií</h2><p class="action-modal-description">Vyber soubor z načtené knihovny. Nové složky a soubory přidáš přes stránku Knihovna médií.</p><div class="folder-list picker-folder-list" id="picker-folder-list"></div><button class="button button-outline picker-load-folder" id="picker-load-folder">NAČÍST SLOŽKU DO KNIHOVNY ↗</button></section>
+  </div>
+  <div class="action-modal created-modal" id="created-modal" hidden role="dialog" aria-modal="true" aria-labelledby="created-title">
+    <section class="created-card"><button class="modal-close" id="created-close" aria-label="Zavřít">×</button><p class="eyebrow">NÁHLED VYTVOŘENÉHO PŘÍSPĚVKU</p><h2 id="created-title">Tvoje tvorba</h2><div class="created-art"><div class="created-canvas-frame"><canvas id="created-canvas" aria-label="Vytvořený příspěvek"></canvas><a class="canvas-website-link" id="created-website-link" href="https://www.atariterror.com/" target="_blank" rel="noopener noreferrer" aria-label="Otevřít web Atari Terror v novém panelu">WWW.ATARITERROR.COM</a></div></div><div class="created-actions"><button class="button button-outline" id="created-edit">UPRAVIT</button><button class="button button-primary" id="created-download">STÁHNOUT OBRÁZEK <span>↓</span></button></div></section>
+  </div>
+  <div class="modal" id="preview-modal" hidden><button class="modal-close" id="close-modal" aria-label="Zavřít">×</button><div class="modal-content"><canvas id="modal-canvas"></canvas></div></div>
+  <script src="studio.js"></script>
+</body>
+</html>

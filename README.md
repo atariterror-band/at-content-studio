@@ -1,5 +1,6 @@
 # Atari Terror Content Studio
 
-Lokální prototyp aplikace pro tvorbu obsahu kapely. Zdrojové soubory jsou ve složce [`atari-terror-studio/`](atari-terror-studio/).
+Lokální prototyp aplikace pro tvorbu obsahu kapely.
 
-Otevři [aplikaci](atari-terror-studio/index.html) pro zobrazení prototypu.
+- [Otevřít aplikaci](./atari-terror-studio/)
+- [Zdrojový adresář](./atari-terror-studio/)
