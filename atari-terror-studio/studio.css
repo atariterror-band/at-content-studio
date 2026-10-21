@@ -14,6 +14,7 @@
 
 /* Homepage workflow: four clear authoring steps and library-only media selection. */
 .inline-library-link{border:0;background:none;color:var(--yellow);font:500 9px var(--mono);letter-spacing:.03em;cursor:pointer;padding:4px 2px;text-decoration:underline;text-underline-offset:3px}
+#source-video{position:fixed;left:-10000px;top:0;width:2px;height:2px;opacity:0;pointer-events:none}
 .inline-library-link:hover{color:#fff078}
 .headline-head{margin-top:22px;align-items:end}
 .step-hint{color:#77766e;font:9px var(--mono);text-align:right}
