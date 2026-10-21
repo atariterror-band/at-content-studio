@@ -132,7 +132,7 @@
 .created-canvas-frame{display:inline-block;max-width:100%;max-height:64vh;line-height:0}
 .created-canvas-frame canvas{display:block;max-width:100%;max-height:64vh;width:auto;height:auto;object-fit:contain;border:1px solid #403f38}
 .canvas-website-link{color:transparent}
-.canvas-website-link:hover,.canvas-website-link:focus-visible{color:transparent;outline:1px solid var(--yellow);outline-offset:2px}
+.canvas-website-link:hover,.canvas-website-link:focus-visible{color:transparent;outline:none;text-decoration:none}
 #preview-canvas{cursor:zoom-in}
 #preview-canvas:focus-visible{outline:2px solid var(--yellow);outline-offset:-3px}
 
