@@ -143,7 +143,7 @@ function renderAssetGrid(){
       const image=document.createElement('img');image.src=asset.src;image.alt='';image.loading='lazy';image.addEventListener('load',()=>fallback.hidden=true,{once:true});image.addEventListener('error',()=>{fallback.textContent='FOTO';image.hidden=true},{once:true});button.append(image);
     }
     const name=document.createElement('span');name.className='asset-name';name.textContent=asset.name;name.title=asset.name;button.append(name);
-    button.addEventListener('click',()=>{if(selected!==index)selectedVideoSegment=0;selected=index;renderAssetGrid();renderVideoSegments();if(asset.type==='video'){restartPreviewClip();return}refreshPreview('PŘIPRAVUJI OBRÁZEK',8)});grid.append(button);
+    button.addEventListener('click',()=>{setPreviewPlayback(false);if(selected!==index){selectedVideoSegment=0;selectedStartFrame=0}selected=index;renderAssetGrid();renderVideoSegments();if(asset.type==='video'){restartPreviewClip();return}refreshPreview('PŘIPRAVUJI OBRÁZEK',8)});grid.append(button);
   });
   if(!visible){const empty=document.createElement('div');empty.className='library-empty';empty.textContent='Zatím není vybraný žádný obsah.';grid.append(empty)}
   updateCounts();
