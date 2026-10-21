@@ -22,7 +22,7 @@ const ctx = canvas.getContext('2d');
 const video = document.getElementById('source-video');
 video.preload='auto';video.muted=true;video.playsInline=true;
 const previewLoading=document.getElementById('preview-loading');
-let previewProgressSequence=0,activePreviewProgress=0,previewProgressTimer;
+let previewProgressSequence=0,activePreviewProgress=0,previewProgressTimer,previewProgressStartedAt=0;
 let currentFormat = 'story';
 let selected = 0;
 let toastTimer;
@@ -34,9 +34,9 @@ const draftData = {
 };
 
 function showToast(message){const el=document.getElementById('toast');el.textContent=message;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2400)}
-function beginPreviewProgress(label,percent=0){clearTimeout(previewProgressTimer);const token=++previewProgressSequence;activePreviewProgress=token;previewLoading.hidden=false;document.getElementById('preview-loading-label').textContent=label;setPreviewProgress(percent);return token}
+function beginPreviewProgress(label,percent=0){clearTimeout(previewProgressTimer);const token=++previewProgressSequence;activePreviewProgress=token;previewProgressStartedAt=performance.now();previewLoading.hidden=false;document.getElementById('preview-loading-label').textContent=label;setPreviewProgress(percent);return token}
 function setPreviewProgress(percent){const value=Math.max(0,Math.min(100,Math.round(percent)));document.getElementById('preview-loading-percent').textContent=`${value} %`;document.getElementById('preview-progress-bar').style.width=`${value}%`}
-function finishPreviewProgress(token){if(!token||token!==activePreviewProgress)return;setPreviewProgress(100);previewProgressTimer=setTimeout(()=>{if(token===activePreviewProgress)previewLoading.hidden=true},320)}
+function finishPreviewProgress(token){if(!token||token!==activePreviewProgress)return;setPreviewProgress(100);const visibleFor=performance.now()-previewProgressStartedAt;previewProgressTimer=setTimeout(()=>{if(token===activePreviewProgress)previewLoading.hidden=true},Math.max(420,650-visibleFor))}
 function selectedAsset(){return assets[selected]||assets[0]}
 function loadImage(src){return new Promise((resolve,reject)=>{const image=new Image();image.onload=()=>resolve(image);image.onerror=reject;image.src=src})}
 function updateCounts(){const n=String(remoteLibrary.reduce((sum,folder)=>sum+folder.files.length,0)).padStart(2,'0');document.getElementById('asset-count').textContent=n}
@@ -65,7 +65,8 @@ function loadVideoSource(src,reportProgress=false){
   if(video.readyState>=2){if(token)finishPreviewProgress(token);return Promise.resolve()}
   return new Promise(resolve=>{let settled=false;const update=()=>{if(!token)return;let percent=8;if(Number.isFinite(video.duration)&&video.duration>0&&video.buffered.length){const end=video.buffered.end(video.buffered.length-1);percent=Math.max(percent,Math.floor(Math.min(1,end/video.duration)*92))}else if(video.readyState>=1)percent=32;setPreviewProgress(percent)};const finish=()=>{if(settled)return;settled=true;video.removeEventListener('loadeddata',finish);video.removeEventListener('error',finish);video.removeEventListener('progress',update);video.removeEventListener('loadedmetadata',update);clearTimeout(timeout);if(token)finishPreviewProgress(token);resolve()};const timeout=setTimeout(finish,20000);video.addEventListener('loadeddata',finish,{once:true});video.addEventListener('error',finish,{once:true});video.addEventListener('progress',update);video.addEventListener('loadedmetadata',update);if(video.readyState>=2)finish()});
 }
-function restartPreviewClip(){if(selectedAsset()?.type!=='video')return;video.pause();video.currentTime=0;loadVideoSource(selectedAsset().src,true).then(()=>video.play().catch(()=>{}))}
+function refreshPreview(label='AKTUALIZUJI NÁHLED',percent=12){const token=beginPreviewProgress(label,percent);drawDesign(canvas).then(()=>finishPreviewProgress(token)).catch(()=>finishPreviewProgress(token))}
+function restartPreviewClip(){if(selectedAsset()?.type!=='video')return;video.pause();video.currentTime=0;refreshPreview('PŘIPRAVUJI VIDEO',8)}
 video.loop=false;
 video.addEventListener('timeupdate',()=>{if(selectedAsset()?.type!=='video'||!Number.isFinite(video.duration))return;const clipEnd=Math.min(getVideoDuration(),video.duration);if(video.currentTime>=clipEnd){video.currentTime=0;video.play().catch(()=>{})}});
 function drawCover(target,source,w,h){const sw=source.videoWidth||source.naturalWidth||source.width;const sh=source.videoHeight||source.naturalHeight||source.height;if(!sw||!sh)return;const scale=Math.max(w/sw,h/sh);const dw=sw*scale,dh=sh*scale;target.drawImage(source,(w-dw)/2,(h-dh)/2,dw,dh)}
@@ -126,7 +127,7 @@ function renderAssetGrid(){
       const image=document.createElement('img');image.src=asset.src;image.alt='';image.loading='lazy';image.addEventListener('load',()=>fallback.hidden=true,{once:true});image.addEventListener('error',()=>{fallback.textContent='FOTO';image.hidden=true},{once:true});button.append(image);
     }
     const name=document.createElement('span');name.className='asset-name';name.textContent=asset.name;name.title=asset.name;button.append(name);
-    button.addEventListener('click',()=>{selected=index;renderAssetGrid();if(asset.type==='video')restartPreviewClip();drawDesign(canvas)});grid.append(button);
+    button.addEventListener('click',()=>{selected=index;renderAssetGrid();if(asset.type==='video'){restartPreviewClip();return}refreshPreview('PŘIPRAVUJI OBRÁZEK',8)});grid.append(button);
   });
   if(!visible){const empty=document.createElement('div');empty.className='library-empty';empty.textContent='Zatím není vybraný žádný obsah.';grid.append(empty)}
   updateCounts();
@@ -152,7 +153,7 @@ document.querySelectorAll('[data-view-target]').forEach(button=>button.addEventL
 document.querySelector('[data-home-link]').addEventListener('click',e=>{e.preventDefault();closeActionModal();closeLibraryPicker();document.getElementById('preview-modal').hidden=true;closeCreatedModal();showView('studio')});
 document.getElementById('library-add-folder').addEventListener('click',()=>{loadRemoteLibrary();showToast('Obnovuji seznam souborů z webové knihovny.')});
 document.getElementById('draft-new').addEventListener('click',()=>{showView('studio');document.getElementById('new-draft').click()});
-function handleLibraryFileClick(e){const row=e.target.closest('[data-asset-name]');if(!row)return;const name=row.dataset.assetName;closeLibraryPicker();if(row.dataset.loaded==='true'){const index=Number(row.dataset.assetIndex);if(Number.isInteger(index)&&index>=0){selected=index;showView('studio');renderAssetGrid();drawDesign(canvas);showToast(`Otevřen režim tvorby z klipu ${name}.`)}return}const url=row.dataset.assetUrl;if(!url){showToast('Soubor nemá dostupnou webovou adresu.');return}const type=row.dataset.assetType||'video';assets.push({name,relativePath:`${row.dataset.folder}/${name}`,type,src:url,tag:type==='video'?'VIDEO':'FOTO',source:'github'});selected=assets.length-1;showView('studio');renderAssetGrid();renderFolderList();drawDesign(canvas);showToast(`Načteno z webové knihovny: ${name}.`)}
+function handleLibraryFileClick(e){const row=e.target.closest('[data-asset-name]');if(!row)return;const name=row.dataset.assetName;closeLibraryPicker();if(row.dataset.loaded==='true'){const index=Number(row.dataset.assetIndex);if(Number.isInteger(index)&&index>=0){selected=index;showView('studio');renderAssetGrid();if(selectedAsset()?.type==='video')restartPreviewClip();else refreshPreview('PŘIPRAVUJI OBRÁZEK',8);showToast(`Otevřen režim tvorby z klipu ${name}.`)}return}const url=row.dataset.assetUrl;if(!url){showToast('Soubor nemá dostupnou webovou adresu.');return}const type=row.dataset.assetType||'video';assets.push({name,relativePath:`${row.dataset.folder}/${name}`,type,src:url,tag:type==='video'?'VIDEO':'FOTO',source:'github'});selected=assets.length-1;showView('studio');renderAssetGrid();renderFolderList();if(type==='video')restartPreviewClip();else refreshPreview('PŘIPRAVUJI OBRÁZEK',8);showToast(`Načteno z webové knihovny: ${name}.`)}
 document.getElementById('folder-list').addEventListener('click',handleLibraryFileClick);document.getElementById('picker-folder-list').addEventListener('click',handleLibraryFileClick);
 document.querySelectorAll('[data-open-library-picker]').forEach(button=>button.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();openLibraryPicker()}));
 function openLibraryPicker(){const modal=document.getElementById('library-picker-modal');if(!modal)return;renderFolderList('picker-folder-list');modal.hidden=false;modal.setAttribute('aria-hidden','false');document.getElementById('library-picker-close')?.focus();loadRemoteLibrary()}
