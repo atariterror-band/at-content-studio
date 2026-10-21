@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#11110f">
   <meta name="description" content="Lokální AT Content Studio — návrhy sociálního obsahu z oficiálních médií Atari Terror.">
   <title>AT Content Studio — Atari Terror</title>
-  <link rel="stylesheet" href="studio.css?v=202610221430">
+  <link rel="stylesheet" href="studio.css?v=202610221500">
 </head>
 <body>
   <aside class="rail">
@@ -30,7 +30,10 @@
         <div class="asset-grid" id="asset-grid" aria-live="polite"></div>
         <p class="micro-note">Média vybírej z knihovny. <button class="inline-library-link" type="button" data-open-library-picker>NAČÍST OBSAH Z KNIHOVNY MÉDIÍ ↗</button></p>
 
-        <div class="section-head headline-head"><div><p class="eyebrow">KROK 02</p><h2>Nadpis textu</h2></div><span class="step-hint">Zobrazí se v náhledu příspěvku</span></div>
+        <div class="section-head headline-head"><div><p class="eyebrow">KROK 02</p><h2>Nadpisy</h2></div><span class="step-hint">Zobrazí se v náhledu příspěvku</span></div>
+        <label class="field-label" for="main-headline">HLAVNÍ NADPIS</label><input class="headline-input" id="main-headline" type="text" maxlength="70" placeholder="Hlavní nadpis nad obsahem">
+        <div class="main-headline-controls"><label for="main-headline-size">VELIKOST HLAVNÍHO NADPISU <output id="main-headline-size-value">100 %</output></label><input id="main-headline-size" type="range" min="55" max="150" value="100"><label for="main-headline-color">BARVA HLAVNÍHO NADPISU</label><input id="main-headline-color" type="color" value="#f2d21b" aria-label="Barva hlavního nadpisu"></div>
+        <label class="field-label" for="post-headline">NADPIS OBSAHU</label>
         <label class="sr-only" for="post-headline">Nadpis textu do vizuálu</label><input class="headline-input" id="post-headline" type="text" maxlength="70" value="Tady dej nadpis, pičo.">
         <div class="text-layout-controls">
           <fieldset class="alignment-picker"><legend>ZAROVNÁNÍ NADPISU A TEXTU</legend><button type="button" class="align-button selected" data-align="left" aria-pressed="true">DOLEVA</button><button type="button" class="align-button" data-align="center" aria-pressed="false">NA STŘED</button><button type="button" class="align-button" data-align="right" aria-pressed="false">DOPRAVA</button></fieldset>
@@ -118,6 +121,6 @@
     <section class="created-card"><button class="modal-close" id="created-close" aria-label="Zavřít">×</button><p class="eyebrow">NÁHLED VYTVOŘENÉHO PŘÍSPĚVKU</p><h2 id="created-title">Tvoje tvorba</h2><div class="created-art"><div class="created-canvas-frame"><canvas id="created-canvas" aria-label="Vytvořený příspěvek"></canvas><a class="canvas-website-link" id="created-website-link" href="https://www.atariterror.com/" target="_blank" rel="noopener noreferrer" aria-label="Otevřít web Atari Terror v novém panelu">WWW.ATARITERROR.COM</a></div></div><div class="created-actions"><button class="button button-outline" id="created-edit">UPRAVIT</button><button class="button button-primary" id="created-download">STÁHNOUT OBRÁZEK <span>↓</span></button></div></section>
   </div>
   <div class="modal" id="preview-modal" hidden><button class="modal-close" id="close-modal" aria-label="Zavřít">×</button><div class="modal-content"><canvas id="modal-canvas"></canvas><div class="video-playback-controls modal-video-controls" id="modal-video-controls" hidden><button class="button button-primary playback-button" id="modal-play-toggle" type="button" disabled>▶ PŘEHRÁT VÝSLEDEK</button><label class="frame-scrubber"><span>POZICE VYBRANÉHO ÚSEKU <output id="modal-start-frame-label">00:00:00</output></span><input id="modal-start-frame" type="range" min="0" max="0" step="1" value="0" disabled><small>Posouvá začátek klipu po snímcích v rámci vybraného úseku a délky videa.</small></label></div></div></div>
-  <script src="studio.js?v=202610221445"></script>
+  <script src="studio.js?v=202610221500"></script>
 </body>
 </html>
