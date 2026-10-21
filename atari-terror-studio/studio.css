@@ -26,6 +26,8 @@
 .picker-folder-list{margin:16px 0}
 .picker-folder-list .folder-files{grid-template-columns:repeat(2,minmax(0,1fr))}
 .picker-load-folder{min-height:37px}
+.library-source-status{margin:7px 0 10px;color:#a6a48f;font:9px var(--mono)}
+.folder-empty{margin:0}
 .library-empty .inline-library-link{display:block;margin:8px auto 0}
 @media(max-width:620px){.library-picker-card{padding:20px 15px;max-height:90vh}.picker-folder-list .folder-files{grid-template-columns:1fr}.step-hint{max-width:45%;line-height:1.4}.inline-library-link{font-size:8px}}
 

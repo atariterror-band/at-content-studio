@@ -98,21 +98,20 @@
     </section>
 
     <section class="view page-view" id="view-library" data-view="library" hidden>
-      <div class="page-heading"><div><h1>Knihovna médií</h1><p>Přehled složek a zdrojových souborů používaných pro příspěvky.</p></div><button class="button button-outline" id="library-add-folder">NAČÍST SLOŽKU ↗</button></div>
+      <div class="page-heading"><div><h1>Knihovna médií</h1><p>Přehled složek a zdrojových souborů používaných pro příspěvky.</p></div><button class="button button-outline" id="library-add-folder">OBNOVIT Z WEBU ↻</button></div>
       <div class="folder-list" id="folder-list"></div>
-      <p class="micro-note library-help">Nové adresáře přidáš výběrem jejich nadřazené složky. Jejich struktura se zobrazí v knihovně.</p>
+      <p class="micro-note library-help">Složky a soubory se načítají přímo z webové knihovny Atari Terror na GitHubu.</p>
     </section>
     <footer><span>AT CONTENT STUDIO · ATARI TERROR</span><span>LOKÁLNÍ PROTOTYP <i>●</i> 0.1</span></footer>
   </main>
 
-  <input id="folder-input" type="file" accept="image/*,video/*" multiple webkitdirectory directory hidden>
   <video id="source-video" muted playsinline hidden></video>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <div class="action-modal" id="action-modal" hidden role="dialog" aria-modal="true" aria-labelledby="action-modal-title">
     <div class="action-modal-card"><button class="modal-close" id="action-modal-close" aria-label="Zavřít">×</button><p class="eyebrow" id="action-modal-eyebrow">AT CONTENT STUDIO</p><div class="action-modal-art" id="action-modal-art"><span>AT</span></div><h2 id="action-modal-title"></h2><p class="action-modal-description" id="action-modal-description"></p><div class="action-modal-meta" id="action-modal-meta"></div><div class="action-modal-actions"><button class="button button-primary" id="action-modal-primary"></button><button class="button button-outline" id="action-modal-secondary">ZAVŘÍT</button></div></div>
   </div>
   <div class="action-modal library-picker-modal" id="library-picker-modal" hidden role="dialog" aria-modal="true" aria-labelledby="library-picker-title">
-    <section class="library-picker-card"><button class="modal-close" id="library-picker-close" aria-label="Zavřít">×</button><p class="eyebrow">AT CONTENT STUDIO / ZDROJE</p><h2 id="library-picker-title">Knihovna médií</h2><p class="action-modal-description">Vyber soubor z načtené knihovny. Nové složky a soubory přidáš přes stránku Knihovna médií.</p><div class="folder-list picker-folder-list" id="picker-folder-list"></div><button class="button button-outline picker-load-folder" id="picker-load-folder">NAČÍST SLOŽKU DO KNIHOVNY ↗</button></section>
+    <section class="library-picker-card"><button class="modal-close" id="library-picker-close" aria-label="Zavřít">×</button><p class="eyebrow">AT CONTENT STUDIO / ZDROJE</p><h2 id="library-picker-title">Knihovna médií</h2><p class="action-modal-description">Vyber konkrétní soubor z webové knihovny. Po výběru se rovnou načte do editoru.</p><p class="library-source-status" id="library-source-status" role="status">Načítám seznam z webu…</p><div class="folder-list picker-folder-list" id="picker-folder-list"></div></section>
   </div>
   <div class="action-modal created-modal" id="created-modal" hidden role="dialog" aria-modal="true" aria-labelledby="created-title">
     <section class="created-card"><button class="modal-close" id="created-close" aria-label="Zavřít">×</button><p class="eyebrow">NÁHLED VYTVOŘENÉHO PŘÍSPĚVKU</p><h2 id="created-title">Tvoje tvorba</h2><div class="created-art"><div class="created-canvas-frame"><canvas id="created-canvas" aria-label="Vytvořený příspěvek"></canvas><a class="canvas-website-link" id="created-website-link" href="https://www.atariterror.com/" target="_blank" rel="noopener noreferrer" aria-label="Otevřít web Atari Terror v novém panelu">WWW.ATARITERROR.COM</a></div></div><div class="created-actions"><button class="button button-outline" id="created-edit">UPRAVIT</button><button class="button button-primary" id="created-download">STÁHNOUT OBRÁZEK <span>↓</span></button></div></section>

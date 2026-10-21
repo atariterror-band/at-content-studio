@@ -6,6 +6,10 @@ const knownOfficialFiles = [
   'ATARI TERROR .mp4',
   'ATARI TERROR - Stuck To The Tit (Official).mp4'
 ];
+const libraryDirectories = ['design','official-photos','official-videos','photos','texts','videos'];
+const githubContentsApi = 'https://api.github.com/repos/atariterror-band/at-content-studio/contents';
+const websiteLibraryRoot = new URL('../', window.location.href);
+let remoteLibrary = libraryDirectories.map(name=>({name,path:`GitHub / ${name}`,files:name==='official-videos'?knownOfficialFiles.map(file=>({name:file,url:new URL(`${name}/${encodeURIComponent(file)}`,websiteLibraryRoot).href,type:'video'})):[]}));
 const formatMap = {
   story:{width:540,height:960,title:'Instagram Story',ratio:'9 / 16'},
   feed:{width:540,height:675,title:'Instagram Feed',ratio:'4 / 5'},
@@ -20,7 +24,6 @@ const video = document.getElementById('source-video');
 let currentFormat = 'story';
 let selected = 0;
 let toastTimer;
-let pendingAssetName = null;
 let modalAction = null;
 const draftData = {
   bright:{title:'Světlo proráží kouř',track:'Bright Sun',format:'story',status:'KE KONTROLE',thumb:'thumb-one',caption:'Světlo proráží kouř. ⚡\n\nAtari Terror — Bright Sun\nPoslechni si nás na Spotify ↗'},
@@ -31,18 +34,41 @@ const draftData = {
 function showToast(message){const el=document.getElementById('toast');el.textContent=message;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2400)}
 function selectedAsset(){return assets[selected]||assets[0]}
 function loadImage(src){return new Promise((resolve,reject)=>{const image=new Image();image.onload=()=>resolve(image);image.onerror=reject;image.src=src})}
-function updateCounts(){const n=String(assets.length||knownOfficialFiles.length).padStart(2,'0');document.getElementById('asset-count').textContent=n}
+function updateCounts(){const n=String(remoteLibrary.reduce((sum,folder)=>sum+folder.files.length,0)).padStart(2,'0');document.getElementById('asset-count').textContent=n}
 function showView(name){document.querySelectorAll('[data-view]').forEach(view=>{const active=view.dataset.view===name;view.hidden=!active;view.classList.toggle('is-active',active)});document.querySelectorAll('[data-view-target]').forEach(button=>button.classList.toggle('active',button.dataset.viewTarget===name));window.scrollTo({top:0,behavior:'smooth'})}
 function closeActionModal(){document.getElementById('action-modal').hidden=true;modalAction=null}
 function openActionModal({eyebrow,title,description,meta,artClass,artLabel,buttonLabel,action}){modalAction=action;document.getElementById('action-modal-eyebrow').textContent=eyebrow;document.getElementById('action-modal-title').textContent=title;document.getElementById('action-modal-description').textContent=description;document.getElementById('action-modal-meta').textContent=meta;const art=document.getElementById('action-modal-art');art.className=`action-modal-art ${artClass||''}`;art.querySelector('span').textContent=artLabel||'AT';document.getElementById('action-modal-primary').textContent=buttonLabel;document.getElementById('action-modal').hidden=false;document.getElementById('action-modal-primary').focus()}
 function openDraftModal(key){const d=draftData[key];if(!d)return;openActionModal({eyebrow:`ROZPRACOVANÝ NÁVRH / ${d.status}`,title:d.title,description:'Otevři tento konkrétní koncept a pokračuj v úpravě textu, skladby i výstupního formátu.',meta:`SKLADBA  ·  ${d.track.toUpperCase()}     /     FORMÁT  ·  ${d.format.toUpperCase()}`,artClass:d.thumb,artLabel:d.track.toUpperCase(),buttonLabel:'POKRAČOVAT V ÚPRAVÁCH',action:{type:'draft',key}})}
 function openFormatModal(format){const f=formatMap[format];if(!f)return;openActionModal({eyebrow:'PŘIPRAVENÝ FORMÁT / EXPORT',title:f.title,description:'Tento formát se otevře v editoru s připraveným poměrem stran. Vyber nebo načti médium a pokračuj v tvorbě.',meta:`POMĚR  ·  ${f.ratio.replaceAll(' ','')}     /     ${f.width} × ${f.height} PX`,artClass:`format-art ${format}`,artLabel:f.ratio.replaceAll(' ','').replace('/',':'),buttonLabel:'VYBRAT TENTO FORMÁT',action:{type:'format',format}})}
 function loadDraft(key){const d=draftData[key];if(!d)return;showView('studio');document.getElementById('post-headline').value=d.title;document.getElementById('post-headline').dispatchEvent(new Event('input'));document.getElementById('track-select').value=d.track;document.getElementById('track-select').dispatchEvent(new Event('change'));document.getElementById('caption').value=d.caption;document.getElementById('caption').dispatchEvent(new Event('input'));document.querySelector(`[data-format="${d.format}"]`).click();closeActionModal();showToast('Konkrétní návrh načten do editoru.')}
+async function loadRemoteLibrary(){
+  const status=document.getElementById('library-source-status');
+  if(status)status.textContent='Načítám seznam souborů z GitHubu…';
+  try{
+    const rootResponse=await fetch(githubContentsApi,{cache:'no-store'});
+    if(!rootResponse.ok)throw new Error(`GitHub API ${rootResponse.status}`);
+    const rootItems=await rootResponse.json();
+    const folderItems=new Map(rootItems.filter(item=>item.type==='dir').map(item=>[item.name,item]));
+    remoteLibrary=await Promise.all(libraryDirectories.map(async name=>{
+      const directory=folderItems.get(name);
+      if(!directory)return {name,path:`GitHub / ${name}`,files:[]};
+      const response=await fetch(directory.url,{cache:'no-store'});
+      if(!response.ok)throw new Error(`Nelze načíst složku ${name}`);
+      const items=await response.json();
+      const files=items.filter(item=>item.type==='file'&&!item.name.startsWith('.')&&/\.(mp4|mov|webm|m4v|jpg|jpeg|png|webp|gif)$/i.test(item.name)).map(item=>({name:item.name,url:new URL(`${name}/${encodeURIComponent(item.name)}`,websiteLibraryRoot).href,type:/\.(mp4|mov|webm|m4v)$/i.test(item.name)?'video':'image'}));
+      return {name,path:`GitHub / ${name}`,files};
+    }));
+    renderFolderList();renderFolderList('picker-folder-list');
+    if(status){const count=remoteLibrary.reduce((sum,folder)=>sum+folder.files.length,0);status.textContent=`Načteno z webové knihovny · ${count} souborů v ${remoteLibrary.length} složkách.`}
+    updateCounts();
+  }catch(error){
+    if(status)status.textContent='Seznam z webu se nepodařilo obnovit. Zobrazuji poslední dostupný seznam.';
+    console.error(error);
+  }
+}
 function renderFolderList(targetId='folder-list'){
   const container=document.getElementById(targetId);if(!container)return;container.replaceChildren();
-  const folders=new Map([['official-videos',{path:'Plocha / AT Content Studio / official-videos',files:knownOfficialFiles.map(name=>({name,loaded:false}))}]]);
-  assets.forEach(asset=>{const rel=asset.relativePath||'';const dir=rel.includes('/')?rel.split('/').slice(0,-1).join('/'):'Média nahraná z počítače';const key=dir.split('/').pop()==='official-videos'?'official-videos':dir;let folder=folders.get(key);if(!folder){folder={path:dir,files:[]};folders.set(key,folder)}if(key==='official-videos'&&!folder.live){folder.files=[];folder.live=true}folder.files.push({name:asset.name,loaded:true,assetIndex:assets.indexOf(asset)})});
-  folders.forEach((folder,name)=>{const card=document.createElement('section');card.className='folder-card';const head=document.createElement('div');head.className='folder-card-head';const icon=document.createElement('span');icon.className='folder-icon';icon.textContent='▰';const label=document.createElement('div');const title=document.createElement('strong');title.textContent=name;const path=document.createElement('small');path.textContent=folder.path;label.append(title,path);const count=document.createElement('span');count.className='folder-count';count.textContent=`${String(folder.files.length).padStart(2,'0')} SOUBORŮ`;head.append(icon,label,count);card.append(head);const list=document.createElement('div');list.className='folder-files';folder.files.forEach(file=>{const row=document.createElement('button');row.type='button';row.className='folder-file'+(file.loaded?' loaded':'');row.textContent=file.name;row.title='Vytvářet obsah z tohoto souboru';row.dataset.assetName=file.name;row.dataset.assetIndex=String(file.assetIndex??'');row.dataset.loaded=String(file.loaded);list.append(row)});card.append(list);container.append(card)});
+  remoteLibrary.forEach(folder=>{const card=document.createElement('section');card.className='folder-card';const head=document.createElement('div');head.className='folder-card-head';const icon=document.createElement('span');icon.className='folder-icon';icon.textContent='▰';const label=document.createElement('div');const title=document.createElement('strong');title.textContent=folder.name;const path=document.createElement('small');path.textContent=folder.path;label.append(title,path);const count=document.createElement('span');count.className='folder-count';count.textContent=`${String(folder.files.length).padStart(2,'0')} SOUBORŮ`;head.append(icon,label,count);card.append(head);const list=document.createElement('div');list.className='folder-files';folder.files.forEach(file=>{const assetIndex=assets.findIndex(asset=>asset.src===file.url);const row=document.createElement('button');row.type='button';row.className='folder-file'+(assetIndex>=0?' loaded':'');row.textContent=file.name;row.title='Načíst tento soubor do editoru';row.dataset.assetName=file.name;row.dataset.assetUrl=file.url;row.dataset.assetType=file.type;row.dataset.folder=folder.name;row.dataset.assetIndex=String(assetIndex);row.dataset.loaded=String(assetIndex>=0);list.append(row)});if(!folder.files.length){const empty=document.createElement('p');empty.className='folder-empty';empty.textContent='Zatím bez souborů';list.append(empty)}card.append(list);container.append(card)});
 }
 function activeMediaFilter(){const choices={cinematic:'contrast(1.1) saturate(1.12) sepia(.08)',contrast:'contrast(1.35) saturate(1.05)',noir:'grayscale(1) contrast(1.28)',film:'sepia(.2) contrast(1.08) saturate(.82)'};return Array.from(document.querySelectorAll('[data-video-filter]:checked')).map(input=>choices[input.dataset.videoFilter]).filter(Boolean).join(' ')||'none'}
 function getVideoDuration(){if(document.querySelector('[data-duration="more"].selected'))return Math.max(25,Math.min(120,Number(document.getElementById('custom-duration').value)||25));return Number(document.querySelector('[data-duration].selected')?.dataset.duration||5)}
@@ -93,7 +119,7 @@ function renderAssetGrid(){
     const fallback=document.createElement('span');fallback.className='thumb-fallback';fallback.textContent='AT';button.append(fallback);
     if(asset.type==='video'){
       const image=document.createElement('img');image.className='video-thumbnail';image.alt='';image.hidden=true;button.append(image);
-      const source=document.createElement('video');source.src=asset.src;source.muted=true;source.playsInline=true;source.preload='auto';
+      const source=document.createElement('video');source.src=asset.src;source.muted=true;source.playsInline=true;source.preload='metadata';
       source.addEventListener('loadedmetadata',()=>{try{source.currentTime=Number.isFinite(source.duration)?Math.min(.7,source.duration*.2):.2}catch{}} ,{once:true});
       source.addEventListener('seeked',()=>{try{const thumb=document.createElement('canvas');thumb.width=360;thumb.height=240;const tctx=thumb.getContext('2d');const sw=source.videoWidth,sh=source.videoHeight,scale=Math.max(thumb.width/sw,thumb.height/sh),dw=sw*scale,dh=sh*scale;tctx.drawImage(source,(thumb.width-dw)/2,(thumb.height-dh)/2,dw,dh);image.src=thumb.toDataURL('image/jpeg',.76);image.hidden=false;fallback.hidden=true}catch{fallback.textContent='VIDEO'}},{once:true});
       source.addEventListener('error',()=>{fallback.textContent='VIDEO'},{once:true});
@@ -107,24 +133,10 @@ function renderAssetGrid(){
   if(!visible){const empty=document.createElement('div');empty.className='library-empty';empty.textContent='Zatím není vybraný žádný obsah.';grid.append(empty)}
   updateCounts();
 }
-function addFiles(files){const incoming=Array.from(files).filter(f=>(f.type.startsWith('image/')||f.type.startsWith('video/'))&&!assets.some(asset=>asset.name===f.name&&asset.relativePath===(f.webkitRelativePath||'')));for(const file of incoming){assets.push({name:file.name,relativePath:file.webkitRelativePath||'',type:file.type.startsWith('video/')?'video':'image',src:URL.createObjectURL(file),tag:file.type.startsWith('video/')?'VIDEO':'FOTO',file})}if(incoming.length){selected=assets.length-incoming.length;if(pendingAssetName){const target=assets.findIndex(asset=>asset.name===pendingAssetName);if(target>=0)selected=target}document.getElementById('char-count').textContent=`${document.getElementById('caption').value.length} / 500`;renderAssetGrid();renderFolderList();renderFolderList('picker-folder-list');drawDesign(canvas);
-const paneResizer=document.getElementById('pane-resizer');
-const studioGrid=document.querySelector('.studio-grid');
-let editorShare=44;
-let resizingPanes=false;
-function updateSplitterPosition(){if(!studioGrid||!paneResizer||window.innerWidth<=720)return;const gridRect=studioGrid.getBoundingClientRect();const editorRect=document.querySelector('.editor-column').getBoundingClientRect();const mediaHeadRect=document.getElementById('editor-media').getBoundingClientRect();paneResizer.style.left=`${gridRect.left+editorRect.width+13}px`;paneResizer.style.top=`${mediaHeadRect.top+mediaHeadRect.height/2}px`;paneResizer.setAttribute('aria-valuenow',String(Math.round(editorShare)))}
-function setEditorShare(value){const available=studioGrid.clientWidth-26;const previewMinimum=window.innerWidth<=820?340:420;const lower=Math.max(30,320/available*100);const upper=Math.min(70,100-previewMinimum/available*100);if(lower>upper)editorShare=50;else editorShare=Math.max(lower,Math.min(upper,value));studioGrid.style.setProperty('--editor-fr',`${editorShare}fr`);studioGrid.style.setProperty('--preview-fr',`${100-editorShare}fr`);updateSplitterPosition()}
-paneResizer.addEventListener('pointerdown',event=>{if(window.innerWidth<=720)return;resizingPanes=true;paneResizer.setPointerCapture(event.pointerId);event.preventDefault()});
-paneResizer.addEventListener('pointermove',event=>{if(!resizingPanes)return;const rect=studioGrid.getBoundingClientRect();const available=rect.width-26;setEditorShare((event.clientX-rect.left-13)/available*100)});
-paneResizer.addEventListener('pointerup',()=>{resizingPanes=false});paneResizer.addEventListener('pointercancel',()=>{resizingPanes=false});
-paneResizer.addEventListener('keydown',event=>{if(event.key==='ArrowLeft'||event.key==='ArrowRight'){event.preventDefault();setEditorShare(editorShare+(event.key==='ArrowRight'?3:-3))}});
-window.addEventListener('resize',updateSplitterPosition);window.addEventListener('scroll',updateSplitterPosition,{passive:true});
-requestAnimationFrame(updateSplitterPosition);
-showToast(`Přidáno ${incoming.length} médií do lokální knihovny.`)}else if(!files.length)showToast('Ve výběru nebyla žádná fotka ani video.');if(pendingAssetName){const found=assets.findIndex(asset=>asset.name===pendingAssetName);if(found>=0){selected=found;showView('studio');renderAssetGrid();drawDesign(canvas);showToast(`Vybrán klip ${assets[found].name}.`)}else showToast(`Klip ${pendingAssetName} ve vybrané složce nebyl.`);pendingAssetName=null}}
 function activeCaption(){return document.getElementById('caption').value}
 function downloadBlob(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),10000)}
 
-document.getElementById('char-count').textContent=`${document.getElementById('caption').value.length} / 500`;renderAssetGrid();renderFolderList();renderFolderList('picker-folder-list');drawDesign(canvas);
+document.getElementById('char-count').textContent=`${document.getElementById('caption').value.length} / 500`;renderAssetGrid();renderFolderList();renderFolderList('picker-folder-list');drawDesign(canvas);loadRemoteLibrary();
 const paneResizer=document.getElementById('pane-resizer');
 const studioGrid=document.querySelector('.studio-grid');
 let editorShare=44;
@@ -140,16 +152,14 @@ requestAnimationFrame(updateSplitterPosition);
 
 document.querySelectorAll('[data-view-target]').forEach(button=>button.addEventListener('click',()=>showView(button.dataset.viewTarget)));
 document.querySelector('[data-home-link]').addEventListener('click',e=>{e.preventDefault();closeActionModal();closeLibraryPicker();document.getElementById('preview-modal').hidden=true;closeCreatedModal();showView('studio')});
-document.getElementById('library-add-folder').addEventListener('click',()=>{showToast('Vyber složku z lokální knihovny médií.');document.getElementById('folder-input').click()});
+document.getElementById('library-add-folder').addEventListener('click',()=>{loadRemoteLibrary();showToast('Obnovuji seznam souborů z webové knihovny.')});
 document.getElementById('draft-new').addEventListener('click',()=>{showView('studio');document.getElementById('new-draft').click()});
-document.getElementById('folder-input').addEventListener('change',e=>{addFiles(e.target.files);e.target.value=''});
-function handleLibraryFileClick(e){const row=e.target.closest('[data-asset-name]');if(!row)return;const name=row.dataset.assetName;closeLibraryPicker();if(row.dataset.loaded==='true'){const index=Number(row.dataset.assetIndex);if(Number.isInteger(index)&&index>=0){selected=index;showView('studio');renderAssetGrid();drawDesign(canvas);showToast(`Otevřen režim tvorby z klipu ${name}.`)}return}pendingAssetName=name;showView('studio');showToast('Vyber složku official-videos z počítače.');document.getElementById('folder-input').click()}
+function handleLibraryFileClick(e){const row=e.target.closest('[data-asset-name]');if(!row)return;const name=row.dataset.assetName;closeLibraryPicker();if(row.dataset.loaded==='true'){const index=Number(row.dataset.assetIndex);if(Number.isInteger(index)&&index>=0){selected=index;showView('studio');renderAssetGrid();drawDesign(canvas);showToast(`Otevřen režim tvorby z klipu ${name}.`)}return}const url=row.dataset.assetUrl;if(!url){showToast('Soubor nemá dostupnou webovou adresu.');return}const type=row.dataset.assetType||'video';assets.push({name,relativePath:`${row.dataset.folder}/${name}`,type,src:url,tag:type==='video'?'VIDEO':'FOTO',source:'github'});selected=assets.length-1;showView('studio');renderAssetGrid();renderFolderList();drawDesign(canvas);showToast(`Načteno z webové knihovny: ${name}.`)}
 document.getElementById('folder-list').addEventListener('click',handleLibraryFileClick);document.getElementById('picker-folder-list').addEventListener('click',handleLibraryFileClick);
 document.addEventListener('click',e=>{if(e.target.closest('[data-open-library-picker]'))openLibraryPicker()});
-function openLibraryPicker(){renderFolderList('picker-folder-list');document.getElementById('library-picker-modal').hidden=false;document.getElementById('library-picker-close').focus()}
+function openLibraryPicker(){renderFolderList('picker-folder-list');document.getElementById('library-picker-modal').hidden=false;document.getElementById('library-picker-close').focus();loadRemoteLibrary()}
 function closeLibraryPicker(){document.getElementById('library-picker-modal').hidden=true}
 document.getElementById('library-picker-close').addEventListener('click',closeLibraryPicker);document.getElementById('library-picker-modal').addEventListener('click',e=>{if(e.target.id==='library-picker-modal')closeLibraryPicker()});
-document.getElementById('picker-load-folder').addEventListener('click',()=>{closeLibraryPicker();showView('library');showToast('Vyber složku z počítače, kterou chceš přidat do knihovny.');document.getElementById('folder-input').click()});
 document.querySelectorAll('.format-tab').forEach(button=>button.addEventListener('click',()=>{document.querySelectorAll('.format-tab').forEach(tab=>{tab.classList.toggle('selected',tab===button);tab.setAttribute('aria-selected',String(tab===button))});currentFormat=button.dataset.format;document.getElementById('preview-platform').textContent=formatMap[currentFormat].title;document.getElementById('device-frame').style.aspectRatio=formatMap[currentFormat].ratio;document.getElementById('device-frame').style.width=currentFormat==='landscape'?'100%':currentFormat==='square'?'240px':currentFormat==='feed'?'190px':'180px';document.getElementById('export-note').textContent=`PNG ${formatMap[currentFormat].width} × ${formatMap[currentFormat].height}px · video se stáhne jako WebM`;drawDesign(canvas)}));
 document.querySelectorAll('[data-duration]').forEach(button=>button.addEventListener('click',()=>{document.querySelectorAll('[data-duration]').forEach(item=>{item.classList.toggle('selected',item===button);item.setAttribute('aria-pressed',String(item===button))});document.getElementById('custom-duration-wrap').hidden=button.dataset.duration!=='more'}));
 document.getElementById('custom-duration').addEventListener('change',e=>{e.target.value=Math.max(25,Math.min(120,Number(e.target.value)||25))});
