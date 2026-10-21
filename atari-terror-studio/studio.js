@@ -7,7 +7,7 @@ const knownOfficialFiles = [
   'ATARI TERROR - Stuck To The Tit (Official).mp4'
 ];
 const libraryDirectories = ['design','official-photos','official-videos','photos','texts','videos'];
-const githubContentsApi = 'https://api.github.com/repos/atariterror-band/at-content-studio/contents';
+const libraryManifestUrl = new URL('media-library.json', window.location.href);
 const websiteLibraryRoot = new URL('../', window.location.href);
 let remoteLibrary = libraryDirectories.map(name=>({name,path:`GitHub / ${name}`,files:name==='official-videos'?knownOfficialFiles.map(file=>({name:file,url:new URL(`${name}/${encodeURIComponent(file)}`,websiteLibraryRoot).href,type:'video'})):[]}));
 const formatMap = {
@@ -46,19 +46,11 @@ async function loadRemoteLibrary(){
   const status=document.getElementById('library-source-status');
   if(status)status.textContent='Načítám seznam souborů z GitHubu…';
   try{
-    const rootResponse=await fetch(githubContentsApi,{cache:'no-store'});
-    if(!rootResponse.ok)throw new Error(`GitHub API ${rootResponse.status}`);
-    const rootItems=await rootResponse.json();
-    const folderItems=new Map(rootItems.filter(item=>item.type==='dir').map(item=>[item.name,item]));
-    remoteLibrary=await Promise.all(libraryDirectories.map(async name=>{
-      const directory=folderItems.get(name);
-      if(!directory)return {name,path:`GitHub / ${name}`,files:[]};
-      const response=await fetch(directory.url,{cache:'no-store'});
-      if(!response.ok)throw new Error(`Nelze načíst složku ${name}`);
-      const items=await response.json();
-      const files=items.filter(item=>item.type==='file'&&!item.name.startsWith('.')&&/\.(mp4|mov|webm|m4v|jpg|jpeg|png|webp|gif)$/i.test(item.name)).map(item=>({name:item.name,url:new URL(`${name}/${encodeURIComponent(item.name)}`,websiteLibraryRoot).href,type:/\.(mp4|mov|webm|m4v)$/i.test(item.name)?'video':'image'}));
-      return {name,path:`GitHub / ${name}`,files};
-    }));
+    const response=await fetch(libraryManifestUrl,{cache:'no-cache'});
+    if(!response.ok)throw new Error(`Manifest knihovny ${response.status}`);
+    const manifest=await response.json();
+    const folders=new Map((manifest.folders||[]).map(folder=>[folder.name,folder]));
+    remoteLibrary=libraryDirectories.map(name=>{const folder=folders.get(name)||{files:[]};const files=(folder.files||[]).filter(file=>file&&/\.(mp4|mov|webm|m4v|jpg|jpeg|png|webp|gif)$/i.test(file.name||file)).map(file=>{const filename=typeof file==='string'?file:file.name;return {name:filename,url:new URL(`${name}/${encodeURIComponent(filename)}`,websiteLibraryRoot).href,type:/\.(mp4|mov|webm|m4v)$/i.test(filename)?'video':'image'}});return {name,path:`GitHub / ${name}`,files}});
     renderFolderList();renderFolderList('picker-folder-list');
     if(status){const count=remoteLibrary.reduce((sum,folder)=>sum+folder.files.length,0);status.textContent=`Načteno z webové knihovny · ${count} souborů v ${remoteLibrary.length} složkách.`}
     updateCounts();

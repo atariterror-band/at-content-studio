@@ -1,0 +1,19 @@
+{
+  "folders": [
+    { "name": "design", "files": [] },
+    { "name": "official-photos", "files": [] },
+    {
+      "name": "official-videos",
+      "files": [
+        "ATARI TERROR - SOBRIETY (Official tutorial).mp4",
+        "ATARI TERROR - Motofoko.mp4",
+        "ATARI TERROR - OH MY GOD! (HD).mp4",
+        "ATARI TERROR .mp4",
+        "ATARI TERROR - Stuck To The Tit (Official).mp4"
+      ]
+    },
+    { "name": "photos", "files": [] },
+    { "name": "texts", "files": [] },
+    { "name": "videos", "files": [] }
+  ]
+}
