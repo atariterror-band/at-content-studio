@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#11110f">
   <meta name="description" content="Lokální AT Content Studio — návrhy sociálního obsahu z oficiálních médií Atari Terror.">
   <title>AT Content Studio — Atari Terror</title>
-  <link rel="stylesheet" href="studio.css?v=202610220210">
+  <link rel="stylesheet" href="studio.css?v=202610220345">
 </head>
 <body>
   <aside class="rail">
@@ -47,6 +47,7 @@
           <p class="control-label">DÉLKA VIDEA</p>
           <div class="duration-options" role="group" aria-label="Délka videa"><button type="button" class="duration-option selected" data-duration="5" aria-pressed="true">5 S</button><button type="button" class="duration-option" data-duration="10" aria-pressed="false">10 S</button><button type="button" class="duration-option" data-duration="15" aria-pressed="false">15 S</button><button type="button" class="duration-option" data-duration="20" aria-pressed="false">20 S</button><button type="button" class="duration-option" data-duration="more" aria-pressed="false">VÍCE</button></div>
           <label class="custom-duration" id="custom-duration-wrap" hidden for="custom-duration">DÉLKA 25–120 SEKUND <input id="custom-duration" type="number" min="25" max="120" value="25"> S</label>
+          <div class="video-segment-control" id="video-segment-control" hidden><span class="control-label">VYBER ÚSEK VIDEA · PO 20 SEKUNDÁCH</span><div class="video-segment-options" id="video-segment-options" role="group" aria-label="Úsek videa"></div><small id="video-segment-hint">Výběr úseku určí část videa, kterou budeš upravovat.</small></div>
           <p class="control-label filter-label">FILTRY <span>lze kombinovat</span></p>
           <div class="filter-options"><label><input type="checkbox" data-video-filter="cinematic"><span>Filmový look</span></label><label><input type="checkbox" data-video-filter="contrast"><span>Kontrast</span></label><label><input type="checkbox" data-video-filter="noir"><span>Černobílý noir</span></label><label><input type="checkbox" data-video-filter="film"><span>Film</span></label></div>
           <button class="button button-outline video-create-button" id="download-video">VYTVOŘIT VIDEO <span>↗</span></button>
@@ -116,6 +117,6 @@
     <section class="created-card"><button class="modal-close" id="created-close" aria-label="Zavřít">×</button><p class="eyebrow">NÁHLED VYTVOŘENÉHO PŘÍSPĚVKU</p><h2 id="created-title">Tvoje tvorba</h2><div class="created-art"><div class="created-canvas-frame"><canvas id="created-canvas" aria-label="Vytvořený příspěvek"></canvas><a class="canvas-website-link" id="created-website-link" href="https://www.atariterror.com/" target="_blank" rel="noopener noreferrer" aria-label="Otevřít web Atari Terror v novém panelu">WWW.ATARITERROR.COM</a></div></div><div class="created-actions"><button class="button button-outline" id="created-edit">UPRAVIT</button><button class="button button-primary" id="created-download">STÁHNOUT OBRÁZEK <span>↓</span></button></div></section>
   </div>
   <div class="modal" id="preview-modal" hidden><button class="modal-close" id="close-modal" aria-label="Zavřít">×</button><div class="modal-content"><canvas id="modal-canvas"></canvas></div></div>
-  <script src="studio.js?v=202610220210"></script>
+  <script src="studio.js?v=202610220345"></script>
 </body>
 </html>
