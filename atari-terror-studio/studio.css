@@ -109,7 +109,7 @@
 @media(max-width:620px){.studio-grid{grid-template-columns:1fr}.preview-stage{min-height:310px}.device-frame{width:155px}}
 
 .studio-grid{grid-template-columns:minmax(0,var(--editor-fr,44fr)) minmax(0,var(--preview-fr,56fr));position:relative;column-gap:26px}
-.pane-resizer{position:fixed;z-index:35;left:var(--splitter-left,60%);top:50%;transform:translate(-50%,-50%);width:34px;height:52px;display:grid;place-items:center;padding:4px;border:0;border-radius:4px;background:transparent;color:var(--red);cursor:ew-resize;touch-action:none;user-select:none}
+.pane-resizer{position:fixed;z-index:19;left:var(--splitter-left,60%);top:50%;transform:translate(-50%,-50%);width:34px;height:52px;display:grid;place-items:center;padding:4px;border:0;border-radius:4px;background:transparent;color:var(--red);cursor:ew-resize;touch-action:none;user-select:none}
 .pane-resizer svg{width:30px;height:30px;overflow:visible}
 .pane-resizer svg path{fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 1px 2px #000)}
 .pane-resizer:hover,.pane-resizer:focus-visible{background:#191917;color:#ff5548;outline:1px solid #e4413277}
