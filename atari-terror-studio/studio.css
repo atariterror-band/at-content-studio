@@ -122,6 +122,14 @@
 .pane-resizer:hover,.pane-resizer:focus-visible{background:transparent;outline:0;filter:drop-shadow(0 0 5px #f2d21b88);color:var(--yellow)}
 .pane-resizer img{width:43px;height:43px;object-fit:contain;pointer-events:none;filter:drop-shadow(0 1px 2px #000)}
 body.preview-detail-open .pane-resizer,body.created-detail-open .pane-resizer{display:none!important}
+.preview-loading{position:absolute;inset:0;z-index:4;display:grid;place-items:center;padding:18px;background:rgba(8,8,7,.78);backdrop-filter:blur(3px)}
+.preview-loading[hidden]{display:none}
+.preview-loading-card{width:min(88%,270px);display:grid;grid-template-columns:1fr auto;gap:11px 14px;align-items:center;padding:16px;border:1px solid #5b5327;background:#151512;color:var(--white);box-shadow:0 8px 34px #0009}
+.preview-loading-card>span{font:9px var(--mono);letter-spacing:.07em;color:#d0c269}
+.preview-loading-card>strong{font:700 15px var(--mono);color:var(--yellow)}
+.preview-progress-track{grid-column:1/-1;height:4px;overflow:hidden;background:#3b3930}
+.preview-progress-track i{display:block;width:0;height:100%;background:var(--yellow);transition:width .2s ease}
+.preview-loading-card small{grid-column:1/-1;color:#aaa99f;font-size:9px}
 /* Align the floating preview with the first media field beneath its step heading. */
 .preview-column{margin-top:41px}
 @media(max-width:620px){.preview-column{margin-top:0}}
