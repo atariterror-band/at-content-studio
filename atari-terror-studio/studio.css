@@ -48,7 +48,7 @@
 .position-picker input{width:100%;height:13px;margin:0 0 3px;accent-color:var(--yellow)}
 .track-picker select:invalid{color:#85847b}
 .track-link-row button:disabled{opacity:.38;cursor:not-allowed}
-.draft-page-grid .draft-card{position:relative;min-height:104px;padding:12px 12px 10px;display:flex;flex-wrap:wrap;align-items:center;cursor:default}
+.draft-page-grid .draft-card{position:relative;min-height:104px;padding:12px 12px 10px;display:flex;flex-wrap:wrap;align-items:center;cursor:pointer}.draft-page-grid .draft-card:focus-visible{outline:2px solid var(--yellow);outline-offset:2px}
 .draft-actions{width:100%;display:flex;gap:7px;margin-left:66px}
 .draft-actions button,.export-format-card>button{border:0;background:transparent;color:var(--yellow);padding:3px 0;font:8px var(--mono);cursor:pointer}
 .draft-actions .delete-action,.export-format-card>button.delete-action{color:#a16e65;margin-left:auto}
