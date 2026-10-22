@@ -24,11 +24,12 @@ let selected = 0;
 const PREVIEW_FPS=25;
 let selectedStartFrame=0;
 let selectedEndFrame=5*PREVIEW_FPS;
+let clipSelectionLoaded=false;
 let pendingSeekTimer=0;
 let lastRangeSeekAt=0;
-const clipSelectionKey=asset=>`at-content-studio:clip:${asset?.relativePath||asset?.src||asset?.name||'default'}`;
+const clipSelectionKey=asset=>`at-content-studio:clip:v2:${asset?.relativePath||asset?.src||asset?.name||'default'}`;
 function saveClipSelection(){const asset=selectedAsset();if(asset?.type!=='video')return;try{localStorage.setItem(clipSelectionKey(asset),JSON.stringify({start:selectedStartFrame,end:selectedEndFrame}))}catch{}}
-function restoreClipSelection(asset=selectedAsset()){if(asset?.type!=='video')return;try{const saved=JSON.parse(localStorage.getItem(clipSelectionKey(asset))||'null');selectedStartFrame=Math.max(0,Number(saved?.start)||0);selectedEndFrame=Math.max(selectedStartFrame+5*PREVIEW_FPS,Number(saved?.end)||5*PREVIEW_FPS)}catch{selectedStartFrame=0;selectedEndFrame=5*PREVIEW_FPS}}
+function restoreClipSelection(asset=selectedAsset()){if(asset?.type!=='video')return;try{const saved=JSON.parse(localStorage.getItem(clipSelectionKey(asset))||'null');clipSelectionLoaded=Number.isFinite(saved?.start)&&Number.isFinite(saved?.end)&&saved.end>saved.start;if(clipSelectionLoaded){selectedStartFrame=Math.max(0,Number(saved.start));selectedEndFrame=Math.max(selectedStartFrame+5*PREVIEW_FPS,Number(saved.end))}else{selectedStartFrame=0;selectedEndFrame=0}}catch{clipSelectionLoaded=false;selectedStartFrame=0;selectedEndFrame=0}}
 let previewPlaying=false;
 let modalFrameRequest=0;
 let toastTimer;
@@ -73,8 +74,46 @@ function selectedStartSeconds(){return selectedStartFrame/PREVIEW_FPS}
 function selectedEndSeconds(){return selectedEndFrame/PREVIEW_FPS}
 function effectiveVideoDuration(){return Math.max(1,selectedEndSeconds()-selectedStartSeconds())}
 function frameLabel(frame){const whole=Math.floor(frame/PREVIEW_FPS);const minutes=Math.floor(whole/60),seconds=whole%60,subframe=frame%PREVIEW_FPS;return`${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}:${String(subframe).padStart(2,'0')}`}
-function syncFrameScrubbers(){const asset=selectedAsset();const sourceMatches=asset?.type==='video'&&video.src===new URL(asset.src,document.baseURI).href;const enabled=sourceMatches&&Number.isFinite(video.duration)&&video.duration>0;const maximum=enabled?Math.floor(video.duration*PREVIEW_FPS):0;const minGap=Math.min(maximum,5*PREVIEW_FPS);selectedStartFrame=Math.max(0,Math.min(maximum-minGap,selectedStartFrame));selectedEndFrame=Math.max(selectedStartFrame+minGap,Math.min(maximum,selectedEndFrame));if(enabled)saveClipSelection();for(const id of ['preview','modal']){const start=document.getElementById(`${id}-start-frame`),end=document.getElementById(`${id}-end-frame`);const startLabel=document.getElementById(`${id}-start-frame-label`),endLabel=document.getElementById(`${id}-end-frame-label`);const controls=document.getElementById(`${id}-video-controls`);const play=document.getElementById(`${id}-play-toggle`);if(!start||!end)continue;controls.hidden=id==='preview'?false:!enabled;start.disabled=end.disabled=!enabled;start.min=end.min='0';start.max=end.max=String(maximum);start.value=String(selectedStartFrame);end.value=String(selectedEndFrame);startLabel.value=frameLabel(selectedStartFrame);startLabel.textContent=frameLabel(selectedStartFrame);endLabel.value=frameLabel(selectedEndFrame);endLabel.textContent=frameLabel(selectedEndFrame);const range=end.closest('.dual-frame-range');if(range){range.style.setProperty('--range-start',`${maximum?selectedStartFrame/maximum*100:0}%`);range.style.setProperty('--range-end',`${maximum?selectedEndFrame/maximum*100:100}%`)}const hint=document.getElementById(`${id}-frame-hint`);if(hint)hint.textContent=enabled?'Táhla nastav začátek a konec na celé délce videa.':'Nejdřív vyber video v kroku 1.';play.disabled=!enabled;play.textContent=previewPlaying?'Ⅱ POZASTAVIT':'▶ PŘEHRÁT VÝSLEDEK'}}
-function updateFrameScrubberReadout(){const maximum=Number(document.getElementById('preview-end-frame').max)||0;for(const id of ['preview','modal']){const start=document.getElementById(`${id}-start-frame`),end=document.getElementById(`${id}-end-frame`);if(!start||!end)continue;start.value=String(selectedStartFrame);end.value=String(selectedEndFrame);const startLabel=document.getElementById(`${id}-start-frame-label`),endLabel=document.getElementById(`${id}-end-frame-label`);startLabel.value=startLabel.textContent=frameLabel(selectedStartFrame);endLabel.value=endLabel.textContent=frameLabel(selectedEndFrame);const range=end.closest('.dual-frame-range');if(range){range.style.setProperty('--range-start',`${maximum?selectedStartFrame/maximum*100:0}%`);range.style.setProperty('--range-end',`${maximum?selectedEndFrame/maximum*100:100}%`)}}saveClipSelection()}
+function syncFrameScrubbers(){
+  const asset=selectedAsset();
+  const sourceMatches=asset?.type==='video'&&video.src===new URL(asset.src,document.baseURI).href;
+  const enabled=sourceMatches&&Number.isFinite(video.duration)&&video.duration>0;
+  const maximum=enabled?Math.floor(video.duration*PREVIEW_FPS):0;
+  const minGap=Math.min(maximum,5*PREVIEW_FPS);
+  if(enabled){
+    if(!clipSelectionLoaded){selectedStartFrame=0;selectedEndFrame=maximum;clipSelectionLoaded=true}
+    selectedStartFrame=Math.max(0,Math.min(Math.max(0,maximum-minGap),selectedStartFrame));
+    selectedEndFrame=Math.max(selectedStartFrame+minGap,Math.min(maximum,selectedEndFrame));
+    saveClipSelection();
+  }
+  for(const id of ['preview','modal']){
+    const start=document.getElementById(`${id}-start-frame`),end=document.getElementById(`${id}-end-frame`);
+    const startLabel=document.getElementById(`${id}-start-frame-label`),endLabel=document.getElementById(`${id}-end-frame-label`);
+    const durationLabel=document.getElementById(`${id}-clip-duration`),controls=document.getElementById(`${id}-video-controls`),play=document.getElementById(`${id}-play-toggle`);
+    if(!start||!end)continue;
+    controls.hidden=id==='preview'?false:!enabled;
+    start.disabled=end.disabled=!enabled;start.min=end.min='0';start.max=end.max=String(maximum);
+    start.value=String(selectedStartFrame);end.value=String(selectedEndFrame);
+    startLabel.value=startLabel.textContent=frameLabel(selectedStartFrame);endLabel.value=endLabel.textContent=frameLabel(selectedEndFrame);
+    durationLabel.value=durationLabel.textContent=formatVideoTime(selectedEndSeconds()-selectedStartSeconds());
+    const hint=document.getElementById(`${id}-frame-hint`);
+    if(hint)hint.textContent=enabled?`Vybraný úsek z celkové délky ${formatVideoTime(video.duration)}.`:'Nejdřív vyber video v kroku 1.';
+    play.disabled=!enabled;play.textContent=previewPlaying?'Ⅱ POZASTAVIT':'▶ PŘEHRÁT VÝSLEDEK';
+  }
+}
+function updateFrameScrubberReadout(){
+  for(const id of ['preview','modal']){
+    const start=document.getElementById(`${id}-start-frame`),end=document.getElementById(`${id}-end-frame`);
+    if(!start||!end)continue;
+    start.value=String(selectedStartFrame);end.value=String(selectedEndFrame);
+    const startLabel=document.getElementById(`${id}-start-frame-label`),endLabel=document.getElementById(`${id}-end-frame-label`),durationLabel=document.getElementById(`${id}-clip-duration`);
+    startLabel.value=startLabel.textContent=frameLabel(selectedStartFrame);endLabel.value=endLabel.textContent=frameLabel(selectedEndFrame);
+    durationLabel.value=durationLabel.textContent=formatVideoTime(selectedEndSeconds()-selectedStartSeconds());
+    const hint=document.getElementById(`${id}-frame-hint`);
+    if(hint&&Number.isFinite(video.duration))hint.textContent=`Vybraný úsek z celkové délky ${formatVideoTime(video.duration)}.`;
+  }
+  saveClipSelection();
+}
 function seekSelectedStart(){clearTimeout(pendingSeekTimer);const wait=Math.max(0,90-(performance.now()-lastRangeSeekAt));pendingSeekTimer=setTimeout(()=>{pendingSeekTimer=0;lastRangeSeekAt=performance.now();if(video.readyState>=1){try{video.currentTime=selectedStartSeconds()}catch{}}},wait)}
 function redrawTextLayout(){if(previewPlaying)setPreviewPlayback(false);drawDesign(canvas)}
 function setPreviewPlayback(playing){previewPlaying=playing;syncFrameScrubbers();if(!playing){video.pause();if(modalFrameRequest)cancelAnimationFrame(modalFrameRequest);modalFrameRequest=0;return}const asset=selectedAsset();if(asset?.type!=='video')return;const play=()=>{if(!previewPlaying)return;const start=selectedStartSeconds();try{if(video.currentTime<start||video.currentTime>=selectedEndSeconds())video.currentTime=start}catch{}video.play().catch(()=>setPreviewPlayback(false));animateModalPreview()};if(video.readyState>=2)play();else video.addEventListener('loadeddata',play,{once:true})}
@@ -188,7 +227,7 @@ function openLibraryPicker(){const modal=document.getElementById('library-picker
 function closeLibraryPicker(){const modal=document.getElementById('library-picker-modal');if(!modal)return;modal.hidden=true;modal.setAttribute('aria-hidden','true')}
 document.getElementById('library-picker-close').addEventListener('click',closeLibraryPicker);document.getElementById('library-picker-modal').addEventListener('click',e=>{if(e.target.id==='library-picker-modal')closeLibraryPicker()});
 document.querySelectorAll('.format-tab').forEach(button=>button.addEventListener('click',()=>{document.querySelectorAll('.format-tab').forEach(tab=>{tab.classList.toggle('selected',tab===button);tab.setAttribute('aria-selected',String(tab===button))});currentFormat=button.dataset.format;document.getElementById('preview-platform').textContent=formatMap[currentFormat].title;document.getElementById('device-frame').style.aspectRatio=formatMap[currentFormat].ratio;document.getElementById('device-frame').style.width=currentFormat==='landscape'?'100%':currentFormat==='square'?'240px':currentFormat==='feed'?'190px':'180px';document.getElementById('export-note').textContent=`Video ${formatMap[currentFormat].width} × ${formatMap[currentFormat].height}px · MP4/H.264 nebo kompatibilní WebM`;drawDesign(canvas)}));
-for(const id of ['preview','modal']){document.getElementById(`${id}-play-toggle`).addEventListener('click',()=>setPreviewPlayback(!previewPlaying));const start=document.getElementById(`${id}-start-frame`),end=document.getElementById(`${id}-end-frame`),range=end.closest('.dual-frame-range');range.addEventListener('pointerdown',event=>{if(event.target!==range||start.disabled)return;if(previewPlaying)setPreviewPlayback(false);const bounds=range.getBoundingClientRect(),ratio=Math.max(0,Math.min(1,(event.clientX-bounds.left)/bounds.width)),maximum=Number(start.max),position=ratio*maximum;const input=Math.abs(position-selectedStartFrame)<=Math.abs(position-selectedEndFrame)?start:end;input.value=String(Math.round(position));input.dispatchEvent(new Event('input',{bubbles:true}));input.dispatchEvent(new Event('change',{bubbles:true}))});for(const input of [start,end]){input.addEventListener('pointerdown',()=>{if(previewPlaying)setPreviewPlayback(false)});input.addEventListener('input',e=>{if(e.target===start)selectedStartFrame=Math.min(Number(e.target.value),selectedEndFrame-5*PREVIEW_FPS);else selectedEndFrame=Math.max(Number(e.target.value),selectedStartFrame+5*PREVIEW_FPS);updateFrameScrubberReadout();seekSelectedStart()});input.addEventListener('change',()=>{clearTimeout(pendingSeekTimer);pendingSeekTimer=0;lastRangeSeekAt=performance.now();if(video.readyState>=1){try{video.currentTime=selectedStartSeconds()}catch{}}saveClipSelection()})}}
+for(const id of ['preview','modal']){document.getElementById(`${id}-play-toggle`).addEventListener('click',()=>setPreviewPlayback(!previewPlaying));const start=document.getElementById(`${id}-start-frame`),end=document.getElementById(`${id}-end-frame`);for(const input of [start,end]){input.addEventListener('pointerdown',()=>{if(previewPlaying)setPreviewPlayback(false)});input.addEventListener('input',e=>{if(e.target===start)selectedStartFrame=Math.min(Number(e.target.value),selectedEndFrame-5*PREVIEW_FPS);else selectedEndFrame=Math.max(Number(e.target.value),selectedStartFrame+5*PREVIEW_FPS);updateFrameScrubberReadout();seekSelectedStart()});input.addEventListener('change',()=>{clearTimeout(pendingSeekTimer);pendingSeekTimer=0;lastRangeSeekAt=performance.now();if(video.readyState>=1){try{video.currentTime=selectedStartSeconds()}catch{}}saveClipSelection()})}}
 document.querySelectorAll('[data-video-filter]').forEach(input=>input.addEventListener('change',()=>drawDesign(canvas)));
 function closeCreatedModal(){document.getElementById('created-modal').hidden=true;document.body.classList.remove('created-detail-open')}
 document.getElementById('created-close').addEventListener('click',closeCreatedModal);document.getElementById('created-edit').addEventListener('click',()=>{closeCreatedModal();document.getElementById('post-headline').focus()});document.getElementById('created-modal').addEventListener('click',e=>{if(e.target.id==='created-modal')closeCreatedModal()});
