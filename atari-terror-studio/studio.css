@@ -88,6 +88,8 @@
 .dual-frame-range input::-moz-range-track{height:3px;background:transparent}
 .dual-frame-range input::-webkit-slider-thumb{width:15px;height:15px;border:2px solid #111;background:var(--yellow);border-radius:50%;appearance:none;-webkit-appearance:none;pointer-events:auto;cursor:ew-resize}
 .dual-frame-range input::-moz-range-thumb{width:12px;height:12px;border:2px solid #111;background:var(--yellow);border-radius:50%;pointer-events:auto;cursor:ew-resize}
+.dual-frame-range input::-webkit-slider-thumb{width:19px;height:19px}
+.dual-frame-range input::-moz-range-thumb{width:16px;height:16px}
 .dual-frame-range input:disabled{opacity:.45}
 .frame-scrubber input:disabled{opacity:.45;cursor:not-allowed}
 .frame-scrubber small{color:#77766e;font:9px var(--font);letter-spacing:0}
@@ -141,7 +143,7 @@
 .studio-grid{grid-template-columns:minmax(300px,.88fr) minmax(440px,1.12fr);gap:26px}
 .preview-column{top:16px;padding:18px}
 .preview-stage{min-height:420px}
-.device-frame{width:250px}
+.device-frame{width:225px}
 @media(max-width:1120px){.studio-grid{grid-template-columns:minmax(280px,.85fr) minmax(380px,1.15fr);gap:18px}.preview-stage{min-height:360px}.device-frame{width:215px}}
 @media(max-width:820px){.studio-grid{grid-template-columns:minmax(270px,.85fr) minmax(330px,1.15fr);gap:14px}.preview-column{padding:12px}.preview-stage{min-height:340px}.device-frame{width:200px}}
 @media(max-width:620px){.studio-grid{grid-template-columns:1fr}.preview-stage{min-height:310px}.device-frame{width:155px}}
@@ -168,8 +170,8 @@ body.preview-detail-open .pane-resizer,body.created-detail-open .pane-resizer{di
 .preview-progress-track{grid-column:1/-1;height:4px;overflow:hidden;background:#3b3930}
 .preview-progress-track i{display:block;width:0;height:100%;background:var(--yellow);transition:width .2s ease}
 .preview-loading-card small{grid-column:1/-1;color:#aaa99f;font-size:9px}
-/* Align the floating preview with the first media field beneath its step heading. */
-.preview-column{margin-top:41px}
+/* Keep the selected start/end control close to the live preview in the first viewport. */
+.preview-column{margin-top:0}
 @media(max-width:620px){.preview-column{margin-top:0}}
 .field-label{display:block;margin:10px 0 6px;color:#aaa99f;font:9px var(--mono);letter-spacing:.05em}
 .main-headline-controls{display:grid;grid-template-columns:minmax(0,1fr) 48px;gap:7px 10px;align-items:center;margin:8px 0 14px;padding:11px;border:1px solid var(--line);background:#171715}
