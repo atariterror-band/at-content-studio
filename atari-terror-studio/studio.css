@@ -265,3 +265,5 @@ body:has(.native-size-preview) .pane-resizer{display:none!important}
 .modal-video-panel .modal-effect-buttons .effect-button{min-height:30px}
 .modal-video-panel .modal-output-actions{grid-template-columns:1fr;gap:7px;margin-top:16px}
 .preview-editor-modal .modal-video-panel .modal-output-actions{align-self:auto}
+.modal-duration-heading{margin:10px 0 0;color:var(--yellow);font:9px var(--mono);letter-spacing:.06em}
+.modal-video-panel .modal-video-controls{margin-top:0}
