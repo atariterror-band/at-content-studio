@@ -168,7 +168,6 @@
 .pane-resizer svg .hand-detail{fill:none;stroke:#141411;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
 .pane-resizer:hover,.pane-resizer:focus-visible{background:transparent;outline:0;filter:drop-shadow(0 0 5px #f2d21b88);color:var(--yellow)}
 .pane-resizer img{width:43px;height:43px;object-fit:contain;pointer-events:none;mix-blend-mode:screen;filter:drop-shadow(0 1px 2px #000)}
-.export-actions #download-result{grid-column:1/-1}
 .share-ready-card .action-modal-actions .button{min-height:42px}
 body.preview-detail-open .pane-resizer{display:none!important}
 .preview-loading{position:absolute;inset:0;z-index:4;display:grid;place-items:center;padding:18px;background:rgba(8,8,7,.78);backdrop-filter:blur(3px)}
@@ -265,7 +264,7 @@ body:has(.native-size-preview) .pane-resizer{display:none!important}
 @media(max-width:560px){.modal-format-tabs .format-tab{font-size:7px}.modal-format-tabs .format-tab small{display:block;margin:1px 0 0}.modal-output-actions .button{font-size:7px}}
 .modal-video-panel .modal-effect-buttons{grid-template-columns:1fr;gap:5px}
 .modal-video-panel .modal-effect-buttons .effect-button{min-height:30px}
-.modal-video-panel .modal-output-actions{grid-template-columns:1fr;gap:7px;margin-top:16px}
+.modal-video-panel .modal-output-actions{grid-template-columns:1fr 1fr;gap:7px;margin-top:16px}
 .preview-editor-modal .modal-video-panel .modal-output-actions{align-self:auto}
 .export-actions{grid-template-columns:1fr 1fr}
 .studio-content-group{margin:0 0 30px}
@@ -274,6 +273,6 @@ body:has(.native-size-preview) .pane-resizer{display:none!important}
 .completed-count{color:var(--yellow);font:10px var(--mono)}
 .completed-content-group{margin-top:38px;padding-top:20px;border-top:1px solid var(--line)}
 .completed-content-group .draft-status{color:#9db96b}
-@media(max-width:520px){.export-actions{grid-template-columns:1fr}.studio-content-group .section-head h2{font-size:21px}}
+@media(max-width:520px){.export-actions{grid-template-columns:1fr 1fr}.studio-content-group .section-head h2{font-size:21px}}
 .modal-duration-heading{margin:10px 0 0;color:var(--yellow);font:9px var(--mono);letter-spacing:.06em}
 .modal-video-panel .modal-video-controls{margin-top:0}
