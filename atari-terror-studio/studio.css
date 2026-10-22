@@ -236,3 +236,5 @@ body:has(.native-size-preview) .pane-resizer{display:none!important}
 .modal-safe-zone-note{color:#8d8b80;font-size:8px;line-height:1.4;text-align:center}
 @media(max-width:900px){.modal-canvas-frame{max-height:44vh}.modal-canvas-frame canvas{max-height:44vh}}
 @media(max-width:560px){.modal-canvas-frame{max-height:35vh}.modal-canvas-frame canvas{max-height:35vh}}
+
+.music-head{margin-top:22px}
