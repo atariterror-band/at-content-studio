@@ -3,6 +3,10 @@ const libraryDirectories = ['design','official-photos','official-videos','photos
 const githubRepository='atariterror-band/at-content-studio';
 const githubApiRoot=`https://api.github.com/repos/${githubRepository}/contents`;
 const githubTokenStorageKey='at-content-studio:github-token:session';
+const studioAccessPassword='Motofoko 2026';
+const studioAccessStorageKey='at-content-studio:access:session';
+try{if(sessionStorage.getItem(studioAccessStorageKey)==='unlocked')document.documentElement.classList.add('studio-authenticated')}catch{}
+document.getElementById('studio-login-form').addEventListener('submit',event=>{event.preventDefault();const input=document.getElementById('studio-login-password'),error=document.getElementById('studio-login-error');if(input.value!==studioAccessPassword){error.hidden=false;input.setAttribute('aria-invalid','true');input.focus();return}error.hidden=true;input.removeAttribute('aria-invalid');document.documentElement.classList.add('studio-authenticated');try{sessionStorage.setItem(studioAccessStorageKey,'unlocked')}catch{}input.value=''});
 let githubToken='';
 try{githubToken=sessionStorage.getItem(githubTokenStorageKey)||''}catch{}
 function rememberGithubToken(value){githubToken=value;try{if(value)sessionStorage.setItem(githubTokenStorageKey,value);else sessionStorage.removeItem(githubTokenStorageKey)}catch{}}
