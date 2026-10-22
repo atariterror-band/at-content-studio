@@ -167,6 +167,8 @@
 .pane-resizer svg .hand-detail{fill:none;stroke:#141411;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
 .pane-resizer:hover,.pane-resizer:focus-visible{background:transparent;outline:0;filter:drop-shadow(0 0 5px #f2d21b88);color:var(--yellow)}
 .pane-resizer img{width:43px;height:43px;object-fit:contain;pointer-events:none;mix-blend-mode:screen;filter:drop-shadow(0 1px 2px #000)}
+.export-actions #download-result{grid-column:1/-1}
+.share-ready-card .action-modal-actions .button{min-height:42px}
 body.preview-detail-open .pane-resizer{display:none!important}
 .preview-loading{position:absolute;inset:0;z-index:4;display:grid;place-items:center;padding:18px;background:rgba(8,8,7,.78);backdrop-filter:blur(3px)}
 .preview-loading[hidden]{display:none}
