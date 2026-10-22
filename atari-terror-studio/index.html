@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#11110f">
   <meta name="description" content="Lokální AT Content Studio — návrhy sociálního obsahu z oficiálních médií Atari Terror.">
   <title>AT Content Studio — Atari Terror</title>
-  <link rel="stylesheet" href="studio.css?v=202610221520">
+  <link rel="stylesheet" href="studio.css?v=202610221700">
 </head>
 <body>
   <aside class="rail">
@@ -45,10 +45,8 @@
         <div class="caption-size-control"><label for="caption-size">VELIKOST TEXTU PŘÍSPĚVKU <output id="caption-size-value">140 %</output></label><input id="caption-size" type="range" min="65" max="200" value="140"></div>
         <div class="caption-meta"><span id="char-count">99 / 500</span><button class="text-button" id="copy-caption">KOPÍROVAT TEXT</button></div>
 
-        <div class="section-head video-head"><div><p class="eyebrow">KROK 04</p><h2>Délka a vzhled videa</h2></div></div>
+        <div class="section-head video-head"><div><p class="eyebrow">KROK 04</p><h2>Vzhled videa</h2></div></div>
         <div class="video-options">
-          <div class="duration-control"><label for="video-duration">DÉLKA VIDEA <output id="video-duration-value">5 S</output></label><input id="video-duration" type="range" min="5" max="120" step="1" value="5"><small id="video-duration-hint">Posuň táhlo od 5 sekund do konce vybraného úseku videa.</small></div>
-          <div class="video-segment-control" id="video-segment-control" hidden><span class="control-label">VYBER ÚSEK VIDEA · PO 20 SEKUNDÁCH</span><div class="video-segment-options" id="video-segment-options" role="group" aria-label="Úsek videa"></div><small id="video-segment-hint">Výběr úseku určí část videa, kterou budeš upravovat.</small></div>
           <p class="control-label filter-label">FILTRY <span>lze kombinovat</span></p>
           <div class="filter-options"><label><input type="checkbox" data-video-filter="cinematic"><span>Filmový look</span></label><label><input type="checkbox" data-video-filter="contrast"><span>Kontrast</span></label><label><input type="checkbox" data-video-filter="noir"><span>Černobílý noir</span></label><label><input type="checkbox" data-video-filter="film"><span>Film</span></label></div>
           <button class="button button-outline video-create-button" id="download-video">VYTVOŘIT VIDEO <span>↗</span></button>
@@ -69,7 +67,7 @@
           <button class="format-tab" data-format="fb-story" role="tab" aria-selected="false">FB STORIES <small>9:16</small></button>
         </div>
         <div class="preview-stage"><div class="device-frame" id="device-frame"><video id="source-video" muted playsinline loop></video><canvas id="preview-canvas" width="540" height="960" role="button" tabindex="0" aria-label="Otevřít náhled příspěvku na celou obrazovku"></canvas><div class="preview-loading" id="preview-loading" hidden role="status" aria-live="polite"><div class="preview-loading-card"><span id="preview-loading-label">NAČÍTÁM MÉDIUM</span><strong id="preview-loading-percent">0 %</strong><div class="preview-progress-track"><i id="preview-progress-bar"></i></div><small>Chvilku strpení…</small></div></div><a class="canvas-website-link" id="preview-website-link" href="https://www.atariterror.com/" target="_blank" rel="noopener noreferrer" aria-label="Otevřít web Atari Terror v novém panelu">WWW.ATARITERROR.COM</a><div class="preview-safe">NÁHLED PŘÍSPĚVKU</div></div></div>
-        <div class="video-playback-controls" id="preview-video-controls" hidden><button class="button button-primary playback-button" id="preview-play-toggle" type="button" disabled>▶ PŘEHRÁT VÝSLEDEK</button><label class="frame-scrubber"><span>POZICE VYBRANÉHO ÚSEKU <output id="preview-start-frame-label">00:00:00</output></span><input id="preview-start-frame" type="range" min="0" max="0" step="1" value="0" disabled><small>Posouvá začátek klipu po snímcích v rámci vybraného úseku a délky videa.</small></label></div>
+        <div class="video-playback-controls" id="preview-video-controls" hidden><button class="button button-primary playback-button" id="preview-play-toggle" type="button" disabled>▶ PŘEHRÁT VÝSLEDEK</button><div class="frame-scrubber"><span>ZAČÁTEK A KONEC VIDEA <output id="preview-start-frame-label">00:00:00</output><output id="preview-end-frame-label">00:00:05</output></span><div class="dual-frame-range"><input id="preview-start-frame" aria-label="Začátek videa" type="range" min="0" max="0" step="1" value="0" disabled><input id="preview-end-frame" aria-label="Konec videa" type="range" min="0" max="0" step="1" value="125" disabled></div><small>Táhly nastav začátek a konec na celé délce videa.</small></div></div>
         <div class="export-actions"><button class="button button-primary" id="create-content">VYTVOŘIT <span>↗</span></button><button class="button button-outline" id="download-result">STÁHNOUT <span>↓</span></button></div>
         <p class="export-note" id="export-note">Video pro sociální sítě · MP4/H.264 nebo kompatibilní WebM</p>
       </aside>
@@ -118,7 +116,7 @@
   <div class="action-modal created-modal" id="created-modal" hidden role="dialog" aria-modal="true" aria-labelledby="created-title">
     <section class="created-card"><button class="modal-close" id="created-close" aria-label="Zavřít">×</button><p class="eyebrow">NÁHLED VYTVOŘENÉHO PŘÍSPĚVKU</p><h2 id="created-title">Tvoje tvorba</h2><div class="created-art"><div class="created-canvas-frame"><canvas id="created-canvas" aria-label="Vytvořený příspěvek"></canvas><a class="canvas-website-link" id="created-website-link" href="https://www.atariterror.com/" target="_blank" rel="noopener noreferrer" aria-label="Otevřít web Atari Terror v novém panelu">WWW.ATARITERROR.COM</a></div></div><div class="created-actions"><button class="button button-outline" id="created-edit">UPRAVIT</button><button class="button button-primary" id="created-download">STÁHNOUT OBRÁZEK <span>↓</span></button></div></section>
   </div>
-  <div class="modal" id="preview-modal" hidden><button class="modal-close" id="close-modal" aria-label="Zavřít">×</button><div class="modal-content"><canvas id="modal-canvas"></canvas><div class="video-playback-controls modal-video-controls" id="modal-video-controls" hidden><button class="button button-primary playback-button" id="modal-play-toggle" type="button" disabled>▶ PŘEHRÁT VÝSLEDEK</button><label class="frame-scrubber"><span>POZICE VYBRANÉHO ÚSEKU <output id="modal-start-frame-label">00:00:00</output></span><input id="modal-start-frame" type="range" min="0" max="0" step="1" value="0" disabled><small>Posouvá začátek klipu po snímcích v rámci vybraného úseku a délky videa.</small></label></div></div></div>
-  <script src="studio.js?v=202610221520"></script>
+  <div class="modal" id="preview-modal" hidden><button class="modal-close" id="close-modal" aria-label="Zavřít">×</button><div class="modal-content"><canvas id="modal-canvas"></canvas><div class="video-playback-controls modal-video-controls" id="modal-video-controls" hidden><button class="button button-primary playback-button" id="modal-play-toggle" type="button" disabled>▶ PŘEHRÁT VÝSLEDEK</button><div class="frame-scrubber"><span>ZAČÁTEK A KONEC VIDEA <output id="modal-start-frame-label">00:00:00</output><output id="modal-end-frame-label">00:00:05</output></span><div class="dual-frame-range"><input id="modal-start-frame" aria-label="Začátek videa" type="range" min="0" max="0" step="1" value="0" disabled><input id="modal-end-frame" aria-label="Konec videa" type="range" min="0" max="0" step="1" value="125" disabled></div><small>Táhly nastav začátek a konec na celé délce videa.</small></div></div></div></div>
+  <script src="studio.js?v=202610221700"></script>
 </body>
 </html>
