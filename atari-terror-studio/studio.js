@@ -48,6 +48,18 @@ function beginPreviewProgress(label,percent=0){clearTimeout(previewProgressTimer
 function setPreviewProgress(percent){const value=Math.max(0,Math.min(100,Math.round(percent)));document.getElementById('preview-loading-percent').textContent=`${value} %`;document.getElementById('preview-progress-bar').style.width=`${value}%`}
 function finishPreviewProgress(token){if(!token||token!==activePreviewProgress)return;setPreviewProgress(100);const visibleFor=performance.now()-previewProgressStartedAt;previewProgressTimer=setTimeout(()=>{if(token===activePreviewProgress)previewLoading.hidden=true},Math.max(420,650-visibleFor))}
 function selectedAsset(){return assets[selected]||null}
+function removeAssetFromSelection(index){
+  const wasSelected=index===selected;
+  const [removed]=assets.splice(index,1);
+  if(wasSelected){
+    setPreviewPlayback(false);
+    video.pause();video.removeAttribute('src');video.load();
+    selected=-1;clipSelectionLoaded=false;selectedStartFrame=0;selectedEndFrame=5*PREVIEW_FPS;
+  }else if(index<selected)selected--;
+  renderAssetGrid();syncFrameScrubbers();
+  if(wasSelected)refreshPreview('OBSAH ODEBRÁN',100);
+  showToast(`Odebráno z výběru: ${removed.name}.`);
+}
 function loadImage(src){return new Promise((resolve,reject)=>{const image=new Image();image.onload=()=>resolve(image);image.onerror=reject;image.src=src})}
 function updateCounts(){const n=String(remoteLibrary.reduce((sum,folder)=>sum+folder.files.length,0)).padStart(2,'0');document.getElementById('asset-count').textContent=n}
 function showView(name){document.querySelectorAll('[data-view]').forEach(view=>{const active=view.dataset.view===name;view.hidden=!active;view.classList.toggle('is-active',active)});document.querySelectorAll('[data-view-target]').forEach(button=>button.classList.toggle('active',button.dataset.viewTarget===name));window.scrollTo({top:0,behavior:'smooth'})}
@@ -216,6 +228,7 @@ function renderAssetGrid(){
   assets.forEach((asset,index)=>{
     if(query&&!asset.name.toLowerCase().includes(query))return;
     visible++;
+    const card=document.createElement('div');card.className='asset-card-wrap';
     const button=document.createElement('button');
     button.className='asset-card'+(index===selected?' selected':'');button.type='button';
     button.setAttribute('aria-label',`Vybrat ${asset.name}`);
@@ -232,7 +245,9 @@ function renderAssetGrid(){
       const image=document.createElement('img');image.src=asset.src;image.alt='';image.loading='lazy';image.addEventListener('load',()=>fallback.hidden=true,{once:true});image.addEventListener('error',()=>{fallback.textContent='FOTO';image.hidden=true},{once:true});button.append(image);
     }
     const name=document.createElement('span');name.className='asset-name';name.textContent=asset.name;name.title=asset.name;button.append(name);
-    button.addEventListener('click',()=>{setPreviewPlayback(false);selected=index;if(asset.type==='video')restoreClipSelection(asset);renderAssetGrid();syncFrameScrubbers();if(asset.type==='video'){restartPreviewClip();return}refreshPreview('PŘIPRAVUJI OBRÁZEK',8)});grid.append(button);
+    button.addEventListener('click',()=>{setPreviewPlayback(false);selected=index;if(asset.type==='video')restoreClipSelection(asset);renderAssetGrid();syncFrameScrubbers();if(asset.type==='video'){restartPreviewClip();return}refreshPreview('PŘIPRAVUJI OBRÁZEK',8)});
+    const remove=document.createElement('button');remove.className='asset-remove-button';remove.type='button';remove.textContent='×';remove.setAttribute('aria-label',`Odebrat ${asset.name} z výběru`);remove.title='Odebrat z výběru';remove.addEventListener('click',event=>{event.stopPropagation();removeAssetFromSelection(index)});
+    card.append(button,remove);grid.append(card);
   });
   if(!visible){const empty=document.createElement('div');empty.className='library-empty';const title=document.createElement('strong');title.textContent='Zatím není vybraný žádný obsah.';const hint=document.createElement('span');hint.textContent='Média vybírej z knihovny.';const button=document.createElement('button');button.className='inline-library-link';button.type='button';button.dataset.openLibraryPicker='';button.textContent='NAČÍST OBSAH Z KNIHOVNY MÉDIÍ ↗';empty.append(title,hint,button);grid.append(empty)}else{const button=document.createElement('button');button.className='asset-card asset-library-trigger';button.type='button';button.dataset.openLibraryPicker='';button.innerHTML='<span aria-hidden="true">＋</span><small>NAČÍST Z KNIHOVNY ↗</small>';grid.append(button)}
   updateCounts();
