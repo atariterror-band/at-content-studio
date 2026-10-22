@@ -240,3 +240,11 @@ body:has(.native-size-preview) .pane-resizer{display:none!important}
 @media(max-width:560px){.modal-canvas-frame{max-height:35vh}.modal-canvas-frame canvas{max-height:35vh}}
 
 .music-head{margin-top:22px}
+.text-effects-head{margin-top:23px;margin-bottom:10px;align-items:center}
+.text-effects-count{color:var(--yellow);font:8px var(--mono);letter-spacing:.08em}
+.text-effects-options{display:grid;gap:8px}
+.text-effects-options .control-label{margin:0}
+.text-effect-select{display:block;width:100%;height:37px;margin:0;background:#22221f;border:1px solid #41413b;color:var(--white);padding:0 10px;font:11px var(--font)}
+.text-effect-note{color:#77766e;font-size:9px;line-height:1.5}
+.music-head{margin-top:30px}
+@media(max-width:620px){.text-effects-head{margin-top:21px}.music-head{margin-top:25px}}
