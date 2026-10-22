@@ -3,7 +3,7 @@ const libraryDirectories = ['design','official-photos','official-videos','photos
 const githubRepository='atariterror-band/at-content-studio';
 const githubApiRoot=`https://api.github.com/repos/${githubRepository}/contents`;
 const githubTokenStorageKey='at-content-studio:github-token:session';
-const studioAccessPassword='MotoFoco2026';
+const studioAccessPassword='Motofoko2026';
 const studioAccessStorageKey='at-content-studio:access:session';
 try{if(localStorage.getItem(studioAccessStorageKey)==='unlocked'||sessionStorage.getItem(studioAccessStorageKey)==='unlocked')document.documentElement.classList.add('studio-authenticated')}catch{try{if(sessionStorage.getItem(studioAccessStorageKey)==='unlocked')document.documentElement.classList.add('studio-authenticated')}catch{}}
 document.getElementById('studio-login-form').addEventListener('submit',event=>{event.preventDefault();const input=document.getElementById('studio-login-password'),error=document.getElementById('studio-login-error');if(input.value!==studioAccessPassword){error.hidden=false;input.setAttribute('aria-invalid','true');input.focus();return}error.hidden=true;input.removeAttribute('aria-invalid');document.documentElement.classList.add('studio-authenticated');try{localStorage.setItem(studioAccessStorageKey,'unlocked')}catch{try{sessionStorage.setItem(studioAccessStorageKey,'unlocked')}catch{}}input.value=''});
