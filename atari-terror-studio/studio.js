@@ -207,7 +207,7 @@ async function drawDesign(target, format=currentFormat, time=0){const spec=forma
   if(selectedTrack){c.fillStyle='#f2d21b';c.font=`500 ${Math.max(9,w*.018*trackScale)}px "DM Mono", monospace`;c.fillText('POSLOUCHEJ NA SPOTIFY  ↗',textX,cursorY,maxWidth)}
   c.restore();c.textAlign='left';
   document.getElementById('preview-website-link').hidden=false;
-  const isStoryFormat=currentFormat==='story'||currentFormat==='fb-story';const footerLineY=h*(isStoryFormat?.73:.89),footerTextY=h*(isStoryFormat?.76:.92);c.strokeStyle='rgba(245,240,220,.3)';c.beginPath();c.moveTo(pad,footerLineY);c.lineTo(w-pad,footerLineY);c.stroke();c.fillStyle='rgba(245,240,220,.8)';c.font=`600 ${Math.max(9,w*.017)}px "DM Mono", monospace`;c.fillText('WWW.ATARITERROR.COM',pad,footerTextY)
+  const isStoryFormat=currentFormat==='story'||currentFormat==='fb-story';const footerLineY=h*(isStoryFormat ? 0.73 : 0.89),footerTextY=h*(isStoryFormat ? 0.76 : 0.92);c.strokeStyle='rgba(245,240,220,.3)';c.beginPath();c.moveTo(pad,footerLineY);c.lineTo(w-pad,footerLineY);c.stroke();c.fillStyle='rgba(245,240,220,.8)';c.font=`600 ${Math.max(9,w*.017)}px "DM Mono", monospace`;c.fillText('WWW.ATARITERROR.COM',pad,footerTextY)
 }
 function renderAssetGrid(){
   const grid=document.getElementById('asset-grid');
