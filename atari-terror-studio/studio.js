@@ -81,6 +81,7 @@ function selectedStartSeconds(){return selectedStartFrame/PREVIEW_FPS}
 function selectedEndSeconds(){return selectedEndFrame/PREVIEW_FPS}
 function effectiveVideoDuration(){return Math.max(1,selectedEndSeconds()-selectedStartSeconds())}
 function frameLabel(frame){const whole=Math.floor(frame/PREVIEW_FPS);const minutes=Math.floor(whole/60),seconds=whole%60,subframe=frame%PREVIEW_FPS;return`${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}:${String(subframe).padStart(2,'0')}`}
+function syncDualRangeTrack(start,maximum){const track=start.closest('.dual-range-track');if(!track)return;const end=track.querySelector('.dual-range-end'),safeMaximum=Math.max(1,maximum),startPercent=maximum?Number(start.value)/safeMaximum*100:0,endPercent=maximum?Number(end.value)/safeMaximum*100:100;track.style.setProperty('--range-start',`${startPercent}%`);track.style.setProperty('--range-end',`${endPercent}%`)}
 function syncFrameScrubbers(){
   const asset=selectedAsset();
   const sourceMatches=asset?.type==='video'&&video.src===new URL(asset.src,document.baseURI).href;
@@ -102,6 +103,7 @@ function syncFrameScrubbers(){
     if(id==='modal')document.getElementById('modal-no-video').hidden=enabled;
     start.disabled=end.disabled=!enabled;start.min=end.min='0';start.max=end.max=String(maximum);
     start.value=String(selectedStartFrame);end.value=String(selectedEndFrame);
+    syncDualRangeTrack(start,maximum);
     startLabel.value=startLabel.textContent=frameLabel(selectedStartFrame);endLabel.value=endLabel.textContent=frameLabel(selectedEndFrame);
     durationLabel.value=durationLabel.textContent=formatVideoTime(selectedEndSeconds()-selectedStartSeconds());
     const hint=document.getElementById(`${id}-frame-hint`);
@@ -114,6 +116,7 @@ function updateFrameScrubberReadout(){
     const start=document.getElementById(`${id}-start-frame`),end=document.getElementById(`${id}-end-frame`);
     if(!start||!end)continue;
     start.value=String(selectedStartFrame);end.value=String(selectedEndFrame);
+    syncDualRangeTrack(start,Number(start.max));
     const startLabel=document.getElementById(`${id}-start-frame-label`),endLabel=document.getElementById(`${id}-end-frame-label`),durationLabel=document.getElementById(`${id}-clip-duration`);
     startLabel.value=startLabel.textContent=frameLabel(selectedStartFrame);endLabel.value=endLabel.textContent=frameLabel(selectedEndFrame);
     durationLabel.value=durationLabel.textContent=formatVideoTime(selectedEndSeconds()-selectedStartSeconds());
