@@ -110,7 +110,7 @@ function syncFrameScrubbers(){
     durationLabel.value=durationLabel.textContent=formatVideoTime(selectedEndSeconds()-selectedStartSeconds());
     const hint=document.getElementById(`${id}-frame-hint`);
     if(hint)hint.textContent=enabled?`Vybraný úsek z celkové délky ${formatVideoTime(video.duration)}.`:'Nejdřív vyber video v kroku 1.';
-    play.disabled=!enabled;play.textContent=previewPlaying?'Ⅱ POZASTAVIT':'▶ PŘEHRÁT VÝSLEDEK';
+    play.disabled=!enabled;play.textContent=previewPlaying?'Ⅱ POZASTAVIT':'▶ PŘEHRÁT SE ZVUKEM';
   }
 }
 function updateFrameScrubberReadout(){
@@ -130,7 +130,8 @@ function updateFrameScrubberReadout(){
 function selectedEndpointSeconds(endpoint='start'){return endpoint==='end'?Math.max(selectedStartSeconds(),selectedEndSeconds()-1/PREVIEW_FPS):selectedStartSeconds()}
 function seekSelectedEndpoint(endpoint='start',immediate=false){clearTimeout(pendingSeekTimer);const seek=()=>{pendingSeekTimer=0;lastRangeSeekAt=performance.now();if(video.readyState>=1){try{video.currentTime=selectedEndpointSeconds(endpoint)}catch{}}};const wait=immediate?0:Math.max(0,90-(performance.now()-lastRangeSeekAt));pendingSeekTimer=setTimeout(seek,wait)}
 function redrawTextLayout(){if(previewPlaying)setPreviewPlayback(false);drawDesign(canvas);if(!document.getElementById('preview-modal').hidden)drawDesign(document.getElementById('modal-canvas'))}
-function setPreviewPlayback(playing){previewPlaying=playing;syncFrameScrubbers();if(!playing){video.pause();if(modalFrameRequest)cancelAnimationFrame(modalFrameRequest);modalFrameRequest=0;return}const asset=selectedAsset();if(asset?.type!=='video')return;const play=()=>{if(!previewPlaying)return;const start=selectedStartSeconds();try{if(video.currentTime<start||video.currentTime>=selectedEndSeconds())video.currentTime=start}catch{}video.play().catch(()=>setPreviewPlayback(false));animateModalPreview()};if(video.readyState>=2)play();else video.addEventListener('loadeddata',play,{once:true})}
+function setPreviewAudio(enabled){video.muted=!enabled;video.volume=enabled?1:0;if(videoAudioSource&&videoAudioContext){try{if(enabled)videoAudioSource.connect(videoAudioContext.destination);else videoAudioSource.disconnect(videoAudioContext.destination)}catch{}}if(enabled&&videoAudioContext?.state==='suspended')videoAudioContext.resume().catch(()=>{})}
+function setPreviewPlayback(playing){previewPlaying=playing;syncFrameScrubbers();if(!playing){video.pause();setPreviewAudio(false);if(modalFrameRequest)cancelAnimationFrame(modalFrameRequest);modalFrameRequest=0;return}const asset=selectedAsset();if(asset?.type!=='video')return;const play=()=>{if(!previewPlaying)return;const start=selectedStartSeconds();try{if(video.currentTime<start||video.currentTime>=selectedEndSeconds())video.currentTime=start}catch{}setPreviewAudio(true);video.play().catch(()=>setPreviewPlayback(false));animateModalPreview()};if(video.readyState>=2)play();else video.addEventListener('loadeddata',play,{once:true})}
 function animateModalPreview(){if(!previewPlaying)return;drawDesign(canvas);if(!document.getElementById('preview-modal').hidden)drawDesign(document.getElementById('modal-canvas'));modalFrameRequest=requestAnimationFrame(animateModalPreview)}
 function formatVideoTime(seconds){const total=Math.max(0,Math.floor(seconds));return`${String(Math.floor(total/60)).padStart(2,'0')}:${String(total%60).padStart(2,'0')}`}
 function loadVideoSource(src,reportProgress=false){
