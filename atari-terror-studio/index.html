@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#11110f">
   <meta name="description" content="Lokální AT Content Studio — návrhy sociálního obsahu z oficiálních médií Atari Terror.">
   <title>AT Content Studio — Atari Terror</title>
-  <link rel="stylesheet" href="studio.css?v=202610221300">
+  <link rel="stylesheet" href="studio.css?v=202610221500">
 </head>
 <body>
   <aside class="rail">
@@ -48,6 +48,23 @@
         <div class="video-options">
           <p class="control-label filter-label">FILTRY <span>lze kombinovat</span></p>
           <div class="filter-options"><label><input type="checkbox" data-video-filter="cinematic"><span>Filmový look</span></label><label><input type="checkbox" data-video-filter="contrast"><span>Kontrast</span></label><label><input type="checkbox" data-video-filter="noir"><span>Černobílý noir</span></label><label><input type="checkbox" data-video-filter="film"><span>Film</span></label></div>
+        </div>
+
+        <div class="section-head text-effects-head"><div><p class="eyebrow">POHYB TEXTU</p><h2>Dynamické efekty</h2></div><span class="text-effects-count">8 EFEKTŮ</span></div>
+        <div class="video-options text-effects-options">
+          <label class="control-label" for="text-effect">EFEKT PRO TEXTOVÉ PRVKY</label>
+          <select id="text-effect" class="text-effect-select">
+            <option value="none">Bez efektu</option>
+            <option value="zoom">Zoom tam a zpět</option>
+            <option value="horizontal">Posun do stran</option>
+            <option value="vertical">Svislé vlnění</option>
+            <option value="diagonal">Diagonální drift</option>
+            <option value="tilt">Jemné otáčení</option>
+            <option value="pulse">Pulzování</option>
+            <option value="reveal">Postupné odhalení</option>
+            <option value="glitch">Krátké glitch záblesky</option>
+          </select>
+          <small class="text-effect-note">Efekt uvidíš v náhledu při přehrávání a promítne se i do staženého videa.</small>
         </div>
 
         <div class="section-head music-head"><div><p class="eyebrow">KROK 05</p><h2>Vyber skladbu ze Spotify</h2></div><a class="spotify-link" href="https://open.spotify.com/artist/7tuvvz0x2oNyY8JTXRcqmp" target="_blank" rel="noreferrer">KATALOG SPOTIFY ↗</a></div>
@@ -122,6 +139,7 @@
         <label class="field-label" for="modal-caption">TEXT PŘÍSPĚVKU</label><textarea id="modal-caption" rows="4" maxlength="500"></textarea>
         <div class="modal-control-row"><label for="modal-caption-size">VELIKOST TEXTU PŘÍSPĚVKU <output id="modal-caption-size-value">140 %</output></label><input id="modal-caption-size" type="range" min="65" max="200" value="140"></div>
         <label class="field-label" for="modal-track-select">SKLADBA ZE SPOTIFY</label><select class="modal-track-select" id="modal-track-select"><option value="">Bez skladby</option><option>Eve</option><option>Bright Sun</option><option>Mother</option><option>Oh My God</option><option>Motofoko</option><option>Chosen One</option><option>Dance Machine</option><option>War</option></select>
+        <label class="field-label" for="modal-text-effect">POHYB TEXTU</label><select class="modal-track-select" id="modal-text-effect"><option value="none">Bez efektu</option><option value="zoom">Zoom tam a zpět</option><option value="horizontal">Posun do stran</option><option value="vertical">Svislé vlnění</option><option value="diagonal">Diagonální drift</option><option value="tilt">Jemné otáčení</option><option value="pulse">Pulzování</option><option value="reveal">Postupné odhalení</option><option value="glitch">Krátké glitch záblesky</option></select>
       </aside>
       <section class="modal-preview-panel" aria-label="Náhled výsledku"><div class="modal-preview-topline"><span class="eyebrow">NÁHLED VÝSLEDKU</span><span id="modal-preview-format">Instagram Story</span></div><div class="modal-canvas-frame safe-zones-on" id="modal-canvas-frame" data-format="story"><canvas id="modal-canvas" aria-label="Náhled příspěvku"></canvas><div class="safe-zone-overlay" aria-hidden="true"><span>BEZPEČNÁ ZÓNA</span></div></div><small class="modal-safe-zone-note">Vodítko ukazuje prostor pro důležité texty a logo; do staženého výstupu se nepřidává.</small></section>
       <aside class="modal-edit-panel modal-video-panel" aria-label="Úpravy videa">
@@ -133,6 +151,6 @@
     </div>
   </div>
   <div class="action-modal" id="share-ready-modal" hidden role="dialog" aria-modal="true" aria-labelledby="share-ready-title"><section class="action-modal-card share-ready-card"><button class="modal-close" id="share-ready-close" aria-label="Zavřít">×</button><p class="eyebrow">HOTOVO KE SDÍLENÍ</p><h2 id="share-ready-title">Výstup je připravený</h2><p class="action-modal-description" id="share-ready-description">Příspěvek je připravený pro vybraný formát. Zvol Sdílet pro nabídku aplikací v telefonu nebo počítači.</p><div class="action-modal-meta" id="share-ready-format"></div><div class="action-modal-actions"><button class="button button-primary" id="share-ready-send" type="button">SDÍLET ↗</button><button class="button button-outline" id="share-ready-download" type="button">STÁHNOUT ↓</button></div></section></div>
-  <script src="studio.js?v=202610221300"></script>
+  <script src="studio.js?v=202610221500"></script>
 </body>
 </html>
