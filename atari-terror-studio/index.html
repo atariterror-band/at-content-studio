@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#11110f">
   <meta name="description" content="Lokální AT Content Studio — návrhy sociálního obsahu z oficiálních médií Atari Terror.">
   <title>AT Content Studio — Atari Terror</title>
-  <link rel="stylesheet" href="studio.css?v=202610222620">
+  <link rel="stylesheet" href="studio.css?v=202610222810">
 </head>
 <body>
   <aside class="rail">
@@ -116,7 +116,30 @@
   <div class="action-modal created-modal" id="created-modal" hidden role="dialog" aria-modal="true" aria-labelledby="created-title">
     <section class="created-card"><button class="modal-close" id="created-close" aria-label="Zavřít">×</button><p class="eyebrow">NÁHLED VYTVOŘENÉHO PŘÍSPĚVKU</p><h2 id="created-title">Tvoje tvorba</h2><div class="created-art"><div class="created-canvas-frame"><canvas id="created-canvas" aria-label="Vytvořený příspěvek"></canvas><a class="canvas-website-link" id="created-website-link" href="https://www.atariterror.com/" target="_blank" rel="noopener noreferrer" aria-label="Otevřít web Atari Terror v novém panelu">WWW.ATARITERROR.COM</a></div></div><div class="created-actions"><button class="button button-outline" id="created-edit">UPRAVIT</button><button class="button button-primary" id="created-download">STÁHNOUT OBRÁZEK <span>↓</span></button></div></section>
   </div>
-  <div class="modal" id="preview-modal" hidden><button class="modal-close" id="close-modal" aria-label="Zavřít">×</button><div class="modal-content"><canvas id="modal-canvas"></canvas><div class="video-playback-controls modal-video-controls" id="modal-video-controls" hidden><button class="button button-primary playback-button" id="modal-play-toggle" type="button" disabled>▶ PŘEHRÁT VÝSLEDEK</button><div class="frame-scrubber"><label class="clip-duration-readout">DÉLKA VYBRANÉHO ÚSEKU <output id="modal-clip-duration">00:00</output></label><div class="clip-range-row"><label for="modal-start-frame">ZAČÁTEK VIDEA <output id="modal-start-frame-label">00:00:00</output></label><input id="modal-start-frame" aria-label="Začátek videa" type="range" min="0" max="0" step="1" value="0" disabled></div><div class="clip-range-row"><label for="modal-end-frame">KONEC VIDEA <output id="modal-end-frame-label">00:00:00</output></label><input id="modal-end-frame" aria-label="Konec videa" type="range" min="0" max="0" step="1" value="125" disabled></div><small id="modal-frame-hint">Vyber video, aby šlo nastavit začátek a konec.</small></div></div></div></div>
-  <script src="studio.js?v=202610222620"></script>
+  <div class="modal preview-editor-modal" id="preview-modal" hidden role="dialog" aria-modal="true" aria-label="Editor živého náhledu">
+    <button class="modal-close" id="close-modal" aria-label="Zavřít">×</button>
+    <div class="preview-editor-layout">
+      <aside class="modal-edit-panel modal-text-panel" aria-label="Úpravy textu">
+        <p class="eyebrow">TEXTOVÉ PRVKY</p>
+        <h2>Úpravy obsahu</h2>
+        <label class="field-label" for="modal-main-headline">HLAVNÍ NADPIS</label><input class="headline-input" id="modal-main-headline" type="text" maxlength="70">
+        <div class="modal-control-row"><label for="modal-main-headline-size">VELIKOST HLAVNÍHO NADPISU <output id="modal-main-headline-size-value">100 %</output></label><input id="modal-main-headline-size" type="range" min="55" max="150" value="100"><label for="modal-main-headline-color">BARVA NADPISU</label><input id="modal-main-headline-color" type="color" value="#f2d21b"></div>
+        <label class="field-label" for="modal-post-headline">NADPIS OBSAHU</label><input class="headline-input" id="modal-post-headline" type="text" maxlength="70">
+        <fieldset class="modal-alignment"><legend>ZAROVNÁNÍ NADPISU A TEXTU</legend><button type="button" class="align-button selected" data-align="left" aria-pressed="true">DOLEVA</button><button type="button" class="align-button" data-align="center" aria-pressed="false">NA STŘED</button><button type="button" class="align-button" data-align="right" aria-pressed="false">DOPRAVA</button></fieldset>
+        <div class="modal-control-row"><label for="modal-headline-size">VELIKOST NADPISU OBSAHU <output id="modal-headline-size-value">100 %</output></label><input id="modal-headline-size" type="range" min="55" max="150" value="100"><label for="modal-content-x">VODOROVNÁ POLOHA</label><input id="modal-content-x" type="range" min="8" max="92" value="8"><label for="modal-content-y">SVISLÁ POLOHA</label><input id="modal-content-y" type="range" min="45" max="88" value="66"></div>
+        <label class="field-label" for="modal-caption">TEXT PŘÍSPĚVKU</label><textarea id="modal-caption" rows="4" maxlength="500"></textarea>
+        <div class="modal-control-row"><label for="modal-caption-size">VELIKOST TEXTU PŘÍSPĚVKU <output id="modal-caption-size-value">140 %</output></label><input id="modal-caption-size" type="range" min="65" max="200" value="140"></div>
+        <label class="field-label" for="modal-track-select">SKLADBA ZE SPOTIFY</label><select class="modal-track-select" id="modal-track-select"><option value="">Bez skladby</option><option>Eve</option><option>Bright Sun</option><option>Mother</option><option>Oh My God</option><option>Motofoko</option><option>Chosen One</option><option>Dance Machine</option><option>War</option></select>
+      </aside>
+      <section class="modal-preview-panel" aria-label="Náhled výsledku"><div class="modal-preview-topline"><span class="eyebrow">NÁHLED VÝSLEDKU</span><span id="modal-preview-format">Instagram Story</span></div><canvas id="modal-canvas" aria-label="Náhled příspěvku"></canvas></section>
+      <aside class="modal-edit-panel modal-video-panel" aria-label="Úpravy videa">
+        <p class="eyebrow">VIDEO A FILTRY</p>
+        <h2>Vzhled výstupu</h2>
+        <div class="video-playback-controls modal-video-controls" id="modal-video-controls" hidden><button class="button button-primary playback-button" id="modal-play-toggle" type="button" disabled>▶ PŘEHRÁT VÝSLEDEK</button><div class="frame-scrubber"><label class="clip-duration-readout">DÉLKA VYBRANÉHO ÚSEKU <output id="modal-clip-duration">00:00</output></label><div class="clip-range-row"><label for="modal-start-frame">ZAČÁTEK VIDEA <output id="modal-start-frame-label">00:00:00</output></label><input id="modal-start-frame" aria-label="Začátek videa" type="range" min="0" max="0" step="1" value="0" disabled></div><div class="clip-range-row"><label for="modal-end-frame">KONEC VIDEA <output id="modal-end-frame-label">00:00:00</output></label><input id="modal-end-frame" aria-label="Konec videa" type="range" min="0" max="0" step="1" value="125" disabled></div><small id="modal-frame-hint">Vyber video, aby šlo nastavit začátek a konec.</small></div></div>
+        <p class="field-label">FILTRY VZHLEDU</p><div class="modal-filter-options"><label><input type="checkbox" data-modal-video-filter="cinematic"><span>Filmový look</span></label><label><input type="checkbox" data-modal-video-filter="contrast"><span>Kontrast</span></label><label><input type="checkbox" data-modal-video-filter="noir"><span>Černobílý noir</span></label><label><input type="checkbox" data-modal-video-filter="film"><span>Film</span></label></div><p id="modal-no-video" class="modal-no-video">Vyber video v kroku 1 pro úpravu délky a přehrávání.</p>
+      </aside>
+    </div>
+  </div>
+  <script src="studio.js?v=202610222810"></script>
 </body>
 </html>
