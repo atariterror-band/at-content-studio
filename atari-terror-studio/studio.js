@@ -295,6 +295,7 @@ async function exportVideo(prepareShare=false){if(!canvas.captureStream||!window
 document.getElementById('save-draft').addEventListener('click',saveDraft);
 document.getElementById('download-result').addEventListener('click',exportVideo);
 document.getElementById('modal-save-draft').addEventListener('click',saveDraft);
+document.getElementById('modal-share-result').addEventListener('click',()=>exportVideo(true));
 document.getElementById('modal-download-result').addEventListener('click',exportVideo);
 document.getElementById('share-result').addEventListener('click',()=>exportVideo(true));
 function closeShareReadyModal(){document.getElementById('share-ready-modal').hidden=true}
