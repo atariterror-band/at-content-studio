@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#11110f">
   <meta name="description" content="Lokální AT Content Studio — návrhy sociálního obsahu z oficiálních médií Atari Terror.">
   <title>AT Content Studio — Atari Terror</title>
-  <link rel="stylesheet" href="studio.css?v=202610221700">
+  <link rel="stylesheet" href="studio.css?v=202610221800">
 </head>
 <body>
   <aside class="rail">
@@ -14,7 +14,6 @@
     <nav class="main-nav" aria-label="Hlavní navigace">
       <button class="nav-item active" type="button" data-view-target="studio"><span class="nav-icon">▧</span> Tvorba obsahu</button>
       <button class="nav-item" type="button" data-view-target="drafts"><span class="nav-icon">◷</span> Rozpracované návrhy <b id="draft-count">00</b></button>
-      <button class="nav-item" type="button" data-view-target="formats"><span class="nav-icon">▧</span> Formáty k exportu <b>05</b></button>
       <button class="nav-item" type="button" data-view-target="library"><span class="nav-icon">▤</span> Knihovna médií <b id="asset-count">05</b></button>
     </nav>
   </aside>
@@ -98,17 +97,6 @@
       <div class="draft-grid draft-page-grid" id="draft-list"><p class="draft-empty">Zatím tu nemáš žádný uložený návrh.</p></div>
     </section>
 
-    <section class="view page-view" id="view-formats" data-view="formats" hidden>
-      <div class="page-heading"><div><h1>Formáty k exportu</h1><p>Vyber připravený formát. Návrh se otevře v editoru s odpovídajícím ořezem.</p></div></div>
-      <div class="export-format-grid">
-        <article class="export-format-card" data-format-card="story"><span class="format-ratio ratio-story">9:16</span><span><b>Instagram Story</b><small>Vertikální · 540 × 960 px</small></span><button type="button" data-format-launch="story">OTEVŘÍT ↗</button><button type="button" class="delete-action" data-format-delete="story">SMAZAT</button></article>
-        <article class="export-format-card" data-format-card="feed"><span class="format-ratio ratio-feed">4:5</span><span><b>Instagram Feed</b><small>Portrét · 540 × 675 px</small></span><button type="button" data-format-launch="feed">OTEVŘÍT ↗</button><button type="button" class="delete-action" data-format-delete="feed">SMAZAT</button></article>
-        <article class="export-format-card" data-format-card="square"><span class="format-ratio ratio-square">1:1</span><span><b>Čtvercový příspěvek</b><small>Čtverec · 700 × 700 px</small></span><button type="button" data-format-launch="square">OTEVŘÍT ↗</button><button type="button" class="delete-action" data-format-delete="square">SMAZAT</button></article>
-        <article class="export-format-card" data-format-card="landscape"><span class="format-ratio ratio-landscape">1.91:1</span><span><b>Facebook příspěvek</b><small>Na šířku · 960 × 503 px</small></span><button type="button" data-format-launch="landscape">OTEVŘÍT ↗</button><button type="button" class="delete-action" data-format-delete="landscape">SMAZAT</button></article>
-        <article class="export-format-card" data-format-card="fb-story"><span class="format-ratio ratio-fbstory">9:16</span><span><b>Facebook Stories</b><small>Vertikální · 540 × 960 px</small></span><button type="button" data-format-launch="fb-story">OTEVŘÍT ↗</button><button type="button" class="delete-action" data-format-delete="fb-story">SMAZAT</button></article>
-      </div>
-    </section>
-
     <section class="view page-view" id="view-library" data-view="library" hidden>
       <div class="page-heading"><div><h1>Knihovna médií</h1><p>Přehled složek a zdrojových souborů používaných pro příspěvky.</p></div><div class="library-page-actions"><button class="button button-outline" id="github-connect">PŘIPOJIT GITHUB ↗</button><button class="button button-outline" id="library-add-folder">OBNOVIT Z WEBU ↻</button></div></div>
       <div class="folder-list" id="folder-list"></div>
@@ -151,6 +139,6 @@
     </div>
   </div>
   <div class="action-modal" id="share-ready-modal" hidden role="dialog" aria-modal="true" aria-labelledby="share-ready-title"><section class="action-modal-card share-ready-card"><button class="modal-close" id="share-ready-close" aria-label="Zavřít">×</button><p class="eyebrow">HOTOVO KE SDÍLENÍ</p><h2 id="share-ready-title">Výstup je připravený</h2><p class="action-modal-description" id="share-ready-description">Příspěvek je připravený pro vybraný formát. Zvol Sdílet pro nabídku aplikací v telefonu nebo počítači.</p><div class="action-modal-meta" id="share-ready-format"></div><div class="action-modal-actions"><button class="button button-primary" id="share-ready-send" type="button">SDÍLET ↗</button><button class="button button-outline" id="share-ready-download" type="button">STÁHNOUT ↓</button></div></section></div>
-  <script src="studio.js?v=202610221700"></script>
+  <script src="studio.js?v=202610221800"></script>
 </body>
 </html>
