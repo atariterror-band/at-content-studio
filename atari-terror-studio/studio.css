@@ -224,3 +224,15 @@ body.preview-detail-open .pane-resizer{display:none!important}
 .native-size-preview .device-frame{flex:none;max-width:none;min-width:0;transition:none;box-shadow:0 10px 34px #0008}
 body:has(.native-size-preview) .pane-resizer{display:none!important}
 @media(max-width:620px){.preview-column.native-size-preview{padding:12px}.native-size-preview .preview-heading{top:-12px}.native-size-preview .preview-stage{justify-content:flex-start}}
+.safe-zone-toggle{display:flex;align-items:center;gap:7px;min-height:30px;padding:4px 0;color:#d4d1c5;font:8px var(--mono);letter-spacing:.04em;cursor:pointer}.safe-zone-toggle input{position:absolute;opacity:0}.safe-zone-check{width:12px;height:12px;border:1px solid #88836a;display:inline-grid;place-items:center}.safe-zone-toggle input:checked+.safe-zone-check{background:var(--yellow);border-color:var(--yellow)}.safe-zone-toggle input:checked+.safe-zone-check:after{content:'✓';color:#15140f;font:800 9px var(--font)}.safe-zone-toggle small{margin-left:auto;color:#77766e;font:7px var(--mono)}
+.device-frame[data-format="story"],.device-frame[data-format="fb-story"],.modal-canvas-frame[data-format="story"],.modal-canvas-frame[data-format="fb-story"]{--safe-top:14%;--safe-right:6%;--safe-bottom:35%;--safe-left:6%}
+.device-frame[data-format="feed"],.device-frame[data-format="square"],.device-frame[data-format="landscape"],.modal-canvas-frame[data-format="feed"],.modal-canvas-frame[data-format="square"],.modal-canvas-frame[data-format="landscape"]{--safe-top:6%;--safe-right:6%;--safe-bottom:6%;--safe-left:6%}
+.device-frame>.safe-zone-overlay,.modal-canvas-frame>.safe-zone-overlay{position:absolute;z-index:2;inset:var(--safe-top,6%) var(--safe-right,6%) var(--safe-bottom,6%) var(--safe-left,6%);display:none;border:1px dashed rgba(255,231,77,.9);box-shadow:0 0 0 100vmax rgba(242,210,27,.12);pointer-events:none}
+.safe-zones-on>.safe-zone-overlay{display:block}
+.safe-zone-overlay span{position:absolute;top:0;left:0;transform:translateY(-100%);padding:3px 5px;background:rgba(18,17,14,.85);color:#ffea51;font:600 7px var(--mono);letter-spacing:.05em;white-space:nowrap}
+.device-frame[data-format="story"] .canvas-website-link,.device-frame[data-format="fb-story"] .canvas-website-link{bottom:36%}
+.modal-canvas-frame{position:relative;display:grid;place-items:center;max-width:100%;max-height:calc(100dvh - 100px);overflow:hidden;line-height:0}
+.modal-canvas-frame canvas{display:block;width:auto;height:auto;max-width:100%;max-height:calc(100dvh - 100px);object-fit:contain;border:1px solid #5a584e;box-shadow:0 12px 40px #000b}
+.modal-safe-zone-note{color:#8d8b80;font-size:8px;line-height:1.4;text-align:center}
+@media(max-width:900px){.modal-canvas-frame{max-height:44vh}.modal-canvas-frame canvas{max-height:44vh}}
+@media(max-width:560px){.modal-canvas-frame{max-height:35vh}.modal-canvas-frame canvas{max-height:35vh}}
