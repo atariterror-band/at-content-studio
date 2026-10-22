@@ -267,5 +267,13 @@ body:has(.native-size-preview) .pane-resizer{display:none!important}
 .modal-video-panel .modal-effect-buttons .effect-button{min-height:30px}
 .modal-video-panel .modal-output-actions{grid-template-columns:1fr;gap:7px;margin-top:16px}
 .preview-editor-modal .modal-video-panel .modal-output-actions{align-self:auto}
+.export-actions{grid-template-columns:1fr 1fr}
+.studio-content-group{margin:0 0 30px}
+.studio-content-group .section-head{align-items:center;margin-bottom:12px;padding-bottom:9px;border-bottom:1px solid var(--line)}
+.studio-content-group .section-head h2{margin:0;font:600 23px/.95 var(--display);text-transform:uppercase}
+.completed-count{color:var(--yellow);font:10px var(--mono)}
+.completed-content-group{margin-top:38px;padding-top:20px;border-top:1px solid var(--line)}
+.completed-content-group .draft-status{color:#9db96b}
+@media(max-width:520px){.export-actions{grid-template-columns:1fr}.studio-content-group .section-head h2{font-size:21px}}
 .modal-duration-heading{margin:10px 0 0;color:var(--yellow);font:9px var(--mono);letter-spacing:.06em}
 .modal-video-panel .modal-video-controls{margin-top:0}
