@@ -262,8 +262,9 @@ body:has(.native-size-preview) .pane-resizer{display:none!important}
 .modal-output-actions .button{min-height:38px;padding:0 8px;font-size:8px;white-space:nowrap}
 .modal-preview-panel{gap:9px}
 @media(max-width:560px){.modal-format-tabs .format-tab{font-size:7px}.modal-format-tabs .format-tab small{display:block;margin:1px 0 0}.modal-output-actions .button{font-size:7px}}
-.modal-video-panel .modal-effect-buttons{grid-template-columns:1fr;gap:5px}
-.modal-video-panel .modal-effect-buttons .effect-button{min-height:30px}
+.modal-video-panel .modal-effect-buttons{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
+.modal-video-panel .modal-effect-buttons .effect-button{min-width:0;min-height:36px;padding:6px 7px;font-size:7px;line-height:1.2}
+@media(max-width:520px){.modal-video-panel .modal-effect-buttons{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .modal-video-panel .modal-output-actions{grid-template-columns:1fr 1fr;gap:7px;margin-top:16px}
 .preview-editor-modal .modal-video-panel .modal-output-actions{align-self:auto}
 .export-actions{grid-template-columns:1fr 1fr}
