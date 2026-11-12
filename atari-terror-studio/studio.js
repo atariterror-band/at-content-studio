@@ -91,7 +91,7 @@ function removeAssetFromSelection(index){
   if(wasSelected)refreshPreview('OBSAH ODEBRÁN',100);
   showToast(`Odebráno z výběru: ${removed.name}.`);
 }
-function loadImage(src){return new Promise((resolve,reject)=>{const image=new Image();image.crossOrigin='anonymous';image.onload=()=>resolve(image);image.onerror=reject;image.src=src})})}
+function loadImage(src){return new Promise((resolve,reject)=>{const image=new Image();image.crossOrigin='anonymous';image.onload=()=>resolve(image);image.onerror=reject;image.src=src})}
 function updateCounts(){const n=String(remoteLibrary.reduce((sum,folder)=>sum+folder.files.length,0)).padStart(2,'0');document.getElementById('asset-count').textContent=n}
 function showView(name){document.querySelectorAll('[data-view]').forEach(view=>{const active=view.dataset.view===name;view.hidden=!active;view.classList.toggle('is-active',active)});document.querySelectorAll('[data-view-target]').forEach(button=>button.classList.toggle('active',button.dataset.viewTarget===name));window.scrollTo({top:0,behavior:'smooth'});if(name==='drafts')loadRemoteLibrary()}
 function closeActionModal(){document.getElementById('action-modal').hidden=true;modalAction=null}
