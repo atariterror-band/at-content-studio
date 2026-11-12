@@ -492,10 +492,10 @@ async function exportVideo(prepareShare=false){
     showToast(prepareShare?'Připravuji výstup pro sociální sítě…':hasSourceVideo?`Vytvářím přesný úsek se zvukem (${durationLabel})…`:`Vytvářím ${durationLabel} video…`);
   }catch(error){running=false;exportRecording=false;video.pause();video.muted=true;video.loop=false;if(recorder&&recorder.state!=='inactive'){exportSucceeded=false;recorder.stop()}else stopTracks();exportInProgress=false;startTextMotionPreview();if(progressToken)finishPreviewProgress(progressToken);showToast(error.message||'Video se nepodařilo vytvořit.')}
 }
-document.getElementById('save-draft').addEventListener('click',saveDraft);
+document.getElementById('save-draft').addEventListener('click',()=>saveDraft(false));
 document.getElementById('save-complete').addEventListener('click',()=>saveDraft(true));
 document.getElementById('download-result').addEventListener('click',exportVideo);
-document.getElementById('modal-save-draft').addEventListener('click',saveDraft);
+document.getElementById('modal-save-draft').addEventListener('click',()=>saveDraft(false));
 document.getElementById('modal-save-complete').addEventListener('click',()=>saveDraft(true));
 document.getElementById('modal-share-result').addEventListener('click',()=>exportVideo(true));
 document.getElementById('modal-download-result').addEventListener('click',exportVideo);
