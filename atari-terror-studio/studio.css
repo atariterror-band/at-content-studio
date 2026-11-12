@@ -194,6 +194,14 @@ body.preview-detail-open .pane-resizer{display:none!important}
 .preview-progress-track{grid-column:1/-1;height:4px;overflow:hidden;background:#3b3930}
 .preview-progress-track i{display:block;width:0;height:100%;background:var(--yellow);transition:width .2s ease}
 .preview-loading-card small{grid-column:1/-1;color:#aaa99f;font-size:9px}
+.video-edit-status{position:absolute;inset:0;z-index:5;display:grid;place-items:center;padding:12px;background:rgba(8,8,7,.82);backdrop-filter:blur(3px)}
+.video-edit-status[hidden]{display:none}
+.video-edit-status-card{display:grid;justify-items:center;gap:9px;width:min(92%,280px);padding:16px 12px;border:1px solid #6a602b;background:#171715;text-align:center;line-height:1.4}
+.video-edit-status-card strong{color:var(--yellow);font:700 10px var(--mono);letter-spacing:.05em}
+.video-edit-status-card small{color:#b3b0a2;font:10px/1.45 var(--font)}
+.video-edit-spinner{width:20px;height:20px;border:2px solid #504925;border-top-color:var(--yellow);border-radius:50%;animation:video-edit-spin .85s linear infinite}
+.video-edit-status.is-error .video-edit-spinner{display:none}
+@keyframes video-edit-spin{to{transform:rotate(360deg)}}
 /* Keep the selected start/end control close to the live preview in the first viewport. */
 .preview-column{margin-top:0}
 @media(max-width:620px){.preview-column{margin-top:0}}
