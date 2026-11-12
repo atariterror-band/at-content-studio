@@ -75,8 +75,9 @@ async function githubRequest(path, token, method, body) {
     ...(body ? { body: JSON.stringify(body) } : {})
   });
   if (response.status === 404) return null;
-  const result = await response.json().catch(() => ({}));
-  if (!response.ok) throw Object.assign(new Error(result.message || `GitHub vrátil chybu ${response.status}.`), { status: 502 });
+  const raw = await response.text();
+  let result = {}; try { result = raw ? JSON.parse(raw) : {}; } catch {}
+  if (!response.ok) throw Object.assign(new Error(`GitHub HTTP ${response.status}: ${result.message || raw.slice(0, 180) || 'bez textu odpovědi'}`), { status: 502 });
   return result;
 }
 async function deleteGithubFile(path, token, message) {
