@@ -321,9 +321,9 @@ body:has(.native-size-preview) .pane-resizer{display:none!important}
 .timeline-playhead output{position:absolute;bottom:calc(100% + 23px);left:50%;transform:translateX(-50%);padding:2px 5px;background:#fff;color:#11110f;font:9px var(--mono);white-space:nowrap}
 .timeline-set-actions{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
 .timeline-set-actions .button{min-height:31px;padding:0 11px;font-size:8px}
-.timeline-actions{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:8px;margin-top:8px}
-.timeline-actions .timeline-set-actions{grid-column:2}
-.timeline-actions .playback-button{grid-column:3;justify-self:end;width:auto;min-width:160px}
+.timeline-actions{display:flex;justify-content:center;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px}
+
+.timeline-actions .playback-button{width:auto;min-width:120px}
 .modal-timeline-panel .timeline-actions{margin-top:4px}
 .modal-timeline-panel .timeline-actions .button{min-height:27px}
 .modal-timeline-panel .marked-dual-range-track{height:34px;margin-top:39px}
@@ -331,9 +331,9 @@ body:has(.native-size-preview) .pane-resizer{display:none!important}
 .modal-timeline-panel .marked-dual-range-track input[type=range]{top:8px}
 .modal-timeline-panel .timeline-marker{top:0;height:28px}
 .modal-timeline-panel .timeline-playhead output{bottom:calc(100% + 23px)}
-.preview-column .timeline-set-actions{margin:8px 0}
-.preview-column .timeline-set-actions .button{flex:1 1 140px;min-width:0;padding:5px;font-size:7px}
-@media(max-width:1200px){.timeline-actions{grid-template-columns:1fr}.timeline-actions .timeline-set-actions,.timeline-actions .playback-button{grid-column:1;justify-self:center}}
+.preview-column .timeline-actions{margin:8px 0}
+.preview-column .timeline-actions .button{flex:0 1 auto;min-width:0;padding:5px;font-size:7px}
+@media(max-width:1200px){.timeline-actions{gap:6px}.timeline-actions .button{font-size:8px;padding-inline:8px}}
 @media(max-width:900px){.preview-editor-layout{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:auto auto auto}.modal-timeline-panel{grid-column:1/-1}.modal-preview-panel canvas{max-height:37vh}}
 @media(max-width:560px){.modal-timeline-panel{order:3;width:100%}.timeline-set-actions .button{flex:1 1 130px}}
 @media(max-width:560px){.modal-preview-panel canvas{max-height:35vh}}

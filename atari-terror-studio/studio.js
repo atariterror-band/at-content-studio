@@ -169,7 +169,7 @@ function syncFrameScrubbers(){
     durationLabel.value=durationLabel.textContent=frameLabel(selectedEndFrame-selectedStartFrame);
     const hint=document.getElementById(`${id}-frame-hint`);
     if(hint)hint.textContent=enabled?`Vybraný úsek z celkové délky ${formatVideoTime(video.duration)}.`:'Nejdřív vyber video v kroku 1.';
-    play.disabled=!enabled;play.textContent=previewPlaying?'Ⅱ POZASTAVIT':'▶ PŘEHRÁT SE ZVUKEM';play.setAttribute('aria-label',previewPlaying?'Pozastavit video':'Přehrát video se zvukem');
+    play.disabled=!enabled;play.textContent=previewPlaying?'Ⅱ POZASTAVIT':'▶ PREVIEW';play.setAttribute('aria-label',previewPlaying?'Pozastavit preview':'Preview');
   }
 }
 function updateFrameScrubberReadout(){
