@@ -357,3 +357,16 @@ html:not(.studio-authenticated) body>*:not(#studio-login-screen):not(script){dis
 .preview-actions-dock .export-actions .button{width:100%;height:34px;min-height:34px;padding:0 5px;font-size:8px}
 .preview-actions-dock .export-note{margin:4px 0 0}
 @media(max-width:620px){.preview-column{position:sticky;height:calc(100dvh - 12px);max-height:calc(100dvh - 12px);padding:10px}.preview-column .format-tabs{margin:0 -10px;padding:0 10px}}
+
+.about-guide{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;max-width:1080px}
+.about-card{padding:18px;border:1px solid var(--line);background:#171715;color:var(--white)}
+.about-card>.eyebrow{margin:0 0 12px;color:var(--yellow)}
+.about-card h2{margin:0 0 10px;font:600 20px/.95 var(--display)}
+.about-card ol{margin:0;padding-left:22px;color:#aaa99f;font-size:11px;line-height:1.6}
+.about-card li{padding:0 0 9px 3px}
+.about-card li:last-child{padding-bottom:0}
+.about-card strong{color:var(--white)}
+.about-card p:not(.eyebrow){color:#aaa99f;font-size:11px;line-height:1.6}
+.about-card p strong{color:var(--white)}
+.about-card .about-note{padding-top:9px;border-top:1px solid var(--line);font-size:9px}
+@media(max-width:720px){.about-guide{grid-template-columns:1fr}.about-card{padding:14px}}

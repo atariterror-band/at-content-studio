@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#11110f">
   <meta name="description" content="Lokální AT Content Studio — návrhy sociálního obsahu z oficiálních médií Atari Terror.">
   <title>AT Content Studio — Atari Terror</title>
-  <link rel="stylesheet" href="studio.css?v=2026111216">
+  <link rel="stylesheet" href="studio.css?v=2026111217">
 </head>
 <body>
   <main class="studio-login-screen" id="studio-login-screen">
@@ -29,6 +29,7 @@
       <button class="nav-item active" type="button" data-view-target="studio"><span class="nav-icon">▧</span> Tvorba obsahu</button>
       <button class="nav-item" type="button" data-view-target="drafts"><span class="nav-icon">◷</span> Obsah studia <b id="draft-count">00</b></button>
       <button class="nav-item" type="button" data-view-target="library"><span class="nav-icon">▤</span> Knihovna médií <b id="asset-count">05</b></button>
+      <button class="nav-item" type="button" data-view-target="about"><span class="nav-icon">ⓘ</span> About</button>
     </nav>
   </aside>
 
@@ -137,6 +138,23 @@
       <div class="page-heading"><div><h1>Knihovna médií</h1><p>Přehled složek a zdrojových souborů používaných pro příspěvky.</p></div><div class="library-page-actions"><button class="button button-outline" id="github-connect">PŘIPOJIT GITHUB ↗</button><button class="button button-outline" id="library-add-folder">OBNOVIT Z WEBU ↻</button></div></div>
       <div class="folder-list" id="folder-list"></div>
       <p class="micro-note library-help">Knihovna se načítá přímo z GitHubu. Pro nahrávání a mazání se připoj omezeným fine-grained tokenem; velké soubory nad 50 MB vyžadují Git LFS.</p>
+    </section>
+    <section class="view page-view" id="view-about" data-view="about" hidden>
+      <div class="page-heading"><div><p class="eyebrow">AT CONTENT STUDIO</p><h1>About</h1><p>Stručný návod pro tvorbu, ukládání a sdílení obsahu.</p></div></div>
+      <div class="about-guide">
+        <section class="about-card"><p class="eyebrow">RYCHLÝ POSTUP</p><ol>
+          <li><strong>Vyber obsah.</strong> Otevři knihovnu médií a načti fotku nebo video do studia.</li>
+          <li><strong>Uprav texty.</strong> Zadej hlavní nadpis, podnadpis a text. Velikost měň táhly; text můžeš také zarovnat a posunout.</li>
+          <li><strong>Uprav video.</strong> Táhly vyber začátek a konec. Bílá čárka ukazuje aktuální snímek; žlutý konec je hranice za posledním snímkem ve výstupu. Tlačítkem Preview přehraješ vybraný úsek.</li>
+          <li><strong>Zkontroluj formát.</strong> Přepni Story, Feed, Čtverec, FB nebo FB Stories. Ochranné zóny jsou volitelné vodítko.</li>
+          <li><strong>Ulož nebo exportuj.</strong> Uložit rozpracované a Uložit hotové ukládají návrh do Obsahu studia. Stáhnout připraví soubor; Sdílet nabídne dostupné aplikace.</li>
+        </ol></section>
+        <section class="about-card"><p class="eyebrow">PŘIPOJENÍ GITHUBU</p><h2>Ukládání návrhů a médií</h2>
+          <p>Pro ukládání návrhů, nahrávání a mazání médií připoj GitHub tlačítkem <strong>Připojit GitHub</strong> v Knihovně médií. Použij vlastní fine-grained token omezený na repozitář <strong>atariterror-band/at-content-studio</strong> s oprávněním Contents: Read and write.</p>
+          <p>Token zadávej jen do přihlašovacího okna studia. Nevkládej ho do stránky, sdílených návrhů ani veřejného repozitáře. Média a návrhy uložené ve veřejném repozitáři může kdokoli zobrazit.</p>
+          <p class="about-note">První export videa může načíst renderovací jádro; zpracování běží v prohlížeči.</p>
+        </section>
+      </div>
     </section>
   </main>
 
