@@ -1,0 +1,1 @@
+The FFmpeg browser wrapper files in this directory are from @ffmpeg/ffmpeg 0.12.15 and are MIT licensed. The FFmpeg WebAssembly core is loaded on demand from @ffmpeg/core 0.12.9 via jsDelivr; the core is GPL-2.0-or-later and includes separately licensed components. Sources: https://github.com/ffmpegwasm/ffmpeg.wasm and https://ffmpegwasm.netlify.app/docs/overview/.

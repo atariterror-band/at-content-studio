@@ -1,31 +1,17 @@
-# AT Content Studio — lokální prototyp
+# Atari Terror Content Studio
 
-Samostatný prototyp studia pro přípravu návrhů příspěvků z oficiálních klipů kapely. Otevři `index.html` v moderním prohlížeči. Pro spolehlivý náhled a export spusť v kořenové složce projektu lokální statický server (`python3 -m http.server 8765`) a otevři `http://localhost:8765/atari-terror-studio/`.
+Webová aplikace pro skládání příspěvků z médií kapely, výběr formátu a uložení návrhů do repozitáře `atariterror-band/at-content-studio`.
 
-## Co prototyp umí
+## Export videa
 
-- Nahrát fotky a videa z počítače.
-- Vybrat složku `Plocha/AT Content Studio/official-videos` a načíst do knihovny její oficiální videoklipy.
-- Vybrat skladbu Atari Terror, zkopírovat odkaz na její vyhledání na Spotify a upravit či obměnit text příspěvku.
-- Přepínat náhledy Instagram Story (9:16), Feed (4:5), čtverec (1:1), Facebook příspěvek (1.91:1) a Facebook Stories (9:16).
-- Stáhnout grafiku v PNG ve velikosti odpovídající vybranému formátu.
-- Vytvořit krátké desetisekundové video ve WebM z vybraného obrázku nebo videosouboru. Výstup zachycuje lokální plátno a v této verzi nepřidává hudební stopu.
-- Označit návrh ke schválení a ručně pokračovat v publikování přes používaný nástroj kapely.
-- Přepínat mezi oddělenými stránkami Studia, Rozpracovaných návrhů, Formátů k exportu a Knihovny médií.
-- Procházet obsah podle adresářů; `official-videos` zobrazuje pět nalezených zdrojových klipů a po načtení se aktualizuje podle skutečných souborů.
-- Otevřít návrh nebo výstupní formát v přehledovém okně uprostřed stránky a pokračovat odtud do editoru.
-- Kliknout na název souboru v knihovně a otevřít tvorbu s vybraným klipem; nenačtený soubor si vyžádá načtení zdrojové složky.
+Video se exportuje lokálně v prohlížeči. Studio nahraje obrazovou vrstvu v pevné snímkové frekvenci a FFmpeg.wasm ji spojí s původní zvukovou stopou, oříznutou podle vybraných snímků. Výstupem je MP4 s H.264 a AAC, jeho délka odpovídá počtu vybraných snímků při 25 fps. Zdrojové video se neposílá na renderovací server.
 
-## Zdrojová média
+Při prvním video exportu se stáhne jednovláknové jádro FFmpeg.wasm (přibližně 30 MB) z CDN jsDelivr. Potom se načte z cache prohlížeče. Prohlížečový export je náročný na paměť a zpracování může trvat déle než délka výsledného videa; kvůli paměti je velikost zdrojového videa omezena na 200 MB. Uživatel uvidí průběh načítání a renderování.
 
-Primárním zdrojem jsou klipy ve složce `Plocha/AT Content Studio/official-videos`. Prohlížeč nedovoluje webové stránce číst složku na Ploše potichu, proto v prototypu stiskni **Načíst Official Videos** a ve výběru složku zvol. Soubory se načtou pouze do aktuální relace; zůstanou ve zdrojové složce a nic se nikam neodesílá. Další fotografie můžeš přidat tlačítkem **Přidat média**.
+Soubor `assets/ffmpeg-export.js` a složka `assets/ffmpeg/` obsahují připnutý wrapper `@ffmpeg/ffmpeg` 0.12.15 (MIT). FFmpeg core 0.12.9 (GPL-2.0-or-later) se načítá z CDN podle `assets/ffmpeg/NOTICE.txt`. Repozitář obsahuje potřebné licenční upozornění.
 
-Pro velké videosoubory používejte Git LFS. Hotové varianty příspěvků se v této verzi do repozitáře nezapisují; stáhnou se do počítače.
+Export obrázkového obsahu zůstává klientský záznam plátna bez FFmpeg. Prohlížeč musí podporovat `MediaRecorder`, Web Workers, WebAssembly a síťové požadavky na jsDelivr.
 
-## Omezení prototypu
+## Nasazení
 
-- Návrhy, knihovna nahraných souborů a stav schválení nejsou sdílené mezi členy kapely ani trvale uložené.
-- Export videa závisí na podpoře `MediaRecorder` v prohlížeči a vytváří WebM. Pro finální MP4/Reels výstup by následovala serverová nebo lokální renderovací služba s FFmpeg.
-- Zvukovou stopu je nutné přidat při finální úpravě a používat pouze média, ke kterým má kapela práva.
-- Označení „ke schválení“ je pouze pracovní stav v prototypu; zveřejnění na Instagramu nebo Facebooku zůstává ruční.
-- Knihovna médií se při otevření stránky záměrně nespouští s ukázkovým obsahem Creatures; začíná prázdná, dokud nenačteš oficiální videa.
+GitHub Pages hostuje statické HTML/CSS/JavaScript. Nejsou potřeba vlastní servery ani běhové funkce. Otevři nasazený web přes HTTPS; exportní jádro a videosoubory načítané z GitHub knihovny vyžadují internetové připojení a povolené CORS požadavky.

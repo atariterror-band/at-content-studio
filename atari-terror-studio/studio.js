@@ -35,7 +35,7 @@ let selectedEndFrame=5*PREVIEW_FPS;
 let clipSelectionLoaded=false;
 let pendingSeekTimer=0;
 let lastRangeSeekAt=0;
-let exportRecording=false;
+let exportRecording=false,exportInProgress=false;
 let preparedShareBlob=null,preparedShareFilename='',preparedShareFormat='';
 let videoAudioContext=null,videoAudioSource=null,videoAudioDestination=null;
 const clipSelectionKey=asset=>`at-content-studio:clip:v2:${asset?.relativePath||asset?.src||asset?.name||'default'}`;
@@ -353,10 +353,69 @@ async function captureVideoAudioTrack(){let capture=null;const captureMethod=vid
   try{if(!videoAudioContext){videoAudioContext=new AudioContextClass();videoAudioSource=videoAudioContext.createMediaElementSource(video)}videoAudioDestination=videoAudioContext.createMediaStreamDestination();videoAudioSource.connect(videoAudioDestination);if(videoAudioContext.state==='suspended')await videoAudioContext.resume();const audio=videoAudioDestination.stream.getAudioTracks()[0];return{track:audio?.clone()||null,capture}}
   catch{return{track:null,capture}}
 }
-async function exportVideo(prepareShare=false){if(!canvas.captureStream||!window.MediaRecorder){showToast('Tento prohlížeč nepodporuje export videa z náhledu.');return}const hasSourceVideo=selectedAsset()?.type==='video';const clipStart=selectedStartSeconds(),clipEnd=selectedEndSeconds();const duration=hasSourceVideo?(clipEnd-clipStart):5;const durationLabel=hasSourceVideo?frameLabel(selectedEndFrame-selectedStartFrame):'00:05:00';const recorderCanvas=document.createElement('canvas');const spec=formatMap[currentFormat];recorderCanvas.width=spec.width;recorderCanvas.height=spec.height;const stream=recorderCanvas.captureStream(PREVIEW_FPS);let capturedAudio=null,extraAudioTrack=null,recorder=null,running=true,exportSucceeded=false;const stopTracks=()=>{for(const track of stream.getTracks())track.stop();if(extraAudioTrack?.readyState==='live')extraAudioTrack.stop();for(const track of capturedAudio?.capture?.getTracks?.()||[])if(track.readyState==='live')track.stop()};
-  try{if(hasSourceVideo){if(video.crossOrigin!=='anonymous')video.crossOrigin='anonymous';video.loop=false;video.muted=false;video.volume=1;exportRecording=true;video.pause();await seekVideoForExport(clipStart);capturedAudio=await captureVideoAudioTrack();if(!capturedAudio.track)throw new Error('Ze zdrojového videa se nepodařilo načíst zvukovou stopu. Zkontroluj, že vybraný klip obsahuje zvuk a lze jej přehrát z knihovny.');extraAudioTrack=capturedAudio.track;stream.addTrack(extraAudioTrack)}
-    const mime=['video/mp4;codecs=avc1.42E01E','video/mp4','video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm'].find(type=>MediaRecorder.isTypeSupported(type));if(!mime)throw new Error('Prohlížeč nepodporuje export videa.');const extension=mime.startsWith('video/mp4')?'mp4':'webm';recorder=new MediaRecorder(stream,{mimeType:mime});const chunks=[];recorder.ondataavailable=event=>{if(event.data.size)chunks.push(event.data)};recorder.onerror=()=>showToast('Při vytváření videa nastala chyba.');recorder.onstop=()=>{running=false;exportRecording=false;video.pause();video.muted=true;video.loop=false;setPreviewPlayback(false);stopTracks();if(exportSucceeded&&chunks.length){const outputBlob=new Blob(chunks,{type:mime});const outputName=`atari-terror-${currentFormat}-${Math.round(duration*100)/100}s-${Date.now()}.${extension}`;if(prepareShare){preparedShareBlob=outputBlob;preparedShareFilename=outputName;preparedShareFormat=currentFormat;document.getElementById('share-ready-format').textContent=`${formatMap[preparedShareFormat].title} · ${spec.width} × ${spec.height} PX · ${durationLabel} · ${extension.toUpperCase()}`;document.getElementById('share-ready-modal').hidden=false;showToast('Výstup je připravený ke sdílení.')}else{downloadBlob(outputBlob,outputName);showToast(`Hotové video se zvukem (${durationLabel}) se stahuje jako ${extension.toUpperCase()}.`)}}else showToast('Video se nepodařilo vytvořit.')};await drawDesign(recorderCanvas,currentFormat,0);recorder.start();if(hasSourceVideo)await video.play();const startedAt=performance.now();const frame=async now=>{if(!running)return;const elapsed=(now-startedAt)/1000;if(hasSourceVideo?video.currentTime>=clipEnd:elapsed>=duration){running=false;exportSucceeded=true;video.pause();if(recorder.state!=='inactive')recorder.stop();return}await drawDesign(recorderCanvas,currentFormat,elapsed);requestAnimationFrame(frame)};requestAnimationFrame(frame);showToast(prepareShare?'Připravuji výstup pro sociální sítě…':hasSourceVideo?`Vytvářím video se zvukem z vybraného úseku (${durationLabel})…`:`Vytvářím ${duration}sekundové video…`)
-  }catch(error){running=false;exportRecording=false;video.pause();video.muted=true;video.loop=false;if(recorder&&recorder.state!=='inactive')recorder.stop();else stopTracks();showToast(error.message||'Video se nepodařilo vytvořit.')}}
+async function exportVideo(prepareShare=false){
+  if(exportInProgress){showToast('Export právě probíhá. Počkej na jeho dokončení.');return}
+  if(!canvas.captureStream||!window.MediaRecorder){showToast('Tento prohlížeč nepodporuje export videa z náhledu.');return}
+  const asset=selectedAsset(),hasSourceVideo=asset?.type==='video';
+  const clipStart=selectedStartSeconds(),clipEnd=selectedEndSeconds();
+  const frameCount=hasSourceVideo?selectedEndFrame-selectedStartFrame:PREVIEW_FPS*5;
+  const duration=frameCount/PREVIEW_FPS;
+  const durationLabel=frameLabel(frameCount);
+  exportInProgress=true;let currentExportProgress=0;const updateExportProgress=(label,percent)=>{document.getElementById('preview-loading-label').textContent=label;currentExportProgress=Math.max(currentExportProgress,Math.min(100,percent));setPreviewProgress(currentExportProgress)};
+  const format=currentFormat,spec=formatMap[format];
+  const recorderCanvas=document.createElement('canvas');recorderCanvas.width=spec.width;recorderCanvas.height=spec.height;
+  const stream=recorderCanvas.captureStream(PREVIEW_FPS);
+  let recorder=null,running=true,exportSucceeded=false,progressToken=0,ffmpegModulePromise=null;
+  const stopTracks=()=>stream.getTracks().forEach(track=>track.stop());
+  try{
+    if(hasSourceVideo){
+      if(!asset.src)throw new Error('Zdrojové video nemá dostupnou adresu pro přesný export.');
+      video.pause();video.loop=false;video.muted=true;
+      exportRecording=true;
+      await seekVideoForExport(clipStart);
+      progressToken=beginPreviewProgress('PŘIPRAVUJI PŘESNÝ EXPORT',2);
+      ffmpegModulePromise=import('./assets/ffmpeg-export.js').then(async module=>{await module.loadFFmpeg(updateExportProgress);return{module}}).catch(error=>({error}));
+    }
+    const mime=['video/mp4;codecs=avc1.42E01E','video/mp4','video/webm;codecs=vp9','video/webm;codecs=vp8','video/webm'].find(type=>MediaRecorder.isTypeSupported(type));
+    if(!mime)throw new Error('Tento prohlížeč nepodporuje záznam náhledu.');
+    const extension=mime.startsWith('video/mp4')?'mp4':'webm';
+    recorder=new MediaRecorder(stream,{mimeType:mime});
+    const chunks=[];
+    recorder.ondataavailable=event=>{if(event.data.size)chunks.push(event.data)};
+    recorder.onerror=()=>{running=false;exportSucceeded=false;showToast('Při vytváření obrazu videa nastala chyba.')};
+    recorder.onstop=async()=>{
+      running=false;exportRecording=false;video.pause();video.muted=true;video.loop=false;setPreviewPlayback(false);stopTracks();
+      if(!exportSucceeded||!chunks.length){exportInProgress=false;if(progressToken)finishPreviewProgress(progressToken);showToast('Video se nepodařilo vytvořit.');return}
+      try{
+        let outputBlob=new Blob(chunks,{type:mime}),outputExtension=extension;
+        if(hasSourceVideo){
+          updateExportProgress('RENDERUJI PŘESNÝ ÚSEK',40);
+          const loaded=await ffmpegModulePromise;if(loaded.error)throw loaded.error;const module=loaded.module;
+          outputBlob=await module.muxExactClip({visualBlob:outputBlob,sourceUrl:asset.src,sourceName:asset.name,startSeconds:clipStart,endSeconds:clipEnd,frameCount,onProgress:updateExportProgress});
+          outputExtension='mp4';
+        }
+        const outputName=`atari-terror-${format}-${duration.toFixed(2)}s-${Date.now()}.${outputExtension}`;
+        if(prepareShare){preparedShareBlob=outputBlob;preparedShareFilename=outputName;preparedShareFormat=format;document.getElementById('share-ready-format').textContent=`${spec.title} · ${spec.width} × ${spec.height} PX · ${durationLabel} · ${outputExtension.toUpperCase()}`;document.getElementById('share-ready-modal').hidden=false;showToast('Výstup je připravený ke sdílení.')}
+        else{downloadBlob(outputBlob,outputName);showToast(hasSourceVideo?`Přesný úsek se zvukem (${durationLabel}) se stahuje jako MP4.`:`Hotové video (${durationLabel}) se stahuje jako ${outputExtension.toUpperCase()}.`)}
+      }catch(error){showToast(error.message||'Přesný export selhal. Zkus ho zopakovat.')}
+      finally{exportInProgress=false;if(progressToken)finishPreviewProgress(progressToken)}
+    };
+    await drawDesign(recorderCanvas,format,0);
+    recorder.start();
+    if(hasSourceVideo)await video.play();
+    const startedAt=performance.now();
+    const frame=async now=>{
+      if(!running)return;
+      const elapsed=(now-startedAt)/1000;
+      if(hasSourceVideo?video.currentTime>=clipEnd:elapsed>=duration){running=false;exportSucceeded=true;video.pause();if(recorder.state!=='inactive')recorder.stop();return}
+      await drawDesign(recorderCanvas,format,elapsed);
+      if(hasSourceVideo&&progressToken){const progress=Math.min(35,Math.round(4+(video.currentTime-clipStart)/Math.max(.04,duration)*31));currentExportProgress=Math.max(currentExportProgress,progress);setPreviewProgress(currentExportProgress)}
+      requestAnimationFrame(frame);
+    };
+    requestAnimationFrame(frame);
+    showToast(prepareShare?'Připravuji výstup pro sociální sítě…':hasSourceVideo?`Vytvářím přesný úsek se zvukem (${durationLabel})…`:`Vytvářím ${durationLabel} video…`);
+  }catch(error){running=false;exportRecording=false;video.pause();video.muted=true;video.loop=false;if(recorder&&recorder.state!=='inactive'){exportSucceeded=false;recorder.stop()}else stopTracks();exportInProgress=false;if(progressToken)finishPreviewProgress(progressToken);showToast(error.message||'Video se nepodařilo vytvořit.')}
+}
 document.getElementById('save-draft').addEventListener('click',saveDraft);
 document.getElementById('save-complete').addEventListener('click',()=>saveDraft(true));
 document.getElementById('download-result').addEventListener('click',exportVideo);
