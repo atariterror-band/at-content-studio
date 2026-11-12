@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#11110f">
   <meta name="description" content="Lokální AT Content Studio — návrhy sociálního obsahu z oficiálních médií Atari Terror.">
   <title>AT Content Studio — Atari Terror</title>
-  <link rel="stylesheet" href="studio.css?v=2026111218">
+  <link rel="stylesheet" href="studio.css?v=2026111219">
 </head>
 <body>
   <main class="studio-login-screen" id="studio-login-screen">
@@ -140,24 +140,17 @@
       <p class="micro-note library-help">Knihovna se načítá přímo z GitHubu. Pro nahrávání a mazání se připoj omezeným fine-grained tokenem; velké soubory nad 50 MB vyžadují Git LFS.</p>
     </section>
     <section class="view page-view" id="view-about" data-view="about" hidden>
-      <div class="page-heading"><div><p class="eyebrow">AT CONTENT STUDIO</p><h1>About</h1><p>Stručný návod pro tvorbu, ukládání a sdílení obsahu.</p></div></div>
-      <div class="about-guide">
-        <section class="about-card"><p class="eyebrow">RYCHLÝ POSTUP</p><ol>
-          <li><strong>Přihlas se.</strong> Zadej heslo studia. Na stejném zařízení zůstaneš přihlášený; při přihlášení na novém zařízení je potřeba heslo zadat znovu.</li>
-          <li><strong>Vyber obsah.</strong> V kroku 1 načti fotku nebo video z Knihovny médií.</li>
-          <li><strong>Uprav texty.</strong> Změň nadpis, podnadpis a text příspěvku. V části Umístění textu nastav zarovnání a polohu; v Dynamických efektech vyber animaci.</li>
-          <li><strong>Nastav výstup.</strong> V živém náhledu přepni Story, Feed, Čtverec, FB nebo FB Stories. Ochranné zóny jsou volitelné vodítko a ve výchozím stavu jsou vypnuté.</li>
-          <li><strong>Vyber úsek videa.</strong> Táhly nastav začátek a konec a tlačítkem Preview přehraj vybranou část.</li>
-          <li><strong>Ulož nebo exportuj.</strong> Tlačítko Uložit uloží příspěvek do Obsahu studia. Stáhnout / sdílet připraví video; v dalším okně zvol stažení do zařízení nebo dostupnou aplikaci pro sdílení.</li>
-        </ol></section>
-        <section class="about-card"><p class="eyebrow">ULOŽENÍ A KNIHOVNA</p><h2>Jak funguje GitHub</h2>
-          <p>Všechny uložené příspěvky jsou v Obsahu studia v jednom seznamu, seřazeném od nejnovějších podle data uložení. Kliknutím na kartu nebo na Pokračovat návrh znovu otevřeš a můžeš upravit. Dalším uložením se aktualizuje stejný příspěvek.</p>
-          <p>Ukládání příspěvků na GitHub zajišťuje server studia. Běžný uživatel žádný GitHub účet ani token nepotřebuje. Připojení GitHubu je potřeba jen administrátorovi pro nahrávání a mazání médií v Knihovně médií.</p>
-          <p>Repozitář je veřejný, proto může kdokoli zobrazit uložené návrhy i soubory knihovny. Nevkládej do nich soukromé ani citlivé údaje.</p>
-          <p class="about-note">První export videa může načíst renderovací jádro; zpracování probíhá v prohlížeči.</p>
-        </section>
+      <div class="page-heading"><div><p class="eyebrow">AT CONTENT STUDIO</p><h1>About</h1><p>Rychlý návod: od výběru média po uložení nebo export.</p></div></div>
+      <div class="about-guide" aria-label="Postup práce ve studiu">
+        <article class="about-step-card"><div class="about-step-copy"><p class="eyebrow">KROK 01</p><h2>Vyber obsah</h2><p>Otevři knihovnu médií a vyber fotku nebo video. Videa najdeš ve složce Official Videos.</p></div><img src="assets/about-step-01.svg" alt="Náhled kroku: výběr fotky nebo videa z knihovny médií" loading="lazy"></article>
+        <article class="about-step-card"><div class="about-step-copy"><p class="eyebrow">KROK 02</p><h2>Uprav texty</h2><p>Doplň nadpis, podnadpis a text příspěvku. Nastav zarovnání, polohu a případný pohyb textu.</p></div><img src="assets/about-step-02.svg" alt="Náhled kroku: pole textů, polohy a animace" loading="lazy"></article>
+        <article class="about-step-card"><div class="about-step-copy"><p class="eyebrow">KROK 03</p><h2>Vzhled videa</h2><p>Volitelně zapni černobílý režim a uprav stíny s kontrastem. Barevný filtr nastavíš překryvem.</p></div><img src="assets/about-step-03.svg" alt="Náhled kroku: černobílý režim a barevný překryv" loading="lazy"></article>
+        <article class="about-step-card"><div class="about-step-copy"><p class="eyebrow">KROK 04</p><h2>Vyber formát</h2><p>V živém náhledu přepínej Story, Feed, Čtverec, FB nebo FB Stories. Ochranné zóny jsou volitelné vodítko.</p></div><img src="assets/about-step-04.svg" alt="Náhled kroku: přepínače formátu a živý náhled" loading="lazy"></article>
+        <article class="about-step-card"><div class="about-step-copy"><p class="eyebrow">KROK 05</p><h2>Vyber úsek videa</h2><p>Táhly nastav začátek a konec. Tlačítkem Preview přehraj vybranou část a ověř, že odpovídá záběru.</p></div><img src="assets/about-step-05.svg" alt="Náhled kroku: časová osa se začátkem, koncem a tlačítkem Preview" loading="lazy"></article>
+        <article class="about-step-card"><div class="about-step-copy"><p class="eyebrow">KROK 06</p><h2>Ulož nebo exportuj</h2><p>Uložit přidá návrh do Obsahu studia, kde ho můžeš později znovu otevřít. Stáhnout / sdílet připraví výstup do zařízení nebo nabídky sdílení.</p></div><img src="assets/about-step-06.svg" alt="Náhled kroku: tlačítka Uložit a Stáhnout nebo sdílet" loading="lazy"></article>
       </div>
-    </section>
+      <p class="about-footnote">Ukládání návrhů zajišťuje server studia. Běžný uživatel nepotřebuje GitHub účet ani token.</p>
+    </section>>
   </main>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
