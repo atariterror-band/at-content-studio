@@ -51,6 +51,8 @@ function restoreClipSelection(asset=selectedAsset()){if(asset?.type!=='video')re
 let previewPlaying=false;
 let modalFrameRequest=0;
 let textMotionRequest=0,textMotionStartedAt=performance.now(),previewStartedAt=0,liveRenderBusy=false;
+const textLayerCache=new Map();
+document.fonts?.ready.then(()=>textLayerCache.clear());
 let toastTimer;
 let modalAction = null;
 const draftStorageKey='at-content-studio:drafts:v1';
@@ -209,7 +211,7 @@ function setPreviewAudio(enabled){video.muted=!enabled;video.volume=enabled?1:0;
 function setPreviewPlayback(playing){previewPlaying=playing;syncFrameScrubbers();if(!playing){video.pause();setPreviewAudio(false);if(modalFrameRequest)cancelAnimationFrame(modalFrameRequest);modalFrameRequest=0;startTextMotionPreview();return}const asset=selectedAsset();if(asset?.type!=='video')return;const play=()=>{if(!previewPlaying)return;const start=selectedStartSeconds();try{if(video.currentTime<start||video.currentTime>=selectedEndSeconds())video.currentTime=start}catch{}setPreviewAudio(true);video.play().catch(()=>setPreviewPlayback(false));previewStartedAt=performance.now();animateModalPreview()};if(video.readyState>=2)play();else video.addEventListener('loadeddata',play,{once:true})}
 function renderLiveFrame(time){if(liveRenderBusy)return;liveRenderBusy=true;drawDesign(canvas,currentFormat,time).then(()=>{if(document.getElementById('preview-modal').hidden)return;const modalCanvas=document.getElementById('modal-canvas');if(modalCanvas.width!==canvas.width)modalCanvas.width=canvas.width;if(modalCanvas.height!==canvas.height)modalCanvas.height=canvas.height;modalCanvas.getContext('2d').drawImage(canvas,0,0)}).catch(error=>console.warn('Náhled se nepodařilo vykreslit:',error)).finally(()=>{liveRenderBusy=false})}
 function animateModalPreview(){if(!previewPlaying)return;const t=(performance.now()-previewStartedAt)/1000;syncModalTimeline();renderLiveFrame(t);modalFrameRequest=requestAnimationFrame(animateModalPreview)}
-function startTextMotionPreview(){if(textMotionRequest)cancelAnimationFrame(textMotionRequest);if(document.getElementById('text-effect').value==='none'||previewPlaying)return;textMotionStartedAt=performance.now();const frame=now=>{if(previewPlaying||document.getElementById('text-effect').value==='none'){textMotionRequest=0;return}renderLiveFrame((now-textMotionStartedAt)/1000);textMotionRequest=requestAnimationFrame(frame)};textMotionRequest=requestAnimationFrame(frame)}
+function startTextMotionPreview(){if(textMotionRequest)cancelAnimationFrame(textMotionRequest);if(document.getElementById('text-effect').value==='none'||previewPlaying||exportInProgress)return;textMotionStartedAt=performance.now();const frame=now=>{if(previewPlaying||exportInProgress||document.getElementById('text-effect').value==='none'){textMotionRequest=0;return}renderLiveFrame((now-textMotionStartedAt)/1000);textMotionRequest=requestAnimationFrame(frame)};textMotionRequest=requestAnimationFrame(frame)}
 function formatVideoTime(seconds){const total=Math.max(0,Math.floor(seconds));return`${String(Math.floor(total/60)).padStart(2,'0')}:${String(total%60).padStart(2,'0')}`}
 function waitForEditableFrame(){
   if(video.readyState>=2&&!video.seeking)return Promise.resolve();
@@ -260,7 +262,7 @@ video.addEventListener('timeupdate',()=>{syncModalTimeline();if(exportRecording|
 function drawCover(target,source,w,h){const sw=source.videoWidth||source.naturalWidth||source.width;const sh=source.videoHeight||source.naturalHeight||source.height;if(!sw||!sh)return;const scale=Math.max(w/sw,h/sh);const dw=sw*scale,dh=sh*scale;target.drawImage(source,(w-dw)/2,(h-dh)/2,dw,dh)}
 function wrappedTextLines(context,text,maxWidth){const lines=[];for(const paragraph of text.split(/\n/)){let line='';for(const word of paragraph.split(/\s+/)){const test=line?`${line} ${word}`:word;if(context.measureText(test).width>maxWidth&&line){lines.push(line);line=word}else line=test}if(line)lines.push(line)}return lines}
 function drawWrappedTitle(context,text,x,y,maxWidth,size,color){context.fillStyle=color;context.font=`900 ${size}px "Barlow Condensed", "Arial Narrow", sans-serif`;const lines=wrappedTextLines(context,text,maxWidth);const lineHeight=size*.86;lines.forEach(line=>{context.fillText(line,x,y,maxWidth);y+=lineHeight});return y}
-async function drawDesign(target, format=currentFormat, time=0){const spec=formatMap[format];if(target.width!==spec.width)target.width=spec.width;if(target.height!==spec.height)target.height=spec.height;const c=target.getContext('2d');const w=spec.width,h=spec.height;const asset=selectedAsset();const liveVideo=target===canvas&&asset?.type==='video';c.clearRect(0,0,w,h);
+async function drawDesign(target, format=currentFormat, time=null){const spec=formatMap[format];if(target.width!==spec.width)target.width=spec.width;if(target.height!==spec.height)target.height=spec.height;let c=target.getContext('2d');const w=spec.width,h=spec.height;const asset=selectedAsset();const liveVideo=target===canvas&&asset?.type==='video';c.clearRect(0,0,w,h);
   if(target===canvas)document.getElementById('device-frame').classList.toggle('video-active',liveVideo);
   if(liveVideo){video.style.filter=activeMediaFilter();if(video.src!==new URL(asset.src,document.baseURI).href)await loadVideoSource(asset.src,true)}else{c.fillStyle='#181713';c.fillRect(0,0,w,h)}
   if(asset){try{c.save();c.filter=activeMediaFilter();if(asset.type==='video'){if(!liveVideo&&video.src!==new URL(asset.src,document.baseURI).href)await loadVideoSource(asset.src);if(video.readyState>=2&&video.videoWidth){const scale=Math.max(w/video.videoWidth,h/video.videoHeight);const dw=video.videoWidth*scale,dh=video.videoHeight*scale;const wobble=1+Math.sin(time*.8)*.018;c.save();c.translate(w/2,h/2);c.scale(wobble,wobble);c.drawImage(video,-dw/2,-dh/2,dw,dh);c.restore()}}else{let image=asset.image;if(!image){const token=target===canvas?beginPreviewProgress('PŘIPRAVUJI OBRÁZEK',24):0;image=asset.image=await loadImage(asset.src);if(token)finishPreviewProgress(token)}drawCover(c,image,w,h)}c.restore()}catch(error){c.restore();if(target===canvas){const token=beginPreviewProgress('MÉDIUM SE NEPODAŘILO NAČÍST',100);previewProgressTimer=setTimeout(()=>{if(token===activePreviewProgress)previewLoading.hidden=true},1800)}}}
@@ -276,6 +278,13 @@ async function drawDesign(target, format=currentFormat, time=0){const spec=forma
   const mainHeadline=(document.getElementById('main-headline').value||'').trim().toUpperCase();
   const headline=(document.getElementById('post-headline').value||'').trim().toUpperCase();
   const caption=(document.getElementById('caption').value||'').trim();
+  const footerLineY=h*.92,footerTextY=h*.955;
+  const textKey=JSON.stringify([format,align,xPercent,yProgress,mainHeadline,headline,caption,document.getElementById('main-headline-size').value,document.getElementById('main-headline-color').value,document.getElementById('headline-size').value,document.getElementById('post-headline-color').value,document.getElementById('caption-size').value,document.getElementById('caption-color').value,document.getElementById('track-select').value,document.getElementById('track-size').value]);
+  let layer=textLayerCache.get(format);
+  if(!layer||layer.key!==textKey){
+    const outputContext=c,textCanvas=layer?.canvas||document.createElement('canvas');
+    if(textCanvas.width!==w*2||textCanvas.height!==h*2){textCanvas.width=w*2;textCanvas.height=h*2}
+    c=textCanvas.getContext('2d');c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,textCanvas.width,textCanvas.height);c.setTransform(2,0,0,2,0,0);
   let measureY=0,blockTop=Infinity,blockBottom=-Infinity;
   const measureTitle=(text,size)=>{c.font=`900 ${size}px "Barlow Condensed", "Arial Narrow", sans-serif`;const lines=wrappedTextLines(c,text,maxWidth),lineHeight=size*.86;if(lines.length){blockTop=Math.min(blockTop,measureY-size*.8);blockBottom=Math.max(blockBottom,measureY+(lines.length-1)*lineHeight+size*.2);measureY+=lines.length*lineHeight}};
   if(mainHeadline){const scale=Number(document.getElementById('main-headline-size').value||100)/100;const size=Math.max(16,w*(isWide?.058:.085)*scale);measureTitle(mainHeadline,size);if(headline)measureY+=Math.max(12,w*.03)}
@@ -284,22 +293,8 @@ async function drawDesign(target, format=currentFormat, time=0){const spec=forma
   const selectedTrack=document.getElementById('track-select').value;
   const trackScale=Number(document.getElementById('track-size').value||100)/100;
   if(selectedTrack){measureY+=Math.max(8,w*.018);const size=Math.max(10,w*.02*trackScale);blockTop=Math.min(blockTop,measureY-size*.8);blockBottom=Math.max(blockBottom,measureY+size*.2);measureY+=Math.max(16,size*1.45);const spotifySize=Math.max(9,w*.018*trackScale);blockTop=Math.min(blockTop,measureY-spotifySize*.8);blockBottom=Math.max(blockBottom,measureY+spotifySize*.2)}
-  const footerLineY=h*.92,footerTextY=h*.955;
   const textHeight=Number.isFinite(blockTop)?blockBottom-blockTop:0,safeTop=h*.055,safeBottom=footerLineY-h*.055,availableTextTravel=Math.max(0,safeBottom-safeTop-textHeight),anchorY=safeTop+yProgress*availableTextTravel-(Number.isFinite(blockTop)?blockTop:0);
   let cursorY=anchorY;
-  const motion=document.getElementById('text-effect')?.value||'none',phase=time*2*Math.PI/3.8;
-  const motionTransform={scale:1,x:0,y:0,rotate:0,reveal:null};
-  if(motion==='zoom')motionTransform.scale=1+.075*Math.sin(phase);
-  else if(motion==='horizontal')motionTransform.x=w*.035*Math.sin(phase);
-  else if(motion==='vertical')motionTransform.y=h*.025*Math.sin(phase);
-  else if(motion==='diagonal'){motionTransform.x=w*.025*Math.sin(phase);motionTransform.y=h*.018*Math.cos(phase)}
-  else if(motion==='tilt')motionTransform.rotate=.035*Math.sin(phase);
-  else if(motion==='pulse')motionTransform.scale=1+.045*(.5+.5*Math.sin(phase*1.5));
-  else if(motion==='reveal')motionTransform.reveal=.5-.5*Math.cos(phase);
-  else if(motion==='glitch'){motionTransform.x=w*.008*Math.sin(phase*3)*Math.sin(phase);motionTransform.y=h*.003*Math.sin(phase*4)*Math.sin(phase)}
-  const textCenterX=textX+maxWidth/2,textCenterY=anchorY+textHeight/2;
-  c.save();c.beginPath();c.rect(0,0,w,footerLineY-h*.015);c.clip();c.translate(textCenterX+motionTransform.x,textCenterY+motionTransform.y);c.rotate(motionTransform.rotate);c.scale(motionTransform.scale,motionTransform.scale);c.translate(-textCenterX,-textCenterY);
-  if(motionTransform.reveal!==null){c.beginPath();c.rect(textX-pad*.1,0,Math.max(0,maxWidth+pad*.2)*motionTransform.reveal,h);c.clip()}
   c.textAlign=align;c.textBaseline='alphabetic';
   if(mainHeadline){const scale=Number(document.getElementById('main-headline-size').value||100)/100;const size=Math.max(16,w*(isWide?.058:.085)*scale);cursorY=drawWrappedTitle(c,mainHeadline,textX,cursorY,maxWidth,size,document.getElementById('main-headline-color').value||'#f2d21b');cursorY+=headline?Math.max(12,w*.03):0}
   if(headline){
@@ -311,7 +306,25 @@ async function drawDesign(target, format=currentFormat, time=0){const spec=forma
   }
   if(selectedTrack){cursorY+=Math.max(8,w*.018);const trackFontSize=Math.max(10,w*.02*trackScale);c.fillStyle='#f2d21b';c.font=`500 ${trackFontSize}px "DM Mono", monospace`;c.fillText(`ATARI TERROR — ${selectedTrack.toUpperCase()}`,textX,cursorY,maxWidth);cursorY+=Math.max(16,trackFontSize*1.45)}
   if(selectedTrack){c.fillStyle='#f2d21b';c.font=`500 ${Math.max(9,w*.018*trackScale)}px "DM Mono", monospace`;c.fillText('POSLOUCHEJ NA SPOTIFY  ↗',textX,cursorY,maxWidth)}
-  c.restore();c.textAlign='left';
+    layer={key:textKey,canvas:textCanvas,centerX:textX+maxWidth/2,centerY:anchorY+textHeight/2,textX,maxWidth};
+    textLayerCache.set(format,layer);c=outputContext;
+  }
+  const motion=document.getElementById('text-effect')?.value||'none';
+  const animationTime=time===null?(performance.now()-(previewPlaying?previewStartedAt:textMotionStartedAt))/1000:time;
+  const phase=animationTime*2*Math.PI/5.2;
+  const transform={scale:1,x:0,y:0,rotate:0,reveal:null};
+  if(motion==='zoom')transform.scale=1+.055*Math.sin(phase);
+  else if(motion==='horizontal')transform.x=w*.028*Math.sin(phase);
+  else if(motion==='vertical')transform.y=h*.018*Math.sin(phase);
+  else if(motion==='diagonal'){transform.x=w*.019*Math.sin(phase);transform.y=h*.013*Math.sin(phase-.65)}
+  else if(motion==='tilt')transform.rotate=.035*Math.sin(phase);
+  else if(motion==='pulse')transform.scale=1+.035*(.5+.5*Math.sin(phase*1.25));
+  else if(motion==='reveal')transform.reveal=.5-.5*Math.cos(phase);
+  else if(motion==='glitch'){transform.x=w*.006*(.65*Math.sin(phase*1.8)+.35*Math.sin(phase*2.7));transform.y=h*.002*Math.sin(phase*2.2)}
+  c.save();c.beginPath();c.rect(0,0,w,footerLineY-h*.015);c.clip();
+  c.translate(layer.centerX+transform.x,layer.centerY+transform.y);c.rotate(transform.rotate);c.scale(transform.scale,transform.scale);c.translate(-layer.centerX,-layer.centerY);
+  if(transform.reveal!==null){c.beginPath();c.rect(layer.textX-pad*.1,0,Math.max(0,layer.maxWidth+pad*.2)*transform.reveal,h);c.clip()}
+  c.imageSmoothingEnabled=true;c.imageSmoothingQuality='high';c.drawImage(layer.canvas,0,0,w,h);c.restore();c.textAlign='left';
   document.getElementById('preview-website-link').hidden=false;
   c.strokeStyle='rgba(245,240,220,.3)';c.beginPath();c.moveTo(pad,footerLineY);c.lineTo(w-pad,footerLineY);c.stroke();c.fillStyle='rgba(245,240,220,.8)';c.font=`600 ${Math.max(9,w*.017)}px "DM Mono", monospace`;c.fillText('WWW.ATARITERROR.COM',pad,footerTextY)
 }
@@ -419,7 +432,7 @@ async function exportVideo(prepareShare=false){
   const captureStart=Math.max(0,clipStart-prerollFrames/PREVIEW_FPS);
   const captureEnd=Math.min(video.duration||clipEnd,clipEnd+postrollFrames/PREVIEW_FPS);
   const durationLabel=frameLabel(frameCount);
-  exportInProgress=true;let currentExportProgress=0;const updateExportProgress=(label,percent)=>{document.getElementById('preview-loading-label').textContent=label;currentExportProgress=Math.max(currentExportProgress,Math.min(100,percent));setPreviewProgress(currentExportProgress)};
+  exportInProgress=true;setPreviewPlayback(false);let currentExportProgress=0;const updateExportProgress=(label,percent)=>{document.getElementById('preview-loading-label').textContent=label;currentExportProgress=Math.max(currentExportProgress,Math.min(100,percent));setPreviewProgress(currentExportProgress)};
   const format=currentFormat,spec=formatMap[format];
   const recorderCanvas=document.createElement('canvas');recorderCanvas.width=spec.width;recorderCanvas.height=spec.height;
   const stream=recorderCanvas.captureStream(PREVIEW_FPS);
@@ -443,7 +456,7 @@ async function exportVideo(prepareShare=false){
     recorder.onerror=()=>{running=false;exportSucceeded=false;showToast('Při vytváření obrazu videa nastala chyba.')};
     recorder.onstop=async()=>{
       running=false;exportRecording=false;video.pause();video.muted=true;video.loop=false;setPreviewPlayback(false);stopTracks();
-      if(!exportSucceeded||!chunks.length){exportInProgress=false;if(progressToken)finishPreviewProgress(progressToken);showToast('Video se nepodařilo vytvořit.');return}
+      if(!exportSucceeded||!chunks.length){exportInProgress=false;startTextMotionPreview();if(progressToken)finishPreviewProgress(progressToken);showToast('Video se nepodařilo vytvořit.');return}
       try{
         let outputBlob=new Blob(chunks,{type:mime}),outputExtension=extension;
         if(hasSourceVideo){
@@ -456,7 +469,7 @@ async function exportVideo(prepareShare=false){
         if(prepareShare){preparedShareBlob=outputBlob;preparedShareFilename=outputName;preparedShareFormat=format;document.getElementById('share-ready-format').textContent=`${spec.title} · ${spec.width} × ${spec.height} PX · ${durationLabel} · ${outputExtension.toUpperCase()}`;document.getElementById('share-ready-modal').hidden=false;showToast('Výstup je připravený ke sdílení.')}
         else{downloadBlob(outputBlob,outputName);showToast(hasSourceVideo?`Přesný úsek se zvukem (${durationLabel}) se stahuje jako MP4.`:`Hotové video (${durationLabel}) se stahuje jako ${outputExtension.toUpperCase()}.`)}
       }catch(error){showToast(error.message||'Přesný export selhal. Zkus ho zopakovat.')}
-      finally{exportInProgress=false;if(progressToken)finishPreviewProgress(progressToken)}
+      finally{exportInProgress=false;startTextMotionPreview();if(progressToken)finishPreviewProgress(progressToken)}
     };
     await drawDesign(recorderCanvas,format,0);
     const startedAt=performance.now();
@@ -472,7 +485,7 @@ async function exportVideo(prepareShare=false){
     };
     requestAnimationFrame(frame);
     showToast(prepareShare?'Připravuji výstup pro sociální sítě…':hasSourceVideo?`Vytvářím přesný úsek se zvukem (${durationLabel})…`:`Vytvářím ${durationLabel} video…`);
-  }catch(error){running=false;exportRecording=false;video.pause();video.muted=true;video.loop=false;if(recorder&&recorder.state!=='inactive'){exportSucceeded=false;recorder.stop()}else stopTracks();exportInProgress=false;if(progressToken)finishPreviewProgress(progressToken);showToast(error.message||'Video se nepodařilo vytvořit.')}
+  }catch(error){running=false;exportRecording=false;video.pause();video.muted=true;video.loop=false;if(recorder&&recorder.state!=='inactive'){exportSucceeded=false;recorder.stop()}else stopTracks();exportInProgress=false;startTextMotionPreview();if(progressToken)finishPreviewProgress(progressToken);showToast(error.message||'Video se nepodařilo vytvořit.')}
 }
 document.getElementById('save-draft').addEventListener('click',saveDraft);
 document.getElementById('save-complete').addEventListener('click',()=>saveDraft(true));
