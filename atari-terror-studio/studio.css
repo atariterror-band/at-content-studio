@@ -380,3 +380,14 @@ html:not(.studio-authenticated) body>*:not(#studio-login-screen):not(script){dis
 
 .video-head{margin-left:20px}
 .editor-column>.video-options:not(.text-effects-options){margin-left:20px}
+
+.about-guide{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;max-width:1180px}
+.about-step-card{min-width:0;overflow:hidden;border:1px solid var(--line);background:#171715}
+.about-step-copy{padding:15px 16px 12px}
+.about-step-copy>.eyebrow{margin:0 0 7px;color:var(--yellow);font:9px var(--mono);letter-spacing:.08em}
+.about-step-copy h2{margin:0 0 7px;font:600 21px/.95 var(--display);text-transform:uppercase}
+.about-step-copy p:not(.eyebrow){min-height:48px;margin:0;color:#aaa99f;font-size:10px;line-height:1.5}
+.about-step-card img{display:block;width:100%;height:auto;aspect-ratio:320/145;object-fit:cover;border-top:1px solid var(--line);background:#11110f}
+.about-footnote{max-width:1180px;margin:15px 0 0;padding:10px 12px;border-left:2px solid var(--yellow);background:#171715;color:#aaa99f;font-size:10px;line-height:1.5}
+@media(max-width:900px){.about-guide{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.about-guide{grid-template-columns:1fr}.about-step-copy p:not(.eyebrow){min-height:0}}
