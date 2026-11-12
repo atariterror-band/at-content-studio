@@ -197,14 +197,14 @@ function renderPhotoPreview(){
 function renderPhotoEffect(context,image,width,height,effect,strength){
   const source=document.createElement('canvas');source.width=width;source.height=height;const sourceContext=source.getContext('2d',{willReadFrequently:true});sourceContext.imageSmoothingEnabled=true;sourceContext.imageSmoothingQuality='high';sourceContext.drawImage(image,0,0,width,height);
   context.clearRect(0,0,width,height);context.imageSmoothingEnabled=true;context.imageSmoothingQuality='high';
-  if(effect==='none'){context.drawImage(source,0,0);return}
+  if(effect==='none'||strength<=0){context.drawImage(source,0,0);return}
   if(effect==='mirror'){drawBrokenMirror(context,source,width,height,strength);return}
   const imageData=sourceContext.getImageData(0,0,width,height),pixels=imageData.data,original=new Uint8ClampedArray(pixels),level=Math.max(0,Math.min(100,strength))/100,cx=(width-1)/2,cy=(height-1)/2,radius=Math.sqrt(cx*cx+cy*cy);
   for(let y=0;y<height;y++)for(let x=0;x<width;x++){
     const i=(y*width+x)*4;let red,green,blue,alpha;
     if(effect==='fisheye'||effect==='kaleidoscope'){
       const nx=(x-cx)/radius,ny=(y-cy)/radius,r=Math.min(1,Math.hypot(nx,ny));let sx=x,sy=y;
-      if(effect==='fisheye'&&r>0){const angle=Math.atan2(ny,nx),thetaMax=.85+level*.75,sourceR=Math.tan(r*thetaMax)/Math.tan(thetaMax);sx=cx+Math.cos(angle)*sourceR*radius;sy=cy+Math.sin(angle)*sourceR*radius}
+      if(effect==='fisheye'&&r>0){const angle=Math.atan2(ny,nx),thetaMax=Math.max(.001,level*1.35),sourceR=Math.tan(r*thetaMax)/Math.tan(thetaMax);sx=cx+Math.cos(angle)*sourceR*radius;sy=cy+Math.sin(angle)*sourceR*radius}
       if(effect==='kaleidoscope'&&r>0){const segments=Math.round(5+level*7),sector=(Math.PI*2)/segments;let angle=Math.atan2(ny,nx)%sector;if(angle<0)angle+=sector;if(angle>sector/2)angle=sector-angle;sx=cx+Math.cos(angle)*r*radius;sy=cy+Math.sin(angle)*r*radius}
       sx=Math.max(0,Math.min(width-1,sx));sy=Math.max(0,Math.min(height-1,sy));const x0=Math.floor(sx),y0=Math.floor(sy),x1=Math.min(width-1,x0+1),y1=Math.min(height-1,y0+1),fx=sx-x0,fy=sy-y0,i00=(y0*width+x0)*4,i10=(y0*width+x1)*4,i01=(y1*width+x0)*4,i11=(y1*width+x1)*4;
       red=bilinear(original,i00,i10,i01,i11,fx,fy,0);green=bilinear(original,i00,i10,i01,i11,fx,fy,1);blue=bilinear(original,i00,i10,i01,i11,fx,fy,2);alpha=bilinear(original,i00,i10,i01,i11,fx,fy,3)
