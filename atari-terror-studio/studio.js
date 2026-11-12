@@ -33,7 +33,7 @@ const PREVIEW_FPS=25;
 // Capture a short guard band outside the selected interval. The MP4 mux step
 // removes these frames, so recorder/seek startup jitter cannot shorten the clip.
 const EXPORT_GUARD_FRAMES=3;
-const CAPTION_FONT_RATIO=.068;
+const CAPTION_FONT_RATIO=.034;
 let selectedStartFrame=0;
 let selectedEndFrame=5*PREVIEW_FPS;
 let clipSelectionLoaded=false;
@@ -287,18 +287,18 @@ async function drawDesign(target, format=currentFormat, time=null){const spec=fo
     c=textCanvas.getContext('2d');c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,textCanvas.width,textCanvas.height);c.setTransform(2,0,0,2,0,0);
   let measureY=0,blockTop=Infinity,blockBottom=-Infinity;
   const measureTitle=(text,size)=>{c.font=`900 ${size}px "Barlow Condensed", "Arial Narrow", sans-serif`;const lines=wrappedTextLines(c,text,maxWidth),lineHeight=size*.86;if(lines.length){blockTop=Math.min(blockTop,measureY-size*.8);blockBottom=Math.max(blockBottom,measureY+(lines.length-1)*lineHeight+size*.2);measureY+=lines.length*lineHeight}};
-  if(mainHeadline){const scale=Number(document.getElementById('main-headline-size').value||100)/100;const size=Math.max(16,w*(isWide?.058:.085)*scale);measureTitle(mainHeadline,size);if(headline)measureY+=Math.max(12,w*.03)}
-  if(headline){const scale=Number(document.getElementById('headline-size').value||100)/100;const size=Math.max(16,w*(isWide?.058:.085)*scale);measureTitle(headline,size)}
-  if(caption){if(headline)measureY+=Math.max(12,w*.03);const scale=Number(document.getElementById('caption-size').value||100)/100;const fontSize=Math.max(10,w*CAPTION_FONT_RATIO*scale),lineHeight=fontSize*1.42;c.font=`500 ${fontSize}px "DM Sans", Arial, sans-serif`;for(const paragraph of caption.split(/\n/)){if(!paragraph){measureY+=lineHeight*.65;continue}const lines=wrappedTextLines(c,paragraph,maxWidth);if(lines.length){blockTop=Math.min(blockTop,measureY-fontSize*.8);blockBottom=Math.max(blockBottom,measureY+(lines.length-1)*lineHeight+fontSize*.22);measureY+=lines.length*lineHeight}}}
+  if(mainHeadline){const scale=Number(document.getElementById('main-headline-size').value||100)/100;const size=Math.max(8,w*(isWide?.058:.085)*scale);measureTitle(mainHeadline,size);if(headline)measureY+=Math.max(12,w*.03)}
+  if(headline){const scale=Number(document.getElementById('headline-size').value||100)/100;const size=Math.max(8,w*(isWide?.058:.085)*.5*scale);measureTitle(headline,size)}
+  if(caption){if(headline)measureY+=Math.max(12,w*.03);const scale=Number(document.getElementById('caption-size').value||100)/100;const fontSize=Math.max(8,w*CAPTION_FONT_RATIO*scale),lineHeight=fontSize*1.42;c.font=`500 ${fontSize}px "DM Sans", Arial, sans-serif`;for(const paragraph of caption.split(/\n/)){if(!paragraph){measureY+=lineHeight*.65;continue}const lines=wrappedTextLines(c,paragraph,maxWidth);if(lines.length){blockTop=Math.min(blockTop,measureY-fontSize*.8);blockBottom=Math.max(blockBottom,measureY+(lines.length-1)*lineHeight+fontSize*.22);measureY+=lines.length*lineHeight}}}
   const selectedTrack=document.getElementById('track-select').value;
   const trackScale=Number(document.getElementById('track-size').value||100)/100;
   if(selectedTrack){measureY+=Math.max(8,w*.018);const size=Math.max(10,w*.02*trackScale);blockTop=Math.min(blockTop,measureY-size*.8);blockBottom=Math.max(blockBottom,measureY+size*.2);measureY+=Math.max(16,size*1.45);const spotifySize=Math.max(9,w*.018*trackScale);blockTop=Math.min(blockTop,measureY-spotifySize*.8);blockBottom=Math.max(blockBottom,measureY+spotifySize*.2)}
   const textHeight=Number.isFinite(blockTop)?blockBottom-blockTop:0,safeTop=h*.055,safeBottom=footerLineY-h*.055,availableTextTravel=Math.max(0,safeBottom-safeTop-textHeight),anchorY=safeTop+yProgress*availableTextTravel-(Number.isFinite(blockTop)?blockTop:0);
   let cursorY=anchorY;
   c.textAlign=align;c.textBaseline='alphabetic';
-  if(mainHeadline){const scale=Number(document.getElementById('main-headline-size').value||100)/100;const size=Math.max(16,w*(isWide?.058:.085)*scale);cursorY=drawWrappedTitle(c,mainHeadline,textX,cursorY,maxWidth,size,document.getElementById('main-headline-color').value||'#f2d21b');cursorY+=headline?Math.max(12,w*.03):0}
+  if(mainHeadline){const scale=Number(document.getElementById('main-headline-size').value||100)/100;const size=Math.max(8,w*(isWide?.058:.085)*scale);cursorY=drawWrappedTitle(c,mainHeadline,textX,cursorY,maxWidth,size,document.getElementById('main-headline-color').value||'#f2d21b');cursorY+=headline?Math.max(12,w*.03):0}
   if(headline){
-    const titleScale=Number(document.getElementById('headline-size').value||100)/100;const titleSize=Math.max(16,w*(isWide?.058:.085)*titleScale);cursorY=drawWrappedTitle(c,headline,textX,cursorY,maxWidth,titleSize,document.getElementById('post-headline-color').value||'#f4f0e5');
+    const titleScale=Number(document.getElementById('headline-size').value||100)/100;const titleSize=Math.max(8,w*(isWide?.058:.085)*.5*titleScale);cursorY=drawWrappedTitle(c,headline,textX,cursorY,maxWidth,titleSize,document.getElementById('post-headline-color').value||'#f4f0e5');
   }
   if(caption){
     cursorY+=headline?Math.max(12,w*.03):0;c.fillStyle=document.getElementById('caption-color').value||'#f4f0e5';const captionScale=Number(document.getElementById('caption-size').value||100)/100;const fontSize=Math.max(10,w*CAPTION_FONT_RATIO*captionScale);c.font=`500 ${fontSize}px "DM Sans", Arial, sans-serif`;
