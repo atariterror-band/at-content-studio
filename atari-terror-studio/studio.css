@@ -66,6 +66,8 @@
 .position-picker label output,.caption-size-control output{float:right;color:var(--yellow)}
 .caption-size-control{display:grid;gap:5px;margin-top:5px;padding:0 1px 13px;color:#aaa99f;font:9px var(--mono);letter-spacing:.04em}
 .caption-size-control input{width:100%;height:13px;margin:0;accent-color:var(--yellow)}
+.caption-head h3{margin:0;color:var(--white);font:10px var(--mono);letter-spacing:.06em}
+.headline-head+.field-label{margin-top:4px}
 .track-size-control{display:grid;gap:5px;margin-top:13px;padding-top:10px;border-top:1px solid #343430;color:#aaa99f;font:9px var(--mono);letter-spacing:.04em}
 .track-size-control output{float:right;color:var(--yellow)}
 .track-size-control input{width:100%;height:13px;margin:0;accent-color:var(--yellow)}
