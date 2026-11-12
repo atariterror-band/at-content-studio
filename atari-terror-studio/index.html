@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#11110f">
   <meta name="description" content="Lokální AT Content Studio — návrhy sociálního obsahu z oficiálních médií Atari Terror.">
   <title>AT Content Studio — Atari Terror</title>
-  <link rel="stylesheet" href="studio.css?v=2026111211">
+  <link rel="stylesheet" href="studio.css?v=2026111212">
 </head>
 <body>
   <main class="studio-login-screen" id="studio-login-screen">
@@ -93,6 +93,7 @@
         <div class="video-options">
           <p class="control-label filter-label">FILTRY <span>lze kombinovat</span></p>
           <div class="filter-options"><label><input type="checkbox" data-video-filter="cinematic"><span>Filmový look</span></label><label><input type="checkbox" data-video-filter="contrast"><span>Kontrast</span></label><label><input type="checkbox" data-video-filter="noir"><span>Černobílý noir</span></label><label><input type="checkbox" data-video-filter="film"><span>Film</span></label></div>
+          <div class="color-overlay-controls"><label class="color-overlay-toggle"><input type="checkbox" data-video-filter="color-overlay"><span>BAREVNÝ PŘEKRYV CELÉHO VIDEA</span></label><div class="color-overlay-settings"><label for="overlay-color">BARVA</label><input id="overlay-color" type="color" value="#e44132" aria-label="Barva překryvu videa"><label for="overlay-opacity">SÍLA PŘEKRYVU <output id="overlay-opacity-value">35 %</output></label><input id="overlay-opacity" type="range" min="0" max="100" value="35"></div></div>
         </div>
 
 
@@ -173,7 +174,7 @@
 
         <p class="field-label">FILTRY VZHLEDU</p>
 
-        <div class="modal-filter-options"><label><input type="checkbox" data-modal-video-filter="cinematic"><span>Filmový look</span></label><label><input type="checkbox" data-modal-video-filter="contrast"><span>Kontrast</span></label><label><input type="checkbox" data-modal-video-filter="noir"><span>Černobílý noir</span></label><label><input type="checkbox" data-modal-video-filter="film"><span>Film</span></label></div><p id="modal-no-video" class="modal-no-video">Vyber video v kroku 1 pro úpravu délky a přehrávání.</p><div class="modal-output-actions"><button class="button button-primary" id="modal-save-draft" type="button">ULOŽIT ROZPRACOVANÉ</button><button class="button button-primary" id="modal-save-complete" type="button">ULOŽIT HOTOVÉ</button><button class="button button-primary" id="modal-share-result" type="button">SDÍLET ↗</button><button class="button button-primary" id="modal-download-result" type="button">STÁHNOUT ↓</button></div>
+        <div class="modal-filter-options"><label><input type="checkbox" data-modal-video-filter="cinematic"><span>Filmový look</span></label><label><input type="checkbox" data-modal-video-filter="contrast"><span>Kontrast</span></label><label><input type="checkbox" data-modal-video-filter="noir"><span>Černobílý noir</span></label><label><input type="checkbox" data-modal-video-filter="film"><span>Film</span></label></div><div class="color-overlay-controls modal-color-overlay"><label class="color-overlay-toggle"><input type="checkbox" data-modal-video-filter="color-overlay"><span>BAREVNÝ PŘEKRYV CELÉHO VIDEA</span></label><div class="color-overlay-settings"><label for="modal-overlay-color">BARVA</label><input id="modal-overlay-color" type="color" value="#e44132" aria-label="Barva překryvu videa"><label for="modal-overlay-opacity">SÍLA PŘEKRYVU <output id="modal-overlay-opacity-value">35 %</output></label><input id="modal-overlay-opacity" type="range" min="0" max="100" value="35"></div></div><p id="modal-no-video" class="modal-no-video">Vyber video v kroku 1 pro úpravu délky a přehrávání.</p><div class="modal-output-actions"><button class="button button-primary" id="modal-save-draft" type="button">ULOŽIT ROZPRACOVANÉ</button><button class="button button-primary" id="modal-save-complete" type="button">ULOŽIT HOTOVÉ</button><button class="button button-primary" id="modal-share-result" type="button">SDÍLET ↗</button><button class="button button-primary" id="modal-download-result" type="button">STÁHNOUT ↓</button></div>
       </aside>
       <section class="modal-timeline-panel" aria-label="Délka videa">
         <p class="field-label modal-duration-heading">DÉLKA VIDEA</p>
@@ -182,6 +183,6 @@
     </div>
   </div>
   <div class="action-modal" id="share-ready-modal" hidden role="dialog" aria-modal="true" aria-labelledby="share-ready-title"><section class="action-modal-card share-ready-card"><button class="modal-close" id="share-ready-close" aria-label="Zavřít">×</button><p class="eyebrow">HOTOVO KE SDÍLENÍ</p><h2 id="share-ready-title">Výstup je připravený</h2><p class="action-modal-description" id="share-ready-description">Příspěvek je připravený pro vybraný formát. Zvol Sdílet pro nabídku aplikací v telefonu nebo počítači.</p><div class="action-modal-meta" id="share-ready-format"></div><div class="action-modal-actions"><button class="button button-primary" id="share-ready-send" type="button">SDÍLET ↗</button><button class="button button-outline" id="share-ready-download" type="button">STÁHNOUT ↓</button></div></section></div>
-  <script src="studio.js?v=2026111211"></script>
+  <script src="studio.js?v=2026111212"></script>
 </body>
 </html>
