@@ -30,6 +30,7 @@ let previewProgressSequence=0,activePreviewProgress=0,previewProgressTimer,previ
 let currentFormat = 'story';
 let selected = 0;
 const PREVIEW_FPS=25;
+const CAPTION_FONT_RATIO=.068;
 let selectedStartFrame=0;
 let selectedEndFrame=5*PREVIEW_FPS;
 let clipSelectionLoaded=false;
@@ -228,7 +229,7 @@ async function drawDesign(target, format=currentFormat, time=0){const spec=forma
   const measureTitle=(text,size)=>{c.font=`900 ${size}px "Barlow Condensed", "Arial Narrow", sans-serif`;const lines=wrappedTextLines(c,text,maxWidth),lineHeight=size*.86;if(lines.length){blockTop=Math.min(blockTop,measureY-size*.8);blockBottom=Math.max(blockBottom,measureY+(lines.length-1)*lineHeight+size*.2);measureY+=lines.length*lineHeight}};
   if(mainHeadline){const scale=Number(document.getElementById('main-headline-size').value||100)/100;const size=Math.max(16,w*(isWide?.058:.085)*scale);measureTitle(mainHeadline,size);if(headline)measureY+=Math.max(12,w*.03)}
   if(headline){const scale=Number(document.getElementById('headline-size').value||100)/100;const size=Math.max(16,w*(isWide?.058:.085)*scale);measureTitle(headline,size)}
-  if(caption){if(headline)measureY+=Math.max(12,w*.03);const scale=Number(document.getElementById('caption-size').value||100)/100;const fontSize=Math.max(10,w*.034*scale),lineHeight=fontSize*1.42;c.font=`500 ${fontSize}px "DM Sans", Arial, sans-serif`;for(const paragraph of caption.split(/\n/)){if(!paragraph){measureY+=lineHeight*.65;continue}const lines=wrappedTextLines(c,paragraph,maxWidth);if(lines.length){blockTop=Math.min(blockTop,measureY-fontSize*.8);blockBottom=Math.max(blockBottom,measureY+(lines.length-1)*lineHeight+fontSize*.22);measureY+=lines.length*lineHeight}}}
+  if(caption){if(headline)measureY+=Math.max(12,w*.03);const scale=Number(document.getElementById('caption-size').value||100)/100;const fontSize=Math.max(10,w*CAPTION_FONT_RATIO*scale),lineHeight=fontSize*1.42;c.font=`500 ${fontSize}px "DM Sans", Arial, sans-serif`;for(const paragraph of caption.split(/\n/)){if(!paragraph){measureY+=lineHeight*.65;continue}const lines=wrappedTextLines(c,paragraph,maxWidth);if(lines.length){blockTop=Math.min(blockTop,measureY-fontSize*.8);blockBottom=Math.max(blockBottom,measureY+(lines.length-1)*lineHeight+fontSize*.22);measureY+=lines.length*lineHeight}}}
   const selectedTrack=document.getElementById('track-select').value;
   const trackScale=Number(document.getElementById('track-size').value||100)/100;
   if(selectedTrack){measureY+=Math.max(8,w*.018);const size=Math.max(10,w*.02*trackScale);blockTop=Math.min(blockTop,measureY-size*.8);blockBottom=Math.max(blockBottom,measureY+size*.2);measureY+=Math.max(16,size*1.45);const spotifySize=Math.max(9,w*.018*trackScale);blockTop=Math.min(blockTop,measureY-spotifySize*.8);blockBottom=Math.max(blockBottom,measureY+spotifySize*.2)}
@@ -254,7 +255,7 @@ async function drawDesign(target, format=currentFormat, time=0){const spec=forma
     const titleScale=Number(document.getElementById('headline-size').value||100)/100;const titleSize=Math.max(16,w*(isWide?.058:.085)*titleScale);cursorY=drawWrappedTitle(c,headline,textX,cursorY,maxWidth,titleSize,document.getElementById('post-headline-color').value||'#f4f0e5');
   }
   if(caption){
-    cursorY+=headline?Math.max(12,w*.03):0;c.fillStyle=document.getElementById('caption-color').value||'#f4f0e5';const captionScale=Number(document.getElementById('caption-size').value||100)/100;const fontSize=Math.max(10,w*.034*captionScale);c.font=`500 ${fontSize}px "DM Sans", Arial, sans-serif`;
+    cursorY+=headline?Math.max(12,w*.03):0;c.fillStyle=document.getElementById('caption-color').value||'#f4f0e5';const captionScale=Number(document.getElementById('caption-size').value||100)/100;const fontSize=Math.max(10,w*CAPTION_FONT_RATIO*captionScale);c.font=`500 ${fontSize}px "DM Sans", Arial, sans-serif`;
     const lineHeight=fontSize*1.42;const paragraphs=caption.split(/\n/);for(const paragraph of paragraphs){if(!paragraph){cursorY+=lineHeight*.65;continue}let line='';for(const word of paragraph.split(/\s+/)){const test=line?`${line} ${word}`:word;if(c.measureText(test).width>maxWidth&&line){c.fillText(line,textX,cursorY,maxWidth);cursorY+=lineHeight;line=word}else line=test}if(line){c.fillText(line,textX,cursorY,maxWidth);cursorY+=lineHeight}}
   }
   if(selectedTrack){cursorY+=Math.max(8,w*.018);const trackFontSize=Math.max(10,w*.02*trackScale);c.fillStyle='#f2d21b';c.font=`500 ${trackFontSize}px "DM Mono", monospace`;c.fillText(`ATARI TERROR — ${selectedTrack.toUpperCase()}`,textX,cursorY,maxWidth);cursorY+=Math.max(16,trackFontSize*1.45)}
