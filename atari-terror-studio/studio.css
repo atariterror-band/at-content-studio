@@ -144,6 +144,10 @@
 .color-overlay-settings label[for$="opacity"],.color-overlay-settings input[type=range]{grid-column:1/-1}
 .color-overlay-settings input[type=range]{width:100%;height:13px;margin:0;accent-color:var(--yellow)}
 .modal-color-overlay{margin-top:9px;background:#131311;border-color:#302f29}
+.editor-column .text-field-heading,.modal-text-panel .text-field-heading,.caption-head h3{display:block;color:var(--white);font:10px var(--mono);letter-spacing:.06em;text-transform:uppercase}
+.editor-column .text-field-heading{margin:20px 0 8px}
+.editor-column .headline-head+.text-field-heading{margin-top:4px}
+.modal-edit-panel .text-field-heading{margin:16px 0 8px}
 .export-actions{grid-template-columns:repeat(2,minmax(0,1fr))}
 .export-actions .button{min-width:0;height:44px;padding:0 7px;font-size:clamp(7px,.75vw,9px);white-space:normal;line-height:1.25}
 .export-actions .button span{font-size:13px;margin-left:3px}
