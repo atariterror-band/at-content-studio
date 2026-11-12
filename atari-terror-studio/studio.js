@@ -225,7 +225,8 @@ async function drawDesign(target, format=currentFormat, time=0){const spec=forma
   const selectedTrack=document.getElementById('track-select').value;
   const trackScale=Number(document.getElementById('track-size').value||100)/100;
   if(selectedTrack){measureY+=Math.max(8,w*.018);const size=Math.max(10,w*.02*trackScale);blockTop=Math.min(blockTop,measureY-size*.8);blockBottom=Math.max(blockBottom,measureY+size*.2);measureY+=Math.max(16,size*1.45);const spotifySize=Math.max(9,w*.018*trackScale);blockTop=Math.min(blockTop,measureY-spotifySize*.8);blockBottom=Math.max(blockBottom,measureY+spotifySize*.2)}
-  const textHeight=Number.isFinite(blockTop)?blockBottom-blockTop:0,safeTop=isVertical?h*.14:h*.06,safeBottom=isVertical?h*.65:h*.94,availableTextTravel=Math.max(0,safeBottom-safeTop-textHeight),anchorY=safeTop+yProgress*availableTextTravel-blockTop;
+  const footerLineY=h*.92,footerTextY=h*.955;
+  const textHeight=Number.isFinite(blockTop)?blockBottom-blockTop:0,safeTop=h*.055,safeBottom=footerLineY-h*.055,availableTextTravel=Math.max(0,safeBottom-safeTop-textHeight),anchorY=safeTop+yProgress*availableTextTravel-(Number.isFinite(blockTop)?blockTop:0);
   let cursorY=anchorY;
   const motion=document.getElementById('text-effect')?.value||'none',phase=time*2*Math.PI/3.8;
   const motionTransform={scale:1,x:0,y:0,rotate:0,reveal:null};
@@ -238,7 +239,7 @@ async function drawDesign(target, format=currentFormat, time=0){const spec=forma
   else if(motion==='reveal')motionTransform.reveal=(time%3.4)/3.4;
   else if(motion==='glitch'){const beat=time%2.8;if(beat<.16){motionTransform.x=(Math.sin(time*91)>0?1:-1)*w*.018;motionTransform.y=(Math.sin(time*47)>0?1:-1)*h*.004}}
   const textCenterX=textX+maxWidth/2,textCenterY=anchorY+textHeight/2;
-  c.save();c.translate(textCenterX+motionTransform.x,textCenterY+motionTransform.y);c.rotate(motionTransform.rotate);c.scale(motionTransform.scale,motionTransform.scale);c.translate(-textCenterX,-textCenterY);
+  c.save();c.beginPath();c.rect(0,0,w,footerLineY-h*.015);c.clip();c.translate(textCenterX+motionTransform.x,textCenterY+motionTransform.y);c.rotate(motionTransform.rotate);c.scale(motionTransform.scale,motionTransform.scale);c.translate(-textCenterX,-textCenterY);
   if(motionTransform.reveal!==null){c.beginPath();c.rect(textX-pad*.1,0,Math.max(0,maxWidth+pad*.2)*motionTransform.reveal,h);c.clip()}
   c.textAlign=align;c.textBaseline='alphabetic';
   if(mainHeadline){const scale=Number(document.getElementById('main-headline-size').value||100)/100;const size=Math.max(16,w*(isWide?.058:.085)*scale);cursorY=drawWrappedTitle(c,mainHeadline,textX,cursorY,maxWidth,size,document.getElementById('main-headline-color').value||'#f2d21b');cursorY+=headline?Math.max(12,w*.03):0}
@@ -253,7 +254,7 @@ async function drawDesign(target, format=currentFormat, time=0){const spec=forma
   if(selectedTrack){c.fillStyle='#f2d21b';c.font=`500 ${Math.max(9,w*.018*trackScale)}px "DM Mono", monospace`;c.fillText('POSLOUCHEJ NA SPOTIFY  ↗',textX,cursorY,maxWidth)}
   c.restore();c.textAlign='left';
   document.getElementById('preview-website-link').hidden=false;
-  const isStoryFormat=currentFormat==='story'||currentFormat==='fb-story';const footerLineY=h*(isStoryFormat ? 0.73 : 0.89),footerTextY=h*(isStoryFormat ? 0.76 : 0.92);c.strokeStyle='rgba(245,240,220,.3)';c.beginPath();c.moveTo(pad,footerLineY);c.lineTo(w-pad,footerLineY);c.stroke();c.fillStyle='rgba(245,240,220,.8)';c.font=`600 ${Math.max(9,w*.017)}px "DM Mono", monospace`;c.fillText('WWW.ATARITERROR.COM',pad,footerTextY)
+  c.strokeStyle='rgba(245,240,220,.3)';c.beginPath();c.moveTo(pad,footerLineY);c.lineTo(w-pad,footerLineY);c.stroke();c.fillStyle='rgba(245,240,220,.8)';c.font=`600 ${Math.max(9,w*.017)}px "DM Mono", monospace`;c.fillText('WWW.ATARITERROR.COM',pad,footerTextY)
 }
 function renderAssetGrid(){
   const grid=document.getElementById('asset-grid');
