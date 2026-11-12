@@ -92,8 +92,9 @@
 
         <div class="section-head video-head"><div><p class="eyebrow">KROK 03</p><h2>Vzhled videa</h2></div></div>
         <div class="video-options">
-          <p class="control-label filter-label">FILTRY <span>lze kombinovat</span></p>
-          <div class="filter-options"><label><input type="checkbox" data-video-filter="cinematic"><span>Filmový look</span></label><label><input type="checkbox" data-video-filter="contrast"><span>Kontrast</span></label><label><input type="checkbox" data-video-filter="noir"><span>Černobílý noir</span></label><label><input type="checkbox" data-video-filter="film"><span>Film</span></label></div>
+          <p class="control-label filter-label">ČERNOBÍLÉ VIDEO</p>
+          <div class="filter-options single-filter"><label><input type="checkbox" data-video-filter="noir"><span>PŘEVÉST DO ČERNOBÍLA</span></label></div>
+          <div class="monochrome-controls"><label for="monochrome-strength">STÍNY A KONTRAST <output id="monochrome-strength-value">50 %</output></label><input id="monochrome-strength" type="range" min="0" max="100" value="50" disabled></div>
           <div class="color-overlay-controls"><label class="color-overlay-toggle"><input type="checkbox" data-video-filter="color-overlay"><span>BAREVNÝ PŘEKRYV CELÉHO VIDEA</span></label><div class="color-overlay-settings"><label for="overlay-color">BARVA</label><input id="overlay-color" type="color" value="#e44132" aria-label="Barva překryvu videa"><label for="overlay-opacity">SÍLA PŘEKRYVU <output id="overlay-opacity-value">35 %</output></label><input id="overlay-opacity" type="range" min="0" max="100" value="35"></div></div>
         </div>
 
@@ -193,9 +194,9 @@
         <h2>Vzhled výstupu</h2>
 
 
-        <p class="field-label">FILTRY VZHLEDU</p>
+        <p class="field-label">ČERNOBÍLÉ VIDEO</p>
 
-        <div class="modal-filter-options"><label><input type="checkbox" data-modal-video-filter="cinematic"><span>Filmový look</span></label><label><input type="checkbox" data-modal-video-filter="contrast"><span>Kontrast</span></label><label><input type="checkbox" data-modal-video-filter="noir"><span>Černobílý noir</span></label><label><input type="checkbox" data-modal-video-filter="film"><span>Film</span></label></div><div class="color-overlay-controls modal-color-overlay"><label class="color-overlay-toggle"><input type="checkbox" data-modal-video-filter="color-overlay"><span>BAREVNÝ PŘEKRYV CELÉHO VIDEA</span></label><div class="color-overlay-settings"><label for="modal-overlay-color">BARVA</label><input id="modal-overlay-color" type="color" value="#e44132" aria-label="Barva překryvu videa"><label for="modal-overlay-opacity">SÍLA PŘEKRYVU <output id="modal-overlay-opacity-value">35 %</output></label><input id="modal-overlay-opacity" type="range" min="0" max="100" value="35"></div></div><p id="modal-no-video" class="modal-no-video">Vyber video v kroku 1 pro úpravu délky a přehrávání.</p><div class="modal-output-actions"><button class="button button-primary" id="modal-save-draft" type="button">ULOŽIT</button><button class="button button-primary" id="modal-share-result" type="button">STÁHNOUT / SDÍLET ↗</button></div>
+        <div class="modal-filter-options"><label><input type="checkbox" data-modal-video-filter="noir"><span>PŘEVÉST DO ČERNOBÍLA</span></label></div><div class="monochrome-controls modal-monochrome-controls"><label for="modal-monochrome-strength">STÍNY A KONTRAST <output id="modal-monochrome-strength-value">50 %</output></label><input id="modal-monochrome-strength" type="range" min="0" max="100" value="50" disabled></div><div class="color-overlay-controls modal-color-overlay"><label class="color-overlay-toggle"><input type="checkbox" data-modal-video-filter="color-overlay"><span>BAREVNÝ PŘEKRYV CELÉHO VIDEA</span></label><div class="color-overlay-settings"><label for="modal-overlay-color">BARVA</label><input id="modal-overlay-color" type="color" value="#e44132" aria-label="Barva překryvu videa"><label for="modal-overlay-opacity">SÍLA PŘEKRYVU <output id="modal-overlay-opacity-value">35 %</output></label><input id="modal-overlay-opacity" type="range" min="0" max="100" value="35"></div></div><p id="modal-no-video" class="modal-no-video">Vyber video v kroku 1 pro úpravu délky a přehrávání.</p><div class="modal-output-actions"><button class="button button-primary" id="modal-save-draft" type="button">ULOŽIT</button><button class="button button-primary" id="modal-share-result" type="button">STÁHNOUT / SDÍLET ↗</button></div>
       </aside>
       <section class="modal-timeline-panel" aria-label="Délka videa">
         <p class="field-label modal-duration-heading">DÉLKA VIDEA</p>
