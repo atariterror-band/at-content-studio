@@ -30,6 +30,9 @@ let previewProgressSequence=0,activePreviewProgress=0,previewProgressTimer,previ
 let currentFormat = 'story';
 let selected = 0;
 const PREVIEW_FPS=25;
+// Capture a short guard band outside the selected interval. The MP4 mux step
+// removes these frames, so recorder/seek startup jitter cannot shorten the clip.
+const EXPORT_GUARD_FRAMES=3;
 const CAPTION_FONT_RATIO=.068;
 let selectedStartFrame=0;
 let selectedEndFrame=5*PREVIEW_FPS;
@@ -361,6 +364,11 @@ async function exportVideo(prepareShare=false){
   const clipStart=selectedStartSeconds(),clipEnd=selectedEndSeconds();
   const frameCount=hasSourceVideo?selectedEndFrame-selectedStartFrame:PREVIEW_FPS*5;
   const duration=frameCount/PREVIEW_FPS;
+  const maxSourceFrame=hasSourceVideo&&Number.isFinite(video.duration)?Math.floor(video.duration*PREVIEW_FPS):selectedEndFrame;
+  const prerollFrames=hasSourceVideo?Math.min(EXPORT_GUARD_FRAMES,selectedStartFrame):0;
+  const postrollFrames=hasSourceVideo?Math.min(EXPORT_GUARD_FRAMES,Math.max(0,maxSourceFrame-selectedEndFrame)):0;
+  const captureStart=Math.max(0,clipStart-prerollFrames/PREVIEW_FPS);
+  const captureEnd=Math.min(video.duration||clipEnd,clipEnd+postrollFrames/PREVIEW_FPS);
   const durationLabel=frameLabel(frameCount);
   exportInProgress=true;let currentExportProgress=0;const updateExportProgress=(label,percent)=>{document.getElementById('preview-loading-label').textContent=label;currentExportProgress=Math.max(currentExportProgress,Math.min(100,percent));setPreviewProgress(currentExportProgress)};
   const format=currentFormat,spec=formatMap[format];
@@ -373,7 +381,7 @@ async function exportVideo(prepareShare=false){
       if(!asset.src)throw new Error('Zdrojové video nemá dostupnou adresu pro přesný export.');
       video.pause();video.loop=false;video.muted=true;
       exportRecording=true;
-      await seekVideoForExport(clipStart);
+      await seekVideoForExport(captureStart);
       progressToken=beginPreviewProgress('PŘIPRAVUJI PŘESNÝ EXPORT',2);
       ffmpegModulePromise=import('./assets/ffmpeg-export.js').then(async module=>{await module.loadFFmpeg(updateExportProgress);return{module}}).catch(error=>({error}));
     }
@@ -392,7 +400,7 @@ async function exportVideo(prepareShare=false){
         if(hasSourceVideo){
           updateExportProgress('RENDERUJI PŘESNÝ ÚSEK',40);
           const loaded=await ffmpegModulePromise;if(loaded.error)throw loaded.error;const module=loaded.module;
-          outputBlob=await module.muxExactClip({visualBlob:outputBlob,sourceUrl:asset.src,sourceName:asset.name,startSeconds:clipStart,endSeconds:clipEnd,frameCount,onProgress:updateExportProgress});
+          outputBlob=await module.muxExactClip({visualBlob:outputBlob,sourceUrl:asset.src,sourceName:asset.name,startSeconds:clipStart,endSeconds:clipEnd,frameCount,prerollFrames,onProgress:updateExportProgress});
           outputExtension='mp4';
         }
         const outputName=`atari-terror-${format}-${duration.toFixed(2)}s-${Date.now()}.${outputExtension}`;
@@ -402,14 +410,14 @@ async function exportVideo(prepareShare=false){
       finally{exportInProgress=false;if(progressToken)finishPreviewProgress(progressToken)}
     };
     await drawDesign(recorderCanvas,format,0);
+    const startedAt=performance.now();
     recorder.start();
     if(hasSourceVideo)await video.play();
-    const startedAt=performance.now();
     const frame=async now=>{
       if(!running)return;
       const elapsed=(now-startedAt)/1000;
-      if(hasSourceVideo?video.currentTime>=clipEnd:elapsed>=duration){running=false;exportSucceeded=true;video.pause();if(recorder.state!=='inactive')recorder.stop();return}
-      await drawDesign(recorderCanvas,format,elapsed);
+      if(hasSourceVideo?video.currentTime>=captureEnd:elapsed>=duration){running=false;exportSucceeded=true;video.pause();if(recorder.state!=='inactive')recorder.stop();return}
+      await drawDesign(recorderCanvas,format,hasSourceVideo?Math.max(0,elapsed-prerollFrames/PREVIEW_FPS):elapsed);
       if(hasSourceVideo&&progressToken){const progress=Math.min(35,Math.round(4+(video.currentTime-clipStart)/Math.max(.04,duration)*31));currentExportProgress=Math.max(currentExportProgress,progress);setPreviewProgress(currentExportProgress)}
       requestAnimationFrame(frame);
     };

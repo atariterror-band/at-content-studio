@@ -83,7 +83,7 @@ function safeExtension(name) {
   return ['mp4', 'mov', 'm4v', 'webm', 'mkv'].includes(extension) ? extension : 'mp4';
 }
 
-export async function muxExactClip({ visualBlob, sourceUrl, sourceName, startSeconds, endSeconds, frameCount, onProgress = () => {} }) {
+export async function muxExactClip({ visualBlob, sourceUrl, sourceName, startSeconds, endSeconds, frameCount, prerollFrames = 0, onProgress = () => {} }) {
   const ffmpeg = await loadFFmpeg((label, percent) => onProgress(label, percent));
   const sourceExtension = safeExtension(sourceName);
   const sourcePath = `source.${sourceExtension}`;
@@ -103,7 +103,9 @@ export async function muxExactClip({ visualBlob, sourceUrl, sourceName, startSec
     const hasAudio = audioBytes instanceof Uint8Array ? new TextDecoder().decode(audioBytes).trim().includes('audio') : String(audioBytes).trim().includes('audio');
     const fps = 25;
     const duration = (endSeconds - startSeconds).toFixed(3);
-    const videoFilter = `[0:v:0]fps=${fps},tpad=stop_mode=clone:stop_duration=1,trim=end_frame=${frameCount},setpts=N/(${fps}*TB)[v]`;
+    // The browser recorder starts a little before the user's selected in-point.
+    // Discard that guard band and keep exactly the selected number of frames.
+    const videoFilter = `[0:v:0]fps=${fps},tpad=stop_mode=clone:stop_duration=1,trim=start_frame=${prerollFrames}:end_frame=${prerollFrames + frameCount},setpts=N/(${fps}*TB)[v]`;
     const args = ['-i', visualPath, '-i', sourcePath, '-filter_complex', hasAudio ? `${videoFilter};[1:a:0]atrim=start=${startSeconds.toFixed(3)}:end=${endSeconds.toFixed(3)},asetpts=PTS-STARTPTS[a]` : videoFilter, '-map', '[v]'];
     if (hasAudio) args.push('-map', '[a]');
     args.push('-frames:v', String(frameCount), '-t', duration, '-c:v', 'libx264', '-preset', 'ultrafast', '-crf', '21', '-pix_fmt', 'yuv420p');
