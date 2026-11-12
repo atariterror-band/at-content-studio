@@ -317,7 +317,7 @@ body:has(.native-size-preview) .pane-resizer{display:none!important}
 .timeline-start-marker output,.timeline-end-marker output{position:absolute;bottom:calc(100% + 2px);left:0;transform:translateX(-50%);padding:2px 4px;background:#171715;color:var(--yellow);font:9px var(--mono);white-space:nowrap}
 .close-blades .timeline-end-marker output{bottom:calc(100% + 20px)}
 .video-playback-controls .clip-range-labels output{display:none}
-.timeline-playhead{left:var(--playhead);background:#fff;z-index:4}
+.timeline-playhead{left:var(--playhead);width:2px;transform:translateX(-50%);background:#fff;box-shadow:0 0 0 1px #1119,0 0 7px #fff8;z-index:4}
 .timeline-playhead output{position:absolute;bottom:calc(100% + 23px);left:50%;transform:translateX(-50%);padding:2px 5px;background:#fff;color:#11110f;font:9px var(--mono);white-space:nowrap}
 .timeline-set-actions{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
 .timeline-set-actions .button{min-height:31px;padding:0 11px;font-size:8px}
