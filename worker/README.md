@@ -2,19 +2,17 @@
 
 Cloudflare Worker přijímá přihlášení, vydává podepsanou relaci a ukládá nebo maže návrhy v GitHubu. Osobní GitHub token zůstává na serveru. Členové kapely nepotřebují GitHub účet ani token.
 
-## Nasazení správcem
+## Nasazení
 
-1. V Cloudflare vytvoř Worker pojmenovaný `at-content-studio-api` a nasaď tento adresář (`worker/`) přes Wrangler nebo propojený Git repozitář.
-2. V **Workers & Pages → at-content-studio-api → Settings → Variables and Secrets** přidej jako typ **Secret**:
-   - `GITHUB_TOKEN`: nový fine-grained token vytvořený správcem, pouze pro `atariterror-band/at-content-studio`, s `Contents: Read and write`.
-   - `STUDIO_PASSWORD`: přístupové heslo pro členy kapely.
-   - `SESSION_SECRET`: náhodný řetězec dlouhý alespoň 32 znaků.
-3. Přidej běžnou proměnnou `ALLOWED_ORIGINS` s původem produkční stránky, např. `https://atariterror-band.github.io`. Vlastní doménu případně přidej jako další hodnotu oddělenou čárkou.
-4. Worker zobrazí adresu ve tvaru `https://at-content-studio-api.<account-subdomain>.workers.dev`.
-5. V `atari-terror-studio/config.js` nastav `window.AT_CONTENT_STUDIO_API` na tuto adresu a publikuj stránku. `ALLOWED_ORIGINS` musí přesně odpovídat doméně stránky.
+Worker je propojený s atariterror-band/at-content-studio na větvi main. Cloudflare Builds používá kořen /worker a při commitu spustí npx wrangler deploy.
 
-Token se nastavuje jednou v Cloudflare. Když GitHub token vyprší, správce vytvoří nový a v Cloudflare nahradí pouze `GITHUB_TOKEN`; členové kapely nic nemění. Starý token vložený do veřejného kódu či konverzace znovu nepoužívej.
+V Cloudflare jsou nastavené šifrované secrets GITHUB_TOKEN, STUDIO_PASSWORD a SESSION_SECRET, plus povolený produkční původ ALLOWED_ORIGINS.
 
-## Ověření po nasazení
+Token je spravovatelská závislost: při jeho vypršení (90 dní) správce vygeneruje nový fine-grained token pouze pro tento repozitář s Contents: Read and write a nahradí pouze secret GITHUB_TOKEN. Členové kapely nic nemění.
 
-Přihlas se do Studia, ulož testovací rozpracovaný návrh a ověř jeho soubor v `content-studio/drafts/`. Ulož jej jako hotový a ověř přesun do `content-studio/completed/`. API omezuje ukládání na tyto složky a návrhy do 1 MB.
+## API
+
+- POST /auth/login přijme heslo studia a vrátí podepsanou relaci platnou 30 dní.
+- POST /api/drafts uloží nebo přesune návrh do content-studio/drafts/ či content-studio/completed/.
+- DELETE /api/drafts/:id odstraní návrh z těchto složek.
+- Povolená velikost jednoho návrhu je 1 MB.
