@@ -399,6 +399,9 @@ html:not(.studio-authenticated) body>*:not(#studio-login-screen):not(script){dis
 .photo-panel{padding:14px}
 .photo-panel-head,.photo-preview-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .photo-panel-head{margin-bottom:10px}
+.photo-source-head{align-items:flex-start;flex-direction:column}
+.photo-source-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;width:100%}
+.photo-source-actions .photo-upload-button{min-width:0;padding:0 6px;font-size:8px}
 .photo-panel-head .eyebrow,.photo-preview-head .eyebrow{margin:0 0 4px;color:var(--yellow);font:9px var(--mono);letter-spacing:.08em}
 .photo-panel-head h2,.photo-preview-head h2{margin:0;font:600 21px/.98 var(--display);text-transform:uppercase}
 .photo-upload-button{min-height:31px;padding:0 10px;font-size:9px}
