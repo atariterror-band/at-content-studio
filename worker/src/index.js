@@ -2,6 +2,7 @@ const REPOSITORY = 'atariterror-band/at-content-studio';
 const API_ROOT = `https://api.github.com/repos/${REPOSITORY}/contents`;
 const SESSION_TTL_SECONDS = 30 * 24 * 60 * 60;
 const MAX_BODY_BYTES = 1024 * 1024;
+const MAX_PHOTO_BYTES = 20 * 1024 * 1024;
 
 export default {
   async fetch(request, env) {
@@ -19,6 +20,30 @@ export default {
       if (!url.pathname.startsWith('/api/')) return json({ error: 'Not found.' }, 404, cors);
       await requireSession(request, env.SESSION_SECRET);
       if (!env.GITHUB_TOKEN) return json({ error: 'Server nemá nastavený GitHub token.' }, 503, cors);
+      if (request.method === 'POST' && url.pathname === '/api/library/photos') {
+        const declaredLength = Number(request.headers.get('Content-Length') || 0);
+        if (declaredLength > MAX_PHOTO_BYTES + 64 * 1024) return json({ error: 'Fotka je větší než 20 MB.' }, 413, cors);
+        const form = await request.formData();
+        const photo = form.get('photo');
+        if (!photo || typeof photo.arrayBuffer !== 'function' || typeof photo.name !== 'string') throw Object.assign(new Error('Vyber platný obrazový soubor.'), { status: 400 });
+        if (photo.size > MAX_PHOTO_BYTES) throw Object.assign(new Error('Fotka je větší než 20 MB.'), { status: 413 });
+        const name = photo.name;
+        const extension = name.split('.').pop().toLowerCase();
+        if (!name || name.length > 180 || name.trim() !== name || /[\/\\\u0000-\u001f\u007f]/.test(name) || name === '.' || name === '..' || !['jpg', 'jpeg', 'png', 'gif', 'webp', 'avif'].includes(extension)) {
+          throw Object.assign(new Error('Použij fotku JPG, PNG, GIF, WebP nebo AVIF s běžným názvem souboru.'), { status: 415 });
+        }
+        const path = `photos/${name}`;
+        const existing = await githubRequest(path, env.GITHUB_TOKEN, 'GET');
+        const replace = form.get('replace') === 'true';
+        if (existing && !replace) return json({ error: `Fotka „${name}“ už v knihovně existuje. Potvrď její nahrazení.` }, 409, cors);
+        const bytes = new Uint8Array(await photo.arrayBuffer());
+        const saved = await githubRequest(path, env.GITHUB_TOKEN, 'PUT', {
+          message: `${existing ? 'Replace' : 'Upload'} photo ${name}`,
+          content: bytesToBase64(bytes),
+          ...(existing?.sha ? { sha: existing.sha } : {})
+        });
+        return json({ ok: true, path, sha: saved.content?.sha || '' }, 200, cors);
+      }
       if (request.method === 'POST' && url.pathname === '/api/drafts') {
         const draft = await readJson(request);
         validateDraft(draft);
@@ -86,6 +111,11 @@ async function deleteGithubFile(path, token, message) {
 }
 function toBase64(value) {
   const bytes = new TextEncoder().encode(value); let binary = '';
+  for (let i = 0; i < bytes.length; i += 0x8000) binary += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
+  return btoa(binary);
+}
+function bytesToBase64(bytes) {
+  let binary = '';
   for (let i = 0; i < bytes.length; i += 0x8000) binary += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
   return btoa(binary);
 }

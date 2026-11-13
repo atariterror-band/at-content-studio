@@ -15,4 +15,5 @@ Token je spravovatelská závislost: při jeho vypršení (90 dní) správce vyg
 - POST /auth/login přijme heslo studia a vrátí podepsanou relaci platnou 30 dní.
 - POST /api/drafts uloží nebo přesune návrh do content-studio/drafts/ či content-studio/completed/.
 - DELETE /api/drafts/:id odstraní návrh z těchto složek.
+- POST /api/library/photos uloží vybranou fotku do veřejné složky photos/ repozitáře; velikost fotky je omezená na 20 MB.
 - Povolená velikost jednoho návrhu je 1 MB.
