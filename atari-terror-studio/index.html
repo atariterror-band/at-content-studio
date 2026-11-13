@@ -142,13 +142,11 @@
       <p class="micro-note library-help">Knihovna se načítá přímo z GitHubu. Pro nahrávání a mazání se připoj omezeným fine-grained tokenem; velké soubory nad 50 MB vyžadují Git LFS.</p>
     </section>
     <section class="view page-view photo-editor-view" id="view-photo-edit" data-view="photo-edit" hidden>
-      <div class="page-heading"><div><p class="eyebrow">OBRAZ / OPTICKÉ EFEKTY</p><h1>Úprava fotek</h1><p>Vyber fotku z knihovny nebo ji nahraj. Nahraná fotka se uloží do složky Fotky v Knihovně médií; originál zůstane beze změny.</p></div><button class="button button-outline" id="photo-reset">RESETOVAT ÚPRAVY</button></div>
+      <div class="page-heading"><div><p class="eyebrow">OBRAZ / OPTICKÉ EFEKTY</p><h1>Úprava fotek</h1><p>Vyber fotografii z Knihovny médií. Originál zůstane beze změny.</p></div><button class="button button-outline" id="photo-reset">RESETOVAT ÚPRAVY</button></div>
       <div class="photo-editor-layout">
         <aside class="photo-editor-controls">
           <section class="photo-panel">
-            <div class="photo-panel-head photo-source-head"><div><p class="eyebrow">ZDROJ</p><h2>Vyber fotku</h2></div><div class="photo-source-actions"><button class="button button-outline photo-upload-button" id="photo-library-select" type="button">VYBRAT Z KNIHOVNY</button><button class="button button-outline photo-upload-button" id="photo-upload" type="button">＋ NAHRÁT DO KNIHOVNY</button></div><input id="photo-file-input" type="file" accept="image/jpeg,image/png,image/gif,image/webp,image/avif" hidden></div>
-            <p class="photo-library-status" id="photo-library-status" role="status">Načítám fotky z knihovny…</p>
-            <div class="photo-library-grid" id="photo-library-grid"></div>
+            <div class="photo-panel-head photo-source-head"><div><p class="eyebrow">ZDROJ</p><h2>Vyber fotku</h2></div><button class="button button-outline photo-upload-button" id="photo-library-select" type="button">VYBRAT Z KNIHOVNY</button></div>
           </section>
           <section class="photo-panel">
             <div class="photo-panel-head"><div><p class="eyebrow">STYL</p><h2>Optický efekt</h2></div></div>
