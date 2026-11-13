@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#11110f">
   <meta name="description" content="Lokální AT Content Studio — návrhy sociálního obsahu z oficiálních médií Atari Terror.">
   <title>AT Content Studio — Atari Terror</title>
-  <link rel="stylesheet" href="studio.css?v=2026111304">
+  <link rel="stylesheet" href="studio.css?v=2026111306">
 </head>
 <body>
   <main class="studio-login-screen" id="studio-login-screen">
@@ -174,6 +174,9 @@
               <button class="photo-motion-button" type="button" data-photo-motion="parallax" aria-pressed="false">PARALAXA 2,5D</button>
               <button class="photo-motion-button" type="button" data-photo-motion="light-leak" aria-pressed="false">SVĚTELNÝ ÚNIK</button>
               <button class="photo-motion-button" type="button" data-photo-motion="glitch" aria-pressed="false">GRUNGE / GLITCH</button>
+              <button class="photo-motion-button" type="button" data-photo-motion="effect-fisheye" aria-pressed="false">ANIMOVANÉ RYBÍ OKO</button>
+              <button class="photo-motion-button" type="button" data-photo-motion="effect-vintage" aria-pressed="false">ANIMOVANÝ STARÝ FILM</button>
+              <button class="photo-motion-button" type="button" data-photo-motion="effect-grunge" aria-pressed="false">ANIMOVANÝ GRUNGE ALBUM</button>
             </div>
             <p class="photo-effect-help" id="photo-motion-help">Pohyb vytvoří video přímo v prohlížeči. Fotka se neposílá na renderovací server.</p>
             <div class="photo-parallax-tools" id="photo-parallax-tools" hidden>
@@ -183,6 +186,11 @@
               <small class="photo-effect-help" id="photo-mask-status">Popředí zatím není označené.</small>
             </div>
             <div class="photo-animation-options" id="photo-animation-options" hidden>
+              <div class="photo-effect-animation-controls" id="photo-effect-animation-controls" hidden>
+                <p class="photo-effect-help">Efekt plynule přejde z levé úrovně na pravou a zpět. Tento pohyb se opakuje po celou zvolenou délku.</p>
+                <div class="photo-effect-range-labels"><label for="photo-effect-start">ZAČÁTEK <output id="photo-effect-start-value">0 %</output></label><label for="photo-effect-end">KONEC <output id="photo-effect-end-value">100 %</output></label></div>
+                <div class="dual-range-track photo-effect-range-track"><input id="photo-effect-start" class="dual-range-start" aria-label="Počáteční úroveň animačního efektu" type="range" min="0" max="100" value="0"><input id="photo-effect-end" class="dual-range-end" aria-label="Koncová úroveň animačního efektu" type="range" min="0" max="100" value="100"></div>
+              </div>
               <label class="photo-strength-label" for="photo-animation-duration"><span>DÉLKA</span></label>
               <select id="photo-animation-duration" class="photo-select"><option value="3">3 sekundy</option><option value="5" selected>5 sekund</option><option value="10">10 sekund</option></select>
               <label class="photo-strength-label" for="photo-animation-format"><span>FORMÁT VÝSTUPU</span></label>
@@ -265,6 +273,6 @@
   </div>
   <div class="action-modal" id="share-ready-modal" hidden role="dialog" aria-modal="true" aria-labelledby="share-ready-title"><section class="action-modal-card share-ready-card"><button class="modal-close" id="share-ready-close" aria-label="Zavřít">×</button><p class="eyebrow">HOTOVO KE SDÍLENÍ</p><h2 id="share-ready-title">Výstup je připravený</h2><p class="action-modal-description" id="share-ready-description">Příspěvek je připravený pro vybraný formát. Zvol Sdílet pro nabídku aplikací v telefonu nebo počítači.</p><div class="action-modal-meta" id="share-ready-format"></div><div class="action-modal-actions"><button class="button button-primary" id="share-ready-send" type="button">SDÍLET ↗</button><button class="button button-outline" id="share-ready-download" type="button">STÁHNOUT ↓</button></div></section></div>
   <script src="config.js?v=2"></script>
-  <script src="studio.js?v=2026111304"></script>
+  <script src="studio.js?v=2026111306"></script>
 </body>
 </html>
