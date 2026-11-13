@@ -446,6 +446,15 @@ html:not(.studio-authenticated) body>*:not(#studio-login-screen):not(script){dis
 .photo-effect-range-labels label:last-child{text-align:right}
 .photo-effect-range-labels output{color:var(--yellow);font-size:9px}
 .photo-effect-range-track{height:26px;margin:0 5px 3px}
+.photo-effect-cycle-readout{display:flex;justify-content:space-between;margin:0;color:var(--muted);font:8px var(--mono)}
+.photo-effect-cycle-readout output{color:var(--yellow)}
+.photo-duration-range{width:100%;height:13px;margin:0;accent-color:var(--yellow)}
+.photo-format-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.photo-format-button{display:grid;gap:5px;min-height:46px;padding:7px;border:1px solid var(--line);background:#11110f;color:var(--muted);text-align:left;cursor:pointer}
+.photo-format-button b{font:8px var(--mono)}
+.photo-format-button small{font:7px var(--mono);color:var(--muted)}
+.photo-format-button:hover,.photo-format-button.selected{border-color:var(--yellow);color:var(--yellow);background:#222016}
+.photo-format-button.selected small{color:#c9bb61}
 .photo-select{width:100%;min-height:38px;padding:8px;border:1px solid var(--line);background:#11110f;color:var(--white);font:10px var(--mono)}
 .photo-play-button,.photo-export-button{width:100%;min-height:40px;margin-top:6px}
 .photo-animation-status{min-height:24px}
