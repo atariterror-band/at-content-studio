@@ -125,3 +125,37 @@ export async function muxExactClip({ visualBlob, sourceUrl, sourceName, startSec
     }
   }
 }
+
+export async function encodePhotoAnimation({ visualBlob, durationSeconds, onProgress = () => {} }) {
+  const ffmpeg = await loadFFmpeg((label, percent) => onProgress(label, percent));
+  const inputPath = visualBlob.type.includes('mp4') ? 'photo-animation-input.mp4' : 'photo-animation-input.webm';
+  const outputPath = 'photo-animation-output.mp4';
+  const fps = 25;
+  const frameCount = Math.max(1, Math.round(durationSeconds * fps));
+  const duration = (frameCount / fps).toFixed(3);
+  const progressHandler = ({ progress }) => onProgress('PŘIPRAVUJI VIDEO MP4', 45 + Math.round(Math.max(0, Math.min(1, progress || 0)) * 50));
+  ffmpeg.on('progress', progressHandler);
+  try {
+    onProgress('PŘIPRAVUJI MP4', 40);
+    await ffmpeg.writeFile(inputPath, new Uint8Array(await visualBlob.arrayBuffer()));
+    const result = await ffmpeg.exec([
+      '-i', inputPath,
+      '-vf', `fps=${fps},tpad=stop_mode=clone:stop_duration=${duration},format=yuv420p`,
+      '-an',
+      '-frames:v', String(frameCount),
+      '-t', duration,
+      '-c:v', 'libx264', '-preset', 'ultrafast', '-crf', '21',
+      '-movflags', '+faststart', outputPath,
+    ]);
+    if (result !== 0) throw new Error('FFmpeg nedokázal vytvořit video MP4.');
+    const output = await ffmpeg.readFile(outputPath);
+    if (!(output instanceof Uint8Array) || !output.length) throw new Error('Export nevytvořil výsledné MP4.');
+    onProgress('VIDEO JE PŘIPRAVENÉ', 100);
+    return new Blob([output], { type: 'video/mp4' });
+  } finally {
+    ffmpeg.off('progress', progressHandler);
+    for (const path of [inputPath, outputPath]) {
+      try { await ffmpeg.deleteFile(path); } catch {}
+    }
+  }
+}

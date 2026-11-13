@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 290" role="img" aria-labelledby="title desc">
+  <title id="title">Pohyb fotografie v editoru</title>
+  <desc id="desc">Náhled fotografie s označeným popředím a nastavením paralaxy, délky a formátu videa.</desc>
+  <rect width="640" height="290" fill="#11110f"/>
+  <rect x="20" y="18" width="164" height="254" fill="#181816" stroke="#383832"/>
+  <rect x="34" y="32" width="136" height="180" fill="#292a2a"/>
+  <circle cx="130" cy="76" r="20" fill="#f7d519" opacity=".85"/>
+  <path d="M35 185 74 122l31 34 22-28 42 51v32H35z" fill="#353a3c"/>
+  <path d="M47 183c8-29 22-45 39-45 18 0 25 23 28 48l9 26H40z" fill="#a79c78"/>
+  <path d="M52 176c7-23 17-35 32-35 13 0 21 19 24 42" fill="none" stroke="#f7d519" stroke-width="3" stroke-linecap="round"/>
+  <text x="34" y="236" fill="#f7d519" font-family="monospace" font-size="11" letter-spacing="1">POHYB FOTKY</text>
+  <text x="34" y="255" fill="#f0eee6" font-family="monospace" font-size="10">PARALAXA 2,5D</text>
+  <path d="M200 145h58" stroke="#f7d519" stroke-width="2" stroke-dasharray="5 5"/>
+  <path d="m250 137 10 8-10 8" fill="none" stroke="#f7d519" stroke-width="2"/>
+  <rect x="278" y="28" width="342" height="234" fill="#181816" stroke="#383832"/>
+  <rect x="294" y="44" width="148" height="194" fill="#292a2a"/>
+  <circle cx="412" cy="90" r="18" fill="#f7d519" opacity=".85"/>
+  <path d="M295 210 338 144l31 31 22-25 50 54v34H295z" fill="#353a3c"/>
+  <path d="M305 200c8-28 22-43 39-43 17 0 24 21 27 45l9 34h-82z" fill="#a79c78"/>
+  <path d="M313 193c7-22 17-34 31-34 12 0 20 18 23 40" fill="none" stroke="#f7d519" stroke-width="3" stroke-linecap="round"/>
+  <text x="462" y="65" fill="#f7d519" font-family="monospace" font-size="11" letter-spacing="1">DÉLKA</text>
+  <rect x="462" y="79" width="138" height="30" fill="#11110f" stroke="#383832"/>
+  <text x="476" y="99" fill="#f0eee6" font-family="monospace" font-size="12">5 sekund</text>
+  <text x="462" y="135" fill="#f7d519" font-family="monospace" font-size="11" letter-spacing="1">FORMÁT</text>
+  <rect x="462" y="149" width="138" height="40" fill="#11110f" stroke="#383832"/>
+  <text x="476" y="166" fill="#f0eee6" font-family="monospace" font-size="10">REELS · 9:16</text>
+  <text x="476" y="181" fill="#a7a69d" font-family="monospace" font-size="9">1080 × 1920</text>
+  <rect x="462" y="205" width="138" height="34" fill="#f7d519"/>
+  <text x="480" y="227" fill="#11110f" font-family="monospace" font-weight="bold" font-size="11">▶ PŘEHRÁT NÁHLED</text>
+</svg>
