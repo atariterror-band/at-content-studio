@@ -211,7 +211,7 @@ function renderPhotoLibrary(){
     const name=document.createElement('span');name.textContent=photo.name;name.title=photo.name;button.append(name);button.addEventListener('click',()=>loadPhotoImage(photo.name,photo.url,photo.path));grid.append(button)
   }
 }
-function photoCreditFromPath(path){const parts=String(path||'').split('/');const folder=parts.length>=3?parts[1]:'';const normalized=folder.normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();if(normalized==='tomas trestik')return'Photo by Tomáš Třeštík';if(normalized==='honza nozicka')return'Photo by Honza Nožička';return''}
+function photoCreditFromPath(path){const parts=String(path||'').split('/');const folder=parts.length>=3?parts[1]:'';const normalized=folder.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();if(normalized==='tomas trestik')return'Photo by Tomáš Třeštík';if(normalized==='honza nozicka')return'Photo by Honza Nožička';return''}
 function loadPhotoImage(name,src,path='',local=false){
   const status=document.getElementById('photo-library-status');if(status)status.textContent=`Načítám ${name}…`;
   const image=new Image();if(!local)image.crossOrigin='anonymous';
