@@ -7,7 +7,7 @@
   <meta name="description" content="Lokální AT Content Studio — návrhy sociálního obsahu z oficiálních médií Atari Terror.">
   <title>AT Content Studio — Atari Terror</title>
   <link rel="icon" type="image/svg+xml" href="assets/favicon-ats.svg?v=2026111415">
-  <link rel="stylesheet" href="studio.css?v=2026111422">
+  <link rel="stylesheet" href="studio.css?v=2026111423">
 </head>
 <body>
   <main class="studio-login-screen" id="studio-login-screen">
@@ -58,7 +58,17 @@
         <div class="main-headline-controls"><label for="caption-size">VELIKOST TEXTU PŘÍSPĚVKU <output id="caption-size-value">100 %</output></label><input id="caption-size" type="range" min="50" max="200" value="100"><label for="caption-color">BARVA TEXTU PŘÍSPĚVKU</label><input id="caption-color" type="color" value="#f4f0e5" aria-label="Barva textu příspěvku"></div>
         <div class="caption-meta"><span id="char-count">99 / 500</span><button class="text-button" id="copy-caption">KOPÍROVAT TEXT</button></div>
 
-        <p class="control-label text-placement-heading">UMÍSTĚNÍ TEXTU</p>
+        <div class="photo-text-animation">
+              <p class="control-label">ANIMACE TEXTU</p>
+              <div class="photo-text-motion-grid" role="group" aria-label="Animace textu ve videu">
+                <button class="photo-motion-button selected" type="button" data-photo-text-motion="none" aria-pressed="true">BEZ ANIMACE</button>
+                <button class="photo-motion-button" type="button" data-photo-text-motion="rise" aria-pressed="false">JEMNÝ POHYB VZHŮRU</button>
+                <button class="photo-motion-button" type="button" data-photo-text-motion="drift" aria-pressed="false">POHYB DO STRAN</button>
+                <button class="photo-motion-button" type="button" data-photo-text-motion="fade" aria-pressed="false">PLYNULÉ ZESÍLENÍ</button>
+              </div>
+              <small class="photo-effect-help">Pohyb zachová font i velikost textu.</small>
+            </div>
+            <p class="control-label text-placement-heading">UMÍSTĚNÍ TEXTU</p>
         <div class="text-layout-controls">
           <fieldset class="alignment-picker"><legend>ZAROVNÁNÍ NADPISU A TEXTU</legend><button type="button" class="align-button selected" data-align="left" aria-pressed="true">DOLEVA</button><button type="button" class="align-button" data-align="center" aria-pressed="false">NA STŘED</button><button type="button" class="align-button" data-align="right" aria-pressed="false">DOPRAVA</button></fieldset>
           <div class="position-picker"><label for="content-x">VODOROVNÁ POLOHA</label><input id="content-x" type="range" min="8" max="92" value="8"><label for="content-y">SVISLÁ POLOHA</label><input id="content-y" type="range" min="0" max="100" value="66"></div>
@@ -179,18 +189,21 @@
           </section>
           <section class="photo-panel photo-motion-panel">
             <div class="photo-panel-head"><div><p class="eyebrow">POHYB / VIDEO</p><h2>Vytvořit animaci</h2></div></div>
-            <div class="photo-motion-grid" role="group" aria-label="Pohyb fotografie">
-              <button class="photo-motion-button selected" type="button" data-photo-motion="none" aria-pressed="true">STATICKÁ FOTKA</button>
-              <button class="photo-motion-button" type="button" data-photo-motion="zoom-in" aria-pressed="false">POMALÝ NÁJEZD</button>
-              <button class="photo-motion-button" type="button" data-photo-motion="zoom-out" aria-pressed="false">ODJEZD</button>
-              <button class="photo-motion-button" type="button" data-photo-motion="float" aria-pressed="false">PLAVOUCÍ KAMERA</button>
-              <button class="photo-motion-button" type="button" data-photo-motion="parallax" aria-pressed="false">PARALAXA 2,5D</button>
-              <button class="photo-motion-button" type="button" data-photo-motion="light-leak" aria-pressed="false">SVĚTELNÝ ÚNIK</button>
-              <button class="photo-motion-button" type="button" data-photo-motion="glitch" aria-pressed="false">GRUNGE / GLITCH</button>
-              <button class="photo-motion-button" type="button" data-photo-motion="effect-fisheye" aria-pressed="false">ANIMOVANÉ RYBÍ OKO</button>
-              <button class="photo-motion-button" type="button" data-photo-motion="effect-vintage" aria-pressed="false">ANIMOVANÝ STARÝ FILM</button>
-              <button class="photo-motion-button" type="button" data-photo-motion="effect-grunge" aria-pressed="false">ANIMOVANÝ GRUNGE ALBUM</button>
-            </div>
+            <div class="photo-motion-grid" role="group" aria-label="Pohyb kamery">
+                <button class="photo-motion-button selected" type="button" data-photo-motion="none" aria-pressed="true">BEZ POHYBU</button>
+                <button class="photo-motion-button" type="button" data-photo-motion="zoom-in" aria-pressed="false">POMALÝ NÁJEZD</button>
+                <button class="photo-motion-button" type="button" data-photo-motion="zoom-out" aria-pressed="false">ODJEZD</button>
+                <button class="photo-motion-button" type="button" data-photo-motion="float" aria-pressed="false">PLAVOUCÍ KAMERA</button>
+                <button class="photo-motion-button" type="button" data-photo-motion="parallax" aria-pressed="false">PARALAXA 2,5D</button>
+              </div>
+              <div class="photo-loop-effects" role="group" aria-label="Kombinovatelné animované efekty">
+                <p class="control-label">ANIMOVANÉ EFEKTY · LZE KOMBINOVAT</p>
+                <label><input type="checkbox" data-photo-loop-effect="light-leak"><span>SVĚTELNÝ ÚNIK</span></label>
+                <label><input type="checkbox" data-photo-loop-effect="glitch"><span>GRUNGE / GLITCH</span></label>
+                <label><input type="checkbox" data-photo-loop-effect="fisheye"><span>RYBÍ OKO</span></label>
+                <label><input type="checkbox" data-photo-loop-effect="vintage"><span>STARÝ FILM</span></label>
+                <label><input type="checkbox" data-photo-loop-effect="grunge"><span>GRUNGE ALBUM</span></label>
+              </div>
             <p class="photo-effect-help" id="photo-motion-help">Pohyb vytvoří video přímo v prohlížeči. Fotka se neposílá na renderovací server.</p>
             <div class="photo-parallax-tools" id="photo-parallax-tools" hidden>
               <p class="photo-effect-help">Označ štětcem hlavní objekt (například muzikanta). Objekt se bude pohybovat odděleně od pozadí.</p>
@@ -302,6 +315,6 @@
   </div>
   <div class="action-modal" id="share-ready-modal" hidden role="dialog" aria-modal="true" aria-labelledby="share-ready-title"><section class="action-modal-card share-ready-card"><button class="modal-close" id="share-ready-close" aria-label="Zavřít">×</button><p class="eyebrow">HOTOVO KE SDÍLENÍ</p><h2 id="share-ready-title">Výstup je připravený</h2><p class="action-modal-description" id="share-ready-description">Příspěvek je připravený pro vybraný formát. Zvol Sdílet pro nabídku aplikací v telefonu nebo počítači.</p><div class="action-modal-meta" id="share-ready-format"></div><div class="action-modal-actions"><button class="button button-primary" id="share-ready-send" type="button">SDÍLET ↗</button><button class="button button-outline" id="share-ready-download" type="button">STÁHNOUT ↓</button></div></section></div>
   <script src="config.js?v=2"></script>
-  <script src="studio.js?v=2026111423"></script>
+  <script src="studio.js?v=2026111424"></script>
 </body>
 </html>
