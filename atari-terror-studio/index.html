@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#11110f">
   <meta name="description" content="Lokální AT Content Studio — návrhy sociálního obsahu z oficiálních médií Atari Terror.">
   <title>AT Content Studio — Atari Terror</title>
-  <link rel="stylesheet" href="studio.css?v=2026111309">
+  <link rel="stylesheet" href="studio.css?v=2026111401">
 </head>
 <body>
   <main class="studio-login-screen" id="studio-login-screen">
@@ -26,7 +26,7 @@
   <aside class="rail">
     <a class="brand" href="#studio" data-home-link aria-label="AT Content Studio — zpět na úvodní stránku"><span class="brand-mark">AT</span><span>AT CONTENT<small>ATARI TERROR</small></span></a>
     <nav class="main-nav" aria-label="Hlavní navigace">
-      <button class="nav-item active" type="button" data-view-target="studio"><span class="nav-icon">▧</span> Tvorba obsahu</button>
+      <button class="nav-item active" type="button" data-view-target="studio"><span class="nav-icon">▧</span> Úprava videa</button>
       <button class="nav-item" type="button" data-view-target="photo-edit"><span class="nav-icon">◉</span> Úprava fotek</button>
       <button class="nav-item" type="button" data-view-target="drafts"><span class="nav-icon">◷</span> Obsah studia <b id="draft-count">00</b></button>
       <button class="nav-item" type="button" data-view-target="library"><span class="nav-icon">▤</span> Knihovna médií <b id="asset-count">05</b></button>
@@ -37,7 +37,7 @@
   <main class="workspace" id="studio">
     <header class="topbar"><div class="crumb">ATARI TERROR <span>/</span> AT CONTENT STUDIO</div><div class="top-actions"><span class="saved-status" id="saved-status">OBSAH SMRTI</span><button class="avatar" title="Lokální pracovní prostor">AT</button></div></header>
     <div class="view is-active" id="view-studio" data-view="studio">
-    <section class="welcome"><div><h1>Tvorba obsahu</h1></div><button class="button button-quiet" id="new-draft">＋ NOVÝ NÁVRH</button></section>
+    <section class="welcome"><div><h1>Úprava videa</h1></div><button class="button button-quiet" id="new-draft">＋ NOVÝ NÁVRH</button></section>
 
     <section class="studio-grid" aria-label="Editor příspěvku">
       <div class="editor-column">
@@ -148,6 +148,19 @@
           <section class="photo-panel">
             <div class="photo-panel-head photo-source-head"><div><p class="eyebrow">ZDROJ</p><h2>Vyber fotku</h2></div><button class="button button-outline photo-upload-button" id="photo-library-select" type="button">VYBRAT Z KNIHOVNY</button></div>
           </section>
+          <section class="photo-panel photo-text-panel" id="photo-text-controls">
+            <div class="photo-panel-head"><div><p class="eyebrow">TEXTOVÉ PRVKY</p><h2>Úpravy textu</h2></div></div>
+            <label class="field-label text-field-heading" for="photo-main-headline">HLAVNÍ NADPIS</label>
+            <input class="headline-input" id="photo-main-headline" type="text" maxlength="70" value="Atari Terror" placeholder="Hlavní nadpis">
+            <div class="main-headline-controls"><label for="photo-main-size">VELIKOST NADPISU <output id="photo-main-size-value">100 %</output></label><input id="photo-main-size" type="range" min="50" max="200" value="100"><label for="photo-main-color">BARVA NADPISU</label><input id="photo-main-color" type="color" value="#f2d21b" aria-label="Barva hlavního nadpisu"></div>
+            <label class="field-label text-field-heading" for="photo-post-headline">PODNADPIS</label>
+            <input class="headline-input" id="photo-post-headline" type="text" maxlength="70" value="" placeholder="Podnadpis">
+            <div class="main-headline-controls"><label for="photo-subtitle-size">VELIKOST PODNADPISU <output id="photo-subtitle-size-value">100 %</output></label><input id="photo-subtitle-size" type="range" min="50" max="200" value="100"><label for="photo-subtitle-color">BARVA PODNADPISU</label><input id="photo-subtitle-color" type="color" value="#f4f0e5" aria-label="Barva podnadpisu"></div>
+            <label class="field-label text-field-heading" for="photo-caption">TEXT PŘÍSPĚVKU</label><textarea id="photo-caption" rows="3" maxlength="500" placeholder="Doplň text příspěvku"></textarea>
+            <div class="main-headline-controls"><label for="photo-caption-size">VELIKOST TEXTU <output id="photo-caption-size-value">100 %</output></label><input id="photo-caption-size" type="range" min="50" max="200" value="100"><label for="photo-caption-color">BARVA TEXTU</label><input id="photo-caption-color" type="color" value="#f4f0e5" aria-label="Barva textu"></div>
+            <p class="control-label text-placement-heading">UMÍSTĚNÍ TEXTU</p>
+            <div class="text-layout-controls photo-text-layout"><fieldset class="alignment-picker"><legend>ZAROVNÁNÍ</legend><button type="button" class="align-button selected" data-photo-align="left" aria-pressed="true">DOLEVA</button><button type="button" class="align-button" data-photo-align="center" aria-pressed="false">NA STŘED</button><button type="button" class="align-button" data-photo-align="right" aria-pressed="false">DOPRAVA</button></fieldset><div class="position-picker"><label for="photo-text-x">VODOROVNÁ POLOHA</label><input id="photo-text-x" type="range" min="8" max="92" value="8"><label for="photo-text-y">SVISLÁ POLOHA</label><input id="photo-text-y" type="range" min="0" max="100" value="66"></div></div>
+          </section>
           <section class="photo-panel">
             <div class="photo-panel-head"><div><p class="eyebrow">STYL</p><h2>Optický efekt</h2></div></div>
             <div class="photo-effect-grid" role="group" aria-label="Optické efekty fotografie">
@@ -193,15 +206,6 @@
               <label class="photo-strength-label" for="photo-animation-duration"><span>DÉLKA VIDEA</span><output id="photo-animation-duration-value">5 s</output></label>
               <input id="photo-animation-duration" class="photo-duration-range" type="range" min="0" max="30" step="1" value="5" aria-describedby="photo-animation-duration-help">
               <small class="photo-effect-help" id="photo-animation-duration-help">0 s vypne animaci. Video může mít délku až 30 s.</small>
-              <label class="photo-strength-label"><span>FORMÁT PRO SOCIÁLNÍ SÍTĚ</span></label>
-              <div class="photo-format-grid" role="group" aria-label="Formát animace fotografie">
-                <button class="photo-format-button selected" type="button" data-photo-format="story" aria-pressed="true"><b>IG STORY</b><small>9:16 · 1080 × 1920</small></button>
-                <button class="photo-format-button" type="button" data-photo-format="reels" aria-pressed="false"><b>IG REELS</b><small>9:16 · 1080 × 1920</small></button>
-                <button class="photo-format-button" type="button" data-photo-format="feed" aria-pressed="false"><b>IG FEED</b><small>4:5 · 1080 × 1350</small></button>
-                <button class="photo-format-button" type="button" data-photo-format="square" aria-pressed="false"><b>IG ČTVEREC</b><small>1:1 · 1080 × 1080</small></button>
-                <button class="photo-format-button" type="button" data-photo-format="landscape" aria-pressed="false"><b>FB REELS</b><small>9:16 · 1080 × 1920</small></button>
-                <button class="photo-format-button" type="button" data-photo-format="fb-story" aria-pressed="false"><b>FB STORIES</b><small>9:16 · 1080 × 1920</small></button>
-              </div>
               <select id="photo-animation-format" class="photo-select" aria-label="Formát animace" hidden><option value="story" selected>Instagram Story</option><option value="reels">Instagram Reels</option><option value="feed">Instagram Feed</option><option value="square">Instagram Feed čtverec</option><option value="landscape">Facebook Reels</option><option value="fb-story">Facebook Stories</option></select>
               <button class="button button-outline photo-play-button" type="button" id="photo-animation-preview" disabled>▶ PŘEHRÁT NÁHLED</button>
               <button class="button button-primary photo-export-button" type="button" id="photo-animation-export" disabled>VYTVOŘIT VIDEO MP4 ↓</button>
@@ -210,12 +214,21 @@
           </section>
         </aside>
         <section class="photo-preview-panel" aria-label="Náhled upravené fotografie">
-          <div class="photo-preview-head"><div><p class="eyebrow">ŽIVÝ NÁHLED</p><h2 id="photo-image-name">Zatím není vybraná fotka</h2><p id="photo-image-dimensions">Vyber obrázek z knihovny nebo nahraj vlastní.</p></div><label class="photo-compare-toggle"><input id="photo-show-original" type="checkbox"><span>POROVNAT ORIGINÁL</span></label></div>
+          <label class="photo-format-heading">FORMÁTY PRO SOCIÁLNÍ SÍTĚ</label>
+          <div class="photo-format-grid photo-preview-formats" role="group" aria-label="Formát výstupu fotografie">
+            <button class="photo-format-button selected" type="button" data-photo-format="story" aria-pressed="true"><b>IG STORY</b><small>9:16 · 1080 × 1920</small></button>
+            <button class="photo-format-button" type="button" data-photo-format="reels" aria-pressed="false"><b>IG REELS</b><small>9:16 · 1080 × 1920</small></button>
+            <button class="photo-format-button" type="button" data-photo-format="feed" aria-pressed="false"><b>IG FEED</b><small>4:5 · 1080 × 1350</small></button>
+            <button class="photo-format-button" type="button" data-photo-format="square" aria-pressed="false"><b>IG ČTVEREC</b><small>1:1 · 1080 × 1080</small></button>
+            <button class="photo-format-button" type="button" data-photo-format="landscape" aria-pressed="false"><b>FB REELS</b><small>9:16 · 1080 × 1920</small></button>
+            <button class="photo-format-button" type="button" data-photo-format="fb-story" aria-pressed="false"><b>FB STORY</b><small>9:16 · 1080 × 1920</small></button>
+          </div>
+          <div class="photo-preview-head"><div><p class="eyebrow">ŽIVÝ NÁHLED</p><h2 id="photo-image-name">Zatím není vybraná fotka</h2><p id="photo-image-dimensions">Vyber fotku z Knihovny médií.</p></div><label class="photo-compare-toggle"><input id="photo-show-original" type="checkbox"><span>POROVNAT ORIGINÁL</span></label></div>
           <div class="photo-preview-stage">
             <div class="photo-preview-media" id="photo-preview-media" hidden><canvas id="photo-preview-canvas" aria-label="Náhled upravené fotografie"></canvas><canvas id="photo-mask-preview" aria-label="Označená oblast popředí" hidden></canvas></div>
             <div class="photo-preview-placeholder" id="photo-preview-placeholder" aria-hidden="true"></div>
           </div>
-          <div class="photo-preview-actions"><p class="micro-note">Stáhne se upravená kopie jako PNG. Obrázek se do knihovny automaticky nenahrává.</p><button class="button button-primary" id="photo-download" disabled>STÁHNOUT UPRAVENOU FOTKU ↓</button></div>
+          <div class="photo-preview-actions"><p class="micro-note" id="photo-export-note">PNG · vybraný poměr stran a texty se promítnou do výstupu.</p><div class="photo-preview-buttons"><button class="button button-outline" id="photo-save-draft" type="button" disabled>ULOŽIT DO OBSAHU STUDIA</button><button class="button button-primary" id="photo-download" disabled>STÁHNOUT FOTKU ↓</button></div></div>
         </section>
       </div>
     </section>
@@ -281,6 +294,6 @@
   </div>
   <div class="action-modal" id="share-ready-modal" hidden role="dialog" aria-modal="true" aria-labelledby="share-ready-title"><section class="action-modal-card share-ready-card"><button class="modal-close" id="share-ready-close" aria-label="Zavřít">×</button><p class="eyebrow">HOTOVO KE SDÍLENÍ</p><h2 id="share-ready-title">Výstup je připravený</h2><p class="action-modal-description" id="share-ready-description">Příspěvek je připravený pro vybraný formát. Zvol Sdílet pro nabídku aplikací v telefonu nebo počítači.</p><div class="action-modal-meta" id="share-ready-format"></div><div class="action-modal-actions"><button class="button button-primary" id="share-ready-send" type="button">SDÍLET ↗</button><button class="button button-outline" id="share-ready-download" type="button">STÁHNOUT ↓</button></div></section></div>
   <script src="config.js?v=2"></script>
-  <script src="studio.js?v=2026111309"></script>
+  <script src="studio.js?v=2026111401"></script>
 </body>
 </html>
