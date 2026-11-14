@@ -521,3 +521,8 @@ html:not(.studio-authenticated) body>*:not(#studio-login-screen):not(script){dis
 #view-photo-edit.page-view{padding-top:0}
 
 .draft-copy .draft-type-tag{justify-self:start;display:inline-flex;align-items:center;padding:3px 6px;border:1px solid #655b22;color:var(--yellow);font:8px var(--mono);letter-spacing:.08em;line-height:1}
+
+/* Match the photo editor's spacing around the first step. */
+#editor-media{margin-bottom:24px}.headline-head{margin-top:12px}
+.draft-copy .draft-type-tag.is-photo{color:#b8d979;border-color:#657546;background:#20251a}
+.draft-copy .draft-type-tag.is-video{color:#f2d21b;border-color:#655b22;background:#262316}
