@@ -550,10 +550,11 @@ document.getElementById('char-count').textContent=`${document.getElementById('ca
 const paneResizer=document.getElementById('pane-resizer');
 const studioGrid=document.querySelector('.studio-grid');
 function alignPreviewWithAssetPicker(){const preview=document.querySelector('.preview-column'),assetGrid=document.getElementById('asset-grid');if(!preview||!assetGrid||!studioGrid)return;if(window.innerWidth<=720){preview.style.marginTop='0px';return}const offset=assetGrid.getBoundingClientRect().top-studioGrid.getBoundingClientRect().top;preview.style.marginTop=`${Math.max(0,Math.round(offset))}px`;updateSplitterPosition()}
-let editorShare=44;
+let editorShare=25;
 let resizingPanes=false;
 function updateSplitterPosition(){if(!studioGrid||!paneResizer||window.innerWidth<=720)return;const gridRect=studioGrid.getBoundingClientRect();const editorRect=document.querySelector('.editor-column').getBoundingClientRect();const mediaHeadRect=document.getElementById('editor-media').getBoundingClientRect();paneResizer.style.left=`${gridRect.left+editorRect.width+13}px`;paneResizer.style.top=`${mediaHeadRect.top+mediaHeadRect.height/2}px`;paneResizer.setAttribute('aria-valuenow',String(Math.round(editorShare)))}
-function setEditorShare(value){const available=studioGrid.clientWidth-26;const previewMinimum=window.innerWidth<=820?340:420;const lower=Math.max(30,320/available*100);const upper=Math.min(70,100-previewMinimum/available*100);if(lower>upper)editorShare=50;else editorShare=Math.max(lower,Math.min(upper,value));studioGrid.style.setProperty('--editor-fr',`${editorShare}fr`);studioGrid.style.setProperty('--preview-fr',`${100-editorShare}fr`);updateSplitterPosition()}
+function setEditorShare(value){const available=studioGrid.clientWidth-26;const previewMinimum=window.innerWidth<=820?340:420;const lower=Math.max(20,320/available*100);const upper=Math.min(70,100-previewMinimum/available*100);if(lower>upper)editorShare=50;else editorShare=Math.max(lower,Math.min(upper,value));studioGrid.style.setProperty('--editor-fr',`${editorShare}fr`);studioGrid.style.setProperty('--preview-fr',`${100-editorShare}fr`);updateSplitterPosition()}
+setEditorShare(editorShare);
 paneResizer.addEventListener('pointerdown',event=>{if(window.innerWidth<=720)return;resizingPanes=true;paneResizer.setPointerCapture(event.pointerId);event.preventDefault()});
 paneResizer.addEventListener('pointermove',event=>{if(!resizingPanes)return;const rect=studioGrid.getBoundingClientRect();const available=rect.width-26;setEditorShare((event.clientX-rect.left-13)/available*100)});
 paneResizer.addEventListener('pointerup',()=>{resizingPanes=false});paneResizer.addEventListener('pointercancel',()=>{resizingPanes=false});
