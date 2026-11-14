@@ -7,7 +7,10 @@
   <meta name="description" content="Lokální AT Content Studio — návrhy sociálního obsahu z oficiálních médií Atari Terror.">
   <title>AT Content Studio — Atari Terror</title>
   <link rel="icon" type="image/svg+xml" href="assets/favicon-ats.svg?v=2026111415">
-  <link rel="stylesheet" href="studio.css?v=2026111429">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Zalando+Sans+Expanded:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="studio.css?v=2026111432">
 </head>
 <body>
   <main class="studio-login-screen" id="studio-login-screen">
@@ -57,6 +60,7 @@
         <label class="sr-only" for="caption">Text příspěvku</label><textarea id="caption" rows="4" maxlength="500">Tady napiš příspěvek smrti, pičo.</textarea>
         <div class="main-headline-controls"><label for="caption-size">VELIKOST TEXTU PŘÍSPĚVKU <output id="caption-size-value">100 %</output></label><input id="caption-size" type="range" min="50" max="200" value="100"><label for="caption-color">BARVA TEXTU PŘÍSPĚVKU</label><input id="caption-color" type="color" value="#f4f0e5" aria-label="Barva textu příspěvku"></div>
         <div class="caption-meta"><span id="char-count">99 / 500</span><button class="text-button" id="copy-caption">KOPÍROVAT TEXT</button></div>
+        <label class="field-label text-field-heading" for="content-font">PÍSMO TEXTŮ</label><select id="content-font" class="font-choice"><option value="Zalando Sans Expanded">AtariTerror.com · Zalando Sans Expanded</option><option value="Barlow Condensed">Barlow Condensed</option><option value="DM Sans">DM Sans</option></select>
         <details class="emoji-picker" data-emoji-scope="video">
           <summary>☺ PŘIDAT EMOJI DO TEXTU</summary>
           <div class="emoji-picker-grid" aria-label="Výběr emoji"><button type="button" data-insert-emoji="🤘" aria-label="Vložit 🤘">🤘</button><button type="button" data-insert-emoji="🎸" aria-label="Vložit 🎸">🎸</button><button type="button" data-insert-emoji="🔥" aria-label="Vložit 🔥">🔥</button><button type="button" data-insert-emoji="🖤" aria-label="Vložit 🖤">🖤</button><button type="button" data-insert-emoji="⚡" aria-label="Vložit ⚡">⚡</button><button type="button" data-insert-emoji="💀" aria-label="Vložit 💀">💀</button><button type="button" data-insert-emoji="😈" aria-label="Vložit 😈">😈</button><button type="button" data-insert-emoji="🎤" aria-label="Vložit 🎤">🎤</button><button type="button" data-insert-emoji="👀" aria-label="Vložit 👀">👀</button><button type="button" data-insert-emoji="✨" aria-label="Vložit ✨">✨</button><button type="button" data-insert-emoji="🦇" aria-label="Vložit 🦇">🦇</button><button type="button" data-insert-emoji="🌀" aria-label="Vložit 🌀">🌀</button></div>
@@ -153,7 +157,7 @@
         <aside class="photo-editor-controls">
           <div class="section-head" id="photo-editor-media"><div><p class="eyebrow">KROK 01</p><h2>Vyber fotku</h2></div></div>
           <section class="photo-panel photo-source-panel" id="photo-source-picker">
-            <div class="photo-source-picker-content"><p id="photo-source-status">Zatím není vybraná žádná fotka.</p><small>Fotky vybírej z Knihovny médií.</small><button class="button button-outline photo-upload-button" id="photo-library-select" type="button">VYBRAT Z KNIHOVNY</button></div>
+            <div class="photo-source-picker-content"><p id="photo-source-status">Zatím není vybraná žádná fotka.</p><small>Fotky vybírej z Knihovny médií.</small><div class="photo-source-actions"><button class="button button-outline photo-upload-button" id="photo-library-select" type="button">VYBRAT Z KNIHOVNY</button><button class="button button-outline photo-upload-button" id="photo-draft-select" type="button">VYBRAT Z OBSAHU STUDIA</button></div></div>
           </section>
           <section class="photo-panel photo-text-panel" id="photo-text-controls">
             <div class="photo-panel-head"><div><p class="eyebrow">TEXTOVÉ PRVKY</p><h2>Úpravy textu</h2></div></div>
@@ -165,6 +169,7 @@
             <div class="main-headline-controls"><label for="photo-subtitle-size">VELIKOST PODNADPISU <output id="photo-subtitle-size-value">100 %</output></label><input id="photo-subtitle-size" type="range" min="50" max="200" value="100"><label for="photo-subtitle-color">BARVA PODNADPISU</label><input id="photo-subtitle-color" type="color" value="#f4f0e5" aria-label="Barva podnadpisu"></div>
             <label class="field-label text-field-heading" for="photo-caption">TEXT PŘÍSPĚVKU</label><textarea id="photo-caption" rows="3" maxlength="500" placeholder="Doplň text příspěvku"></textarea>
             <div class="main-headline-controls"><label for="photo-caption-size">VELIKOST TEXTU <output id="photo-caption-size-value">100 %</output></label><input id="photo-caption-size" type="range" min="50" max="200" value="100"><label for="photo-caption-color">BARVA TEXTU</label><input id="photo-caption-color" type="color" value="#f4f0e5" aria-label="Barva textu"></div>
+            <label class="field-label text-field-heading" for="photo-font">PÍSMO TEXTŮ</label><select id="photo-font" class="font-choice"><option value="Zalando Sans Expanded">AtariTerror.com · Zalando Sans Expanded</option><option value="Barlow Condensed">Barlow Condensed</option><option value="DM Sans">DM Sans</option></select>
             <details class="emoji-picker" data-emoji-scope="photo">
           <summary>☺ PŘIDAT EMOJI DO TEXTU</summary>
           <div class="emoji-picker-grid" aria-label="Výběr emoji"><button type="button" data-insert-emoji="🤘" aria-label="Vložit 🤘">🤘</button><button type="button" data-insert-emoji="🎸" aria-label="Vložit 🎸">🎸</button><button type="button" data-insert-emoji="🔥" aria-label="Vložit 🔥">🔥</button><button type="button" data-insert-emoji="🖤" aria-label="Vložit 🖤">🖤</button><button type="button" data-insert-emoji="⚡" aria-label="Vložit ⚡">⚡</button><button type="button" data-insert-emoji="💀" aria-label="Vložit 💀">💀</button><button type="button" data-insert-emoji="😈" aria-label="Vložit 😈">😈</button><button type="button" data-insert-emoji="🎤" aria-label="Vložit 🎤">🎤</button><button type="button" data-insert-emoji="👀" aria-label="Vložit 👀">👀</button><button type="button" data-insert-emoji="✨" aria-label="Vložit ✨">✨</button><button type="button" data-insert-emoji="🦇" aria-label="Vložit 🦇">🦇</button><button type="button" data-insert-emoji="🌀" aria-label="Vložit 🌀">🌀</button></div>
@@ -238,7 +243,6 @@
               <small class="photo-effect-help" id="photo-animation-duration-help">0 s vypne animaci. Video může mít délku až 30 s.</small>
               <select id="photo-animation-format" class="photo-select" aria-label="Formát animace" hidden><option value="story" selected>Instagram Story</option><option value="reels">Instagram Reels</option><option value="feed">Instagram Feed</option><option value="square">Instagram Feed čtverec</option><option value="landscape">Facebook Reels</option><option value="fb-story">Facebook Stories</option></select>
               <button class="button button-outline photo-play-button" type="button" id="photo-animation-preview" disabled>▶ PŘEHRÁT NÁHLED</button>
-              <button class="button button-primary photo-export-button" type="button" id="photo-animation-export" disabled>VYTVOŘIT VIDEO MP4 ↓</button>
               <small class="photo-effect-help" id="photo-animation-status" role="status">Nejdřív vyber fotku a pohyb.</small>
             </div>
           </section>
@@ -257,7 +261,7 @@
             <div class="photo-preview-media" id="photo-preview-media" hidden><canvas id="photo-preview-canvas" aria-label="Náhled upravené fotografie"></canvas><canvas id="photo-mask-preview" aria-label="Označená oblast popředí" hidden></canvas></div>
             <div class="photo-preview-placeholder" id="photo-preview-placeholder" aria-hidden="true"></div>
           </div>
-          <div class="photo-preview-actions"><p class="micro-note" id="photo-export-note">PNG · vybraný poměr stran a texty se promítnou do výstupu.</p><div class="photo-preview-buttons"><button class="button button-outline" id="photo-save-draft" type="button" disabled>ULOŽIT DO OBSAHU STUDIA</button><button class="button button-primary" id="photo-download" disabled>STÁHNOUT FOTKU ↓</button></div></div>
+          <div class="photo-preview-actions"><p class="micro-note" id="photo-export-note">PNG stáhne statickou fotku s texty. MP4 vytvoří animované video.</p><div class="photo-preview-buttons"><button class="button button-outline" id="photo-save-draft" type="button" disabled>ULOŽIT DO OBSAHU STUDIA</button><button class="button button-primary" id="photo-download" disabled>STÁHNOUT FOTKU ↓</button><button class="button button-primary photo-export-button" type="button" id="photo-animation-export" disabled>VYTVOŘIT VIDEO MP4 ↓</button></div></div>
         </section>
         <button class="pane-resizer photo-pane-resizer" id="photo-pane-resizer" type="button" role="slider" aria-label="Změnit poměr prostoru pro ovládání a živý náhled fotky" aria-valuemin="20" aria-valuemax="55" aria-valuenow="25" title="Táhni doleva nebo doprava pro změnu velikosti obou panelů">
           <img src="assets/rock-hand.png?v=2026102212" alt="" aria-hidden="true">
@@ -303,6 +307,7 @@
         <label class="field-label text-field-heading" for="modal-post-headline">PODNADPIS</label><input class="headline-input" id="modal-post-headline" type="text" maxlength="70">
         <div class="modal-control-row"><label for="modal-headline-size">VELIKOST PODNADPISU <output id="modal-headline-size-value">100 %</output></label><input id="modal-headline-size" type="range" min="50" max="200" value="100"><label for="modal-post-headline-color">BARVA PODNADPISU</label><input id="modal-post-headline-color" type="color" value="#f4f0e5"></div>
         <label class="field-label text-field-heading" for="modal-caption">TEXT PŘÍSPĚVKU</label><textarea id="modal-caption" rows="4" maxlength="500"></textarea>
+        <label class="field-label text-field-heading" for="modal-content-font">PÍSMO TEXTŮ</label><select id="modal-content-font" class="font-choice"><option value="Zalando Sans Expanded">AtariTerror.com · Zalando Sans Expanded</option><option value="Barlow Condensed">Barlow Condensed</option><option value="DM Sans">DM Sans</option></select>
         <div class="modal-control-row"><label for="modal-caption-size">VELIKOST TEXTU PŘÍSPĚVKU <output id="modal-caption-size-value">100 %</output></label><input id="modal-caption-size" type="range" min="50" max="200" value="100"><label for="modal-caption-color">BARVA TEXTU PŘÍSPĚVKU</label><input id="modal-caption-color" type="color" value="#f4f0e5"></div>
         <details class="emoji-picker" data-emoji-scope="video">
           <summary>☺ PŘIDAT EMOJI DO TEXTU</summary>
@@ -334,6 +339,6 @@
   </div>
   <div class="action-modal" id="share-ready-modal" hidden role="dialog" aria-modal="true" aria-labelledby="share-ready-title"><section class="action-modal-card share-ready-card"><button class="modal-close" id="share-ready-close" aria-label="Zavřít">×</button><p class="eyebrow">HOTOVO KE SDÍLENÍ</p><h2 id="share-ready-title">Výstup je připravený</h2><p class="action-modal-description" id="share-ready-description">Příspěvek je připravený pro vybraný formát. Zvol Sdílet pro nabídku aplikací v telefonu nebo počítači.</p><div class="action-modal-meta" id="share-ready-format"></div><div class="action-modal-actions"><button class="button button-primary" id="share-ready-send" type="button">SDÍLET ↗</button><button class="button button-outline" id="share-ready-download" type="button">STÁHNOUT ↓</button></div></section></div>
   <script src="config.js?v=2"></script>
-  <script src="studio.js?v=2026111430"></script>
+  <script src="studio.js?v=2026111432"></script>
 </body>
 </html>
