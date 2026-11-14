@@ -242,7 +242,7 @@ function drawPhotoText(context,width,height){
     if(fields.length){
       const align=photoTextAlign,xPercent=Number(document.getElementById('photo-text-x').value)/100,yPercent=Number(document.getElementById('photo-text-y').value)/100,pad=width*.07;
       const anchorX=Math.max(pad,Math.min(width-pad,width*xPercent)),maxWidth=align==='left'?width-anchorX-pad:align==='right'?anchorX-pad:Math.min(width-pad*2,(width-pad*2)*.92),textX=align==='left'?anchorX:align==='right'?anchorX:width/2+(anchorX-width/2)*.55;
-      const blocks=fields.map(item=>{context.font=`900 ${item.size}px "Barlow Condensed", "Arial Narrow", sans-serif`;return{...item,lines:item.text.split('\\n').flatMap(part=>wrappedTextLines(context,part,maxWidth)),lineHeight:item.size*TEXT_LINE_HEIGHT}}).filter(item=>item.lines.length);
+      const blocks=fields.map(item=>{context.font=`900 ${item.size}px "Barlow Condensed", "Arial Narrow", sans-serif`;return{...item,lines:item.text.split('\n').flatMap(part=>wrappedTextLines(context,part,maxWidth)),lineHeight:item.size*TEXT_LINE_HEIGHT}}).filter(item=>item.lines.length);
       if(blocks.length){
         const gap=height*.024,totalHeight=blocks.reduce((sum,item)=>sum+item.lines.length*item.lineHeight,0)+gap*(blocks.length-1),safeTop=height*.07,safeBottom=photoEditorAuthor?height*.87:height*.93,top=safeTop+Math.max(0,safeBottom-safeTop-totalHeight)*yPercent;
         context.save();context.textAlign=align;context.textBaseline='alphabetic';context.shadowColor='rgba(0,0,0,.72)';context.shadowBlur=width*.008;context.shadowOffsetY=height*.002;let y=top;
