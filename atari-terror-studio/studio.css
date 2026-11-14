@@ -508,3 +508,11 @@ html:not(.studio-authenticated) body>*:not(#studio-login-screen):not(script){dis
 .photo-editor-modal-content .photo-editor-layout{grid-template-columns:minmax(260px,var(--photo-controls-fr,25fr)) minmax(320px,var(--photo-preview-fr,75fr))}
 @media(max-width:1050px){.photo-editor-layout,.photo-editor-modal-content .photo-editor-layout{grid-template-columns:minmax(240px,var(--photo-controls-fr,30fr)) minmax(300px,var(--photo-preview-fr,70fr));column-gap:18px}}
 @media(max-width:760px){.photo-editor-layout,.photo-editor-modal-content .photo-editor-layout{grid-template-columns:1fr!important}.photo-pane-resizer{display:none!important}}
+
+
+/* Match photo media selection and preview alignment to the video editor. */
+.photo-source-panel{min-height:156px;display:grid;place-items:center;border-style:dashed;background:transparent;text-align:center}
+.photo-source-picker-content{display:grid;justify-items:center;gap:7px}
+.photo-source-picker-content p,.photo-source-picker-content small{margin:0;color:var(--muted)}
+.photo-source-picker-content p{font-size:10px}
+.photo-source-picker-content small{font-size:9px}
