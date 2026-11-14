@@ -7,7 +7,7 @@
   <meta name="description" content="Lokální AT Content Studio — návrhy sociálního obsahu z oficiálních médií Atari Terror.">
   <title>AT Content Studio — Atari Terror</title>
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=2026111402">
-  <link rel="stylesheet" href="studio.css?v=2026111401">
+  <link rel="stylesheet" href="studio.css?v=2026111403">
 </head>
 <body>
   <main class="studio-login-screen" id="studio-login-screen">
@@ -215,16 +215,15 @@
           </section>
         </aside>
         <section class="photo-preview-panel" aria-label="Náhled upravené fotografie">
-          <label class="photo-format-heading">FORMÁTY PRO SOCIÁLNÍ SÍTĚ</label>
-          <div class="photo-format-grid photo-preview-formats" role="group" aria-label="Formát výstupu fotografie">
-            <button class="photo-format-button selected" type="button" data-photo-format="story" aria-pressed="true"><b>IG STORY</b><small>9:16 · 1080 × 1920</small></button>
-            <button class="photo-format-button" type="button" data-photo-format="reels" aria-pressed="false"><b>IG REELS</b><small>9:16 · 1080 × 1920</small></button>
-            <button class="photo-format-button" type="button" data-photo-format="feed" aria-pressed="false"><b>IG FEED</b><small>4:5 · 1080 × 1350</small></button>
-            <button class="photo-format-button" type="button" data-photo-format="square" aria-pressed="false"><b>IG ČTVEREC</b><small>1:1 · 1080 × 1080</small></button>
-            <button class="photo-format-button" type="button" data-photo-format="landscape" aria-pressed="false"><b>FB REELS</b><small>9:16 · 1080 × 1920</small></button>
-            <button class="photo-format-button" type="button" data-photo-format="fb-story" aria-pressed="false"><b>FB STORY</b><small>9:16 · 1080 × 1920</small></button>
+          <div class="photo-preview-head"><div><p class="eyebrow">ŽIVÝ NÁHLED</p><h2 id="photo-image-name">Zatím není vybraná fotka</h2><p id="photo-image-dimensions">Vyber fotku z Knihovny médií.</p></div><div class="photo-preview-head-actions"><label class="photo-compare-toggle"><input id="photo-show-original" type="checkbox"><span>POROVNAT ORIGINÁL</span></label><button class="icon-button" id="photo-fullscreen" type="button" title="Otevřít úpravu fotky v modálním okně" aria-label="Otevřít úpravu fotky v modálním okně">⛶</button></div></div>
+          <div class="format-tabs photo-preview-formats" role="tablist" aria-label="Formát výstupu fotografie">
+            <button class="format-tab selected" type="button" role="tab" data-photo-format="story" aria-pressed="true" aria-selected="true">IG STORY <small>9:16 · 1080 × 1920</small></button>
+            <button class="format-tab" type="button" role="tab" data-photo-format="reels" aria-pressed="false" aria-selected="false">IG REELS <small>9:16 · 1080 × 1920</small></button>
+            <button class="format-tab" type="button" role="tab" data-photo-format="feed" aria-pressed="false" aria-selected="false">IG FEED <small>4:5 · 1080 × 1350</small></button>
+            <button class="format-tab" type="button" role="tab" data-photo-format="square" aria-pressed="false" aria-selected="false">IG ČTVEREC <small>1:1 · 1080 × 1080</small></button>
+            <button class="format-tab" type="button" role="tab" data-photo-format="landscape" aria-pressed="false" aria-selected="false">FB REELS <small>9:16 · 1080 × 1920</small></button>
+            <button class="format-tab" type="button" role="tab" data-photo-format="fb-story" aria-pressed="false" aria-selected="false">FB STORY <small>9:16 · 1080 × 1920</small></button>
           </div>
-          <div class="photo-preview-head"><div><p class="eyebrow">ŽIVÝ NÁHLED</p><h2 id="photo-image-name">Zatím není vybraná fotka</h2><p id="photo-image-dimensions">Vyber fotku z Knihovny médií.</p></div><label class="photo-compare-toggle"><input id="photo-show-original" type="checkbox"><span>POROVNAT ORIGINÁL</span></label></div>
           <div class="photo-preview-stage">
             <div class="photo-preview-media" id="photo-preview-media" hidden><canvas id="photo-preview-canvas" aria-label="Náhled upravené fotografie"></canvas><canvas id="photo-mask-preview" aria-label="Označená oblast popředí" hidden></canvas></div>
             <div class="photo-preview-placeholder" id="photo-preview-placeholder" aria-hidden="true"></div>
@@ -233,6 +232,10 @@
         </section>
       </div>
     </section>
+    <div class="photo-editor-modal" id="photo-editor-modal" hidden role="dialog" aria-modal="true" aria-label="Úprava fotky v modálním okně">
+      <header class="photo-editor-modal-bar"><span class="eyebrow">ÚPRAVA FOTKY</span><div><button class="button button-outline" id="photo-modal-reset" type="button">RESETOVAT ÚPRAVY</button><button class="photo-editor-modal-close" id="photo-modal-close" type="button" aria-label="Zavřít úpravu fotky">×</button></div></header>
+      <div class="photo-editor-modal-content" id="photo-editor-modal-content"></div>
+    </div>
 
     <section class="view page-view" id="view-about" data-view="about" hidden>
       <div class="page-heading"><div><p class="eyebrow">AT CONTENT STUDIO</p><h1>About</h1><p>Rychlý návod: od výběru média po uložení nebo export.</p></div></div>
@@ -295,6 +298,6 @@
   </div>
   <div class="action-modal" id="share-ready-modal" hidden role="dialog" aria-modal="true" aria-labelledby="share-ready-title"><section class="action-modal-card share-ready-card"><button class="modal-close" id="share-ready-close" aria-label="Zavřít">×</button><p class="eyebrow">HOTOVO KE SDÍLENÍ</p><h2 id="share-ready-title">Výstup je připravený</h2><p class="action-modal-description" id="share-ready-description">Příspěvek je připravený pro vybraný formát. Zvol Sdílet pro nabídku aplikací v telefonu nebo počítači.</p><div class="action-modal-meta" id="share-ready-format"></div><div class="action-modal-actions"><button class="button button-primary" id="share-ready-send" type="button">SDÍLET ↗</button><button class="button button-outline" id="share-ready-download" type="button">STÁHNOUT ↓</button></div></section></div>
   <script src="config.js?v=2"></script>
-  <script src="studio.js?v=2026111401"></script>
+  <script src="studio.js?v=2026111403"></script>
 </body>
 </html>
