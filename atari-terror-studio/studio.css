@@ -519,3 +519,5 @@ html:not(.studio-authenticated) body>*:not(#studio-login-screen):not(script){dis
 
 /* Keep the photo editor header at the same vertical origin as the video editor. */
 #view-photo-edit.page-view{padding-top:0}
+
+.draft-copy .draft-type-tag{justify-self:start;display:inline-flex;align-items:center;padding:3px 6px;border:1px solid #655b22;color:var(--yellow);font:8px var(--mono);letter-spacing:.08em;line-height:1}
