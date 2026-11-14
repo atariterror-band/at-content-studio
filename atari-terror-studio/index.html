@@ -7,7 +7,7 @@
   <meta name="description" content="Lokální AT Content Studio — návrhy sociálního obsahu z oficiálních médií Atari Terror.">
   <title>AT Content Studio — Atari Terror</title>
   <link rel="icon" type="image/svg+xml" href="assets/favicon-ats.svg?v=2026111415">
-  <link rel="stylesheet" href="studio.css?v=2026111425">
+  <link rel="stylesheet" href="studio.css?v=2026111429">
 </head>
 <body>
   <main class="studio-login-screen" id="studio-login-screen">
@@ -57,6 +57,10 @@
         <label class="sr-only" for="caption">Text příspěvku</label><textarea id="caption" rows="4" maxlength="500">Tady napiš příspěvek smrti, pičo.</textarea>
         <div class="main-headline-controls"><label for="caption-size">VELIKOST TEXTU PŘÍSPĚVKU <output id="caption-size-value">100 %</output></label><input id="caption-size" type="range" min="50" max="200" value="100"><label for="caption-color">BARVA TEXTU PŘÍSPĚVKU</label><input id="caption-color" type="color" value="#f4f0e5" aria-label="Barva textu příspěvku"></div>
         <div class="caption-meta"><span id="char-count">99 / 500</span><button class="text-button" id="copy-caption">KOPÍROVAT TEXT</button></div>
+        <details class="emoji-picker" data-emoji-scope="video">
+          <summary>☺ PŘIDAT EMOJI DO TEXTU</summary>
+          <div class="emoji-picker-grid" aria-label="Výběr emoji"><button type="button" data-insert-emoji="🤘" aria-label="Vložit 🤘">🤘</button><button type="button" data-insert-emoji="🎸" aria-label="Vložit 🎸">🎸</button><button type="button" data-insert-emoji="🔥" aria-label="Vložit 🔥">🔥</button><button type="button" data-insert-emoji="🖤" aria-label="Vložit 🖤">🖤</button><button type="button" data-insert-emoji="⚡" aria-label="Vložit ⚡">⚡</button><button type="button" data-insert-emoji="💀" aria-label="Vložit 💀">💀</button><button type="button" data-insert-emoji="😈" aria-label="Vložit 😈">😈</button><button type="button" data-insert-emoji="🎤" aria-label="Vložit 🎤">🎤</button><button type="button" data-insert-emoji="👀" aria-label="Vložit 👀">👀</button><button type="button" data-insert-emoji="✨" aria-label="Vložit ✨">✨</button><button type="button" data-insert-emoji="🦇" aria-label="Vložit 🦇">🦇</button><button type="button" data-insert-emoji="🌀" aria-label="Vložit 🌀">🌀</button></div>
+        </details>
 
         
             <p class="control-label text-placement-heading">UMÍSTĚNÍ TEXTU</p>
@@ -161,15 +165,25 @@
             <div class="main-headline-controls"><label for="photo-subtitle-size">VELIKOST PODNADPISU <output id="photo-subtitle-size-value">100 %</output></label><input id="photo-subtitle-size" type="range" min="50" max="200" value="100"><label for="photo-subtitle-color">BARVA PODNADPISU</label><input id="photo-subtitle-color" type="color" value="#f4f0e5" aria-label="Barva podnadpisu"></div>
             <label class="field-label text-field-heading" for="photo-caption">TEXT PŘÍSPĚVKU</label><textarea id="photo-caption" rows="3" maxlength="500" placeholder="Doplň text příspěvku"></textarea>
             <div class="main-headline-controls"><label for="photo-caption-size">VELIKOST TEXTU <output id="photo-caption-size-value">100 %</output></label><input id="photo-caption-size" type="range" min="50" max="200" value="100"><label for="photo-caption-color">BARVA TEXTU</label><input id="photo-caption-color" type="color" value="#f4f0e5" aria-label="Barva textu"></div>
+            <details class="emoji-picker" data-emoji-scope="photo">
+          <summary>☺ PŘIDAT EMOJI DO TEXTU</summary>
+          <div class="emoji-picker-grid" aria-label="Výběr emoji"><button type="button" data-insert-emoji="🤘" aria-label="Vložit 🤘">🤘</button><button type="button" data-insert-emoji="🎸" aria-label="Vložit 🎸">🎸</button><button type="button" data-insert-emoji="🔥" aria-label="Vložit 🔥">🔥</button><button type="button" data-insert-emoji="🖤" aria-label="Vložit 🖤">🖤</button><button type="button" data-insert-emoji="⚡" aria-label="Vložit ⚡">⚡</button><button type="button" data-insert-emoji="💀" aria-label="Vložit 💀">💀</button><button type="button" data-insert-emoji="😈" aria-label="Vložit 😈">😈</button><button type="button" data-insert-emoji="🎤" aria-label="Vložit 🎤">🎤</button><button type="button" data-insert-emoji="👀" aria-label="Vložit 👀">👀</button><button type="button" data-insert-emoji="✨" aria-label="Vložit ✨">✨</button><button type="button" data-insert-emoji="🦇" aria-label="Vložit 🦇">🦇</button><button type="button" data-insert-emoji="🌀" aria-label="Vložit 🌀">🌀</button></div>
+        </details>
             <div class="photo-text-animation">
               <p class="control-label">ANIMACE TEXTU</p>
-              <div class="photo-text-motion-grid" role="group" aria-label="Animace textu ve videu">
-                <button class="photo-motion-button selected" type="button" data-photo-text-motion="none" aria-pressed="true">BEZ ANIMACE</button>
-                <button class="photo-motion-button" type="button" data-photo-text-motion="rise" aria-pressed="false">JEMNÝ POHYB VZHŮRU</button>
-                <button class="photo-motion-button" type="button" data-photo-text-motion="drift" aria-pressed="false">POHYB DO STRAN</button>
+              <div class="photo-text-motion-grid" role="group" aria-label="Animace textu ve fotografii">
+                <button class="photo-motion-button selected" type="button" data-photo-text-motion="none" aria-pressed="true">BEZ EFEKTU</button>
+                <button class="photo-motion-button" type="button" data-photo-text-motion="zoom" aria-pressed="false">ZOOM TAM A ZPĚT</button>
+                <button class="photo-motion-button" type="button" data-photo-text-motion="horizontal" aria-pressed="false">POSUN DO STRAN</button>
+                <button class="photo-motion-button" type="button" data-photo-text-motion="vertical" aria-pressed="false">SVISLÉ VLNĚNÍ</button>
+                <button class="photo-motion-button" type="button" data-photo-text-motion="diagonal" aria-pressed="false">DIAGONÁLNÍ DRIFT</button>
+                <button class="photo-motion-button" type="button" data-photo-text-motion="tilt" aria-pressed="false">JEMNÉ OTÁČENÍ</button>
+                <button class="photo-motion-button" type="button" data-photo-text-motion="pulse" aria-pressed="false">PULZOVÁNÍ</button>
+                <button class="photo-motion-button" type="button" data-photo-text-motion="reveal" aria-pressed="false">POSTUPNÉ ODHALENÍ</button>
+                <button class="photo-motion-button" type="button" data-photo-text-motion="glitch" aria-pressed="false">KRÁTKÉ GLITCH ZÁBLESKY</button>
                 <button class="photo-motion-button" type="button" data-photo-text-motion="fade" aria-pressed="false">PLYNULÉ ZESÍLENÍ</button>
               </div>
-              <small class="photo-effect-help">Pohyb zachová font i velikost textu.</small>
+              <small class="photo-effect-help">Animace plynule navazuje sama na sebe stejně jako ve videoeditoru.</small>
             </div>
             <p class="control-label text-placement-heading">UMÍSTĚNÍ TEXTU</p>
             <div class="text-layout-controls photo-text-layout"><fieldset class="alignment-picker"><legend>ZAROVNÁNÍ</legend><button type="button" class="align-button selected" data-photo-align="left" aria-pressed="true">DOLEVA</button><button type="button" class="align-button" data-photo-align="center" aria-pressed="false">NA STŘED</button><button type="button" class="align-button" data-photo-align="right" aria-pressed="false">DOPRAVA</button></fieldset><div class="position-picker"><label for="photo-text-x">VODOROVNÁ POLOHA</label><input id="photo-text-x" type="range" min="8" max="92" value="8"><label for="photo-text-y">SVISLÁ POLOHA</label><input id="photo-text-y" type="range" min="0" max="100" value="66"></div></div>
@@ -290,6 +304,10 @@
         <div class="modal-control-row"><label for="modal-headline-size">VELIKOST PODNADPISU <output id="modal-headline-size-value">100 %</output></label><input id="modal-headline-size" type="range" min="50" max="200" value="100"><label for="modal-post-headline-color">BARVA PODNADPISU</label><input id="modal-post-headline-color" type="color" value="#f4f0e5"></div>
         <label class="field-label text-field-heading" for="modal-caption">TEXT PŘÍSPĚVKU</label><textarea id="modal-caption" rows="4" maxlength="500"></textarea>
         <div class="modal-control-row"><label for="modal-caption-size">VELIKOST TEXTU PŘÍSPĚVKU <output id="modal-caption-size-value">100 %</output></label><input id="modal-caption-size" type="range" min="50" max="200" value="100"><label for="modal-caption-color">BARVA TEXTU PŘÍSPĚVKU</label><input id="modal-caption-color" type="color" value="#f4f0e5"></div>
+        <details class="emoji-picker" data-emoji-scope="video">
+          <summary>☺ PŘIDAT EMOJI DO TEXTU</summary>
+          <div class="emoji-picker-grid" aria-label="Výběr emoji"><button type="button" data-insert-emoji="🤘" aria-label="Vložit 🤘">🤘</button><button type="button" data-insert-emoji="🎸" aria-label="Vložit 🎸">🎸</button><button type="button" data-insert-emoji="🔥" aria-label="Vložit 🔥">🔥</button><button type="button" data-insert-emoji="🖤" aria-label="Vložit 🖤">🖤</button><button type="button" data-insert-emoji="⚡" aria-label="Vložit ⚡">⚡</button><button type="button" data-insert-emoji="💀" aria-label="Vložit 💀">💀</button><button type="button" data-insert-emoji="😈" aria-label="Vložit 😈">😈</button><button type="button" data-insert-emoji="🎤" aria-label="Vložit 🎤">🎤</button><button type="button" data-insert-emoji="👀" aria-label="Vložit 👀">👀</button><button type="button" data-insert-emoji="✨" aria-label="Vložit ✨">✨</button><button type="button" data-insert-emoji="🦇" aria-label="Vložit 🦇">🦇</button><button type="button" data-insert-emoji="🌀" aria-label="Vložit 🌀">🌀</button></div>
+        </details>
         <label class="field-label" for="modal-track-select">SKLADBA ZE SPOTIFY</label><select class="modal-track-select" id="modal-track-select"><option value="">Bez skladby</option><option>Eve</option><option>Bright Sun</option><option>Mother</option><option>Oh My God</option><option>Motofoko</option><option>Chosen One</option><option>Dance Machine</option><option>War</option></select>
         <p class="field-label">UMÍSTĚNÍ TEXTU</p>
         <fieldset class="modal-alignment"><legend>ZAROVNÁNÍ NADPISU A TEXTU</legend><button type="button" class="align-button selected" data-align="left" aria-pressed="true">DOLEVA</button><button type="button" class="align-button" data-align="center" aria-pressed="false">NA STŘED</button><button type="button" class="align-button" data-align="right" aria-pressed="false">DOPRAVA</button></fieldset>
@@ -316,6 +334,6 @@
   </div>
   <div class="action-modal" id="share-ready-modal" hidden role="dialog" aria-modal="true" aria-labelledby="share-ready-title"><section class="action-modal-card share-ready-card"><button class="modal-close" id="share-ready-close" aria-label="Zavřít">×</button><p class="eyebrow">HOTOVO KE SDÍLENÍ</p><h2 id="share-ready-title">Výstup je připravený</h2><p class="action-modal-description" id="share-ready-description">Příspěvek je připravený pro vybraný formát. Zvol Sdílet pro nabídku aplikací v telefonu nebo počítači.</p><div class="action-modal-meta" id="share-ready-format"></div><div class="action-modal-actions"><button class="button button-primary" id="share-ready-send" type="button">SDÍLET ↗</button><button class="button button-outline" id="share-ready-download" type="button">STÁHNOUT ↓</button></div></section></div>
   <script src="config.js?v=2"></script>
-  <script src="studio.js?v=2026111426"></script>
+  <script src="studio.js?v=2026111430"></script>
 </body>
 </html>
