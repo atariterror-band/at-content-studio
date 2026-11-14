@@ -452,7 +452,7 @@ html:not(.studio-authenticated) body>*:not(#studio-login-screen):not(script){dis
 .photo-preview-actions .micro-note{max-width:360px;margin:0}
 .photo-preview-actions .button{flex:none;min-height:42px}
 .photo-preview-buttons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;width:100%;min-width:0}
-.photo-preview-buttons .button{width:100%;min-width:0;padding-inline:7px;font-size:9px;white-space:normal}
+.photo-preview-buttons .button{display:flex;align-items:center;justify-content:center;width:100%;height:48px;min-height:48px;box-sizing:border-box;padding:7px;text-align:center;font-size:9px;line-height:1.2;white-space:normal}
 .photo-motion-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
 .photo-motion-button{min-height:36px;padding:7px;border:1px solid var(--line);background:#11110f;color:#aaa99f;text-align:left;font:8px var(--mono);cursor:pointer}
 .photo-motion-button:hover,.photo-motion-button.selected{border-color:var(--yellow);color:var(--yellow);background:#222016}
