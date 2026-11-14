@@ -536,3 +536,13 @@ html:not(.studio-authenticated) body>*:not(#studio-login-screen):not(script){dis
 .photo-text-animation>.control-label{margin:0 0 7px;color:var(--muted);font:8px var(--mono)}
 .photo-text-motion-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
 @media(max-width:650px){.photo-loop-effects{grid-template-columns:1fr}}
+
+.emoji-picker{margin:7px 0 12px;border:1px solid var(--line);background:#121210}
+.emoji-picker summary{padding:8px 10px;color:var(--yellow);font:8px var(--mono);letter-spacing:.04em;cursor:pointer;list-style:none}
+.emoji-picker summary::-webkit-details-marker{display:none}
+.emoji-picker-grid{display:grid;grid-template-columns:repeat(6,minmax(34px,1fr));gap:4px;padding:0 8px 8px}
+.emoji-picker-grid button{min-height:34px;border:1px solid var(--line);background:#191917;font:18px/1 var(--font);cursor:pointer}
+.emoji-picker-grid button:hover,.emoji-picker-grid button:focus-visible{border-color:var(--yellow);background:#242216;outline:0}
+ .photo-text-motion-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.modal-text-panel .emoji-picker{margin:5px 0 10px}
+
