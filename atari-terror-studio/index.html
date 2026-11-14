@@ -6,8 +6,8 @@
   <meta name="theme-color" content="#11110f">
   <meta name="description" content="Lokální AT Content Studio — návrhy sociálního obsahu z oficiálních médií Atari Terror.">
   <title>AT Content Studio — Atari Terror</title>
-  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=2026111404">
-  <link rel="stylesheet" href="studio.css?v=2026111403">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon-ats.svg?v=2026111415">
+  <link rel="stylesheet" href="studio.css?v=2026111415">
 </head>
 <body>
   <main class="studio-login-screen" id="studio-login-screen">
@@ -230,6 +230,9 @@
           </div>
           <div class="photo-preview-actions"><p class="micro-note" id="photo-export-note">PNG · vybraný poměr stran a texty se promítnou do výstupu.</p><div class="photo-preview-buttons"><button class="button button-outline" id="photo-save-draft" type="button" disabled>ULOŽIT DO OBSAHU STUDIA</button><button class="button button-primary" id="photo-download" disabled>STÁHNOUT FOTKU ↓</button></div></div>
         </section>
+        <button class="pane-resizer photo-pane-resizer" id="photo-pane-resizer" type="button" role="slider" aria-label="Změnit poměr prostoru pro ovládání a živý náhled fotky" aria-valuemin="20" aria-valuemax="55" aria-valuenow="25" title="Táhni doleva nebo doprava pro změnu velikosti obou panelů">
+          <img src="assets/rock-hand.png?v=2026102212" alt="" aria-hidden="true">
+        </button>
       </div>
     </section>
     <div class="photo-editor-modal" id="photo-editor-modal" hidden role="dialog" aria-modal="true" aria-label="Úprava fotky v modálním okně">
@@ -298,6 +301,6 @@
   </div>
   <div class="action-modal" id="share-ready-modal" hidden role="dialog" aria-modal="true" aria-labelledby="share-ready-title"><section class="action-modal-card share-ready-card"><button class="modal-close" id="share-ready-close" aria-label="Zavřít">×</button><p class="eyebrow">HOTOVO KE SDÍLENÍ</p><h2 id="share-ready-title">Výstup je připravený</h2><p class="action-modal-description" id="share-ready-description">Příspěvek je připravený pro vybraný formát. Zvol Sdílet pro nabídku aplikací v telefonu nebo počítači.</p><div class="action-modal-meta" id="share-ready-format"></div><div class="action-modal-actions"><button class="button button-primary" id="share-ready-send" type="button">SDÍLET ↗</button><button class="button button-outline" id="share-ready-download" type="button">STÁHNOUT ↓</button></div></section></div>
   <script src="config.js?v=2"></script>
-  <script src="studio.js?v=2026111403"></script>
+  <script src="studio.js?v=2026111415"></script>
 </body>
 </html>
